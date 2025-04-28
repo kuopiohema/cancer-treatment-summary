@@ -15,8 +15,8 @@ import {
 import {IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, IconSun} from '@tabler/icons-react'
 import {useDisclosure} from '@mantine/hooks'
 import {type ReactNode, useState} from 'react'
-import Start from './Pages/Start'
-import Treatments from './Pages/Treatments.tsx'
+import Start from './pages/Start'
+import Treatments from './pages/Treatments.tsx'
 import {FormProvider, newDiagnosis, newProtocol, useForm} from './formContext.ts'
 
 

@@ -1,22 +1,60 @@
-import {ActionIcon, Paper} from '@mantine/core'
+import {ActionIcon, Card, Center, Text} from '@mantine/core'
 import type {UseFormReturnType} from '@mantine/form'
 import {PropsWithChildren} from 'react'
-import {IconTrash} from '@tabler/icons-react'
+import {IconGripHorizontal, IconTrash} from '@tabler/icons-react'
 import type {FormValues} from '../formContext.ts'
+import { Draggable } from '@hello-pangea/dnd'
+import { modals } from '@mantine/modals'
 
-interface ItemCardProps extends PropsWithChildren {
+export interface ItemCardProps extends PropsWithChildren {
     form: UseFormReturnType<FormValues>
     formPath: string
     index: number
+    draggableId: string
 }
 
-export default function ItemCard({form, formPath, index, children}: ItemCardProps) {
+export default function ItemCard({form, formPath, index, draggableId, children}: ItemCardProps) {
+    const confirmModal = () => modals.openConfirmModal({
+        title: 'Poista kohde',
+        children: (
+            <Text size="sm">
+                Poistetaanko kohde? Tätä ei voi kumota!
+            </Text>
+        ),
+        labels: { confirm: 'Poista', cancel: 'Peruuta' },
+        onConfirm: () => form.removeListItem(formPath, index)
+    })
+
     return (
-        <Paper shadow="sm" withBorder p="md" bg="gray.8">
-            {children}
-            <ActionIcon color="red" onClick={() => form.removeListItem(formPath, index)}>
-                <IconTrash size={22} />
-            </ActionIcon>
-        </Paper>
+        <Draggable index={index} draggableId={draggableId}>
+            {(provided) => (
+                <Card
+                    shadow="sm"
+                    withBorder
+                    p="md"
+                    maw={600}
+                    bg="gray.8"
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                >
+                    <Card.Section mb="md">
+                        <Center {...provided.dragHandleProps}>
+                            <IconGripHorizontal size={18} />
+                        </Center>
+                        <ActionIcon
+                            color="red"
+                            variant="subtle"
+                            pos="absolute"
+                            top="0"
+                            right="0"
+                            onClick={confirmModal}
+                        >
+                            <IconTrash size={22} />
+                        </ActionIcon>
+                    </Card.Section>
+                    {children}
+                </Card>
+            )}
+        </Draggable>
     )
 }
