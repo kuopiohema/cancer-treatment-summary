@@ -1,4 +1,4 @@
-import {ActionIcon, Card, Center, Text} from '@mantine/core'
+import {ActionIcon, alpha, Card, Center, Text} from '@mantine/core'
 import type {UseFormReturnType} from '@mantine/form'
 import {PropsWithChildren} from 'react'
 import {IconGripHorizontal, IconTrash} from '@tabler/icons-react'
@@ -18,12 +18,14 @@ export default function ItemCard({form, formPath, index, draggableId, children}:
         title: 'Poista kohde',
         children: (
             <Text size="sm">
-                Poistetaanko kohde? Tätä ei voi kumota!
+                Poistetaanko kohde? Palauttaminen ei ole mahdollista!
             </Text>
         ),
         labels: { confirm: 'Poista', cancel: 'Peruuta' },
         onConfirm: () => form.removeListItem(formPath, index)
     })
+
+    const cardBackgroundColor = alpha('var(--mantine-color-gray-6)', 0.2)
 
     return (
         <Draggable index={index} draggableId={draggableId}>
@@ -32,8 +34,7 @@ export default function ItemCard({form, formPath, index, draggableId, children}:
                     shadow="sm"
                     withBorder
                     p="md"
-                    maw={600}
-                    bg="gray.8"
+                    bg={cardBackgroundColor}
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                 >

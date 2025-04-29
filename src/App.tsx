@@ -52,7 +52,11 @@ export default function App() {
     })
 
     const handleSave = () => {
-        console.log(JSON.stringify(form.getValues()))
+        console.log(form.getValues())
+    }
+
+    const handleLoad = () => {
+        console.log('Load')
     }
 
     return (
@@ -76,7 +80,13 @@ export default function App() {
                     </Group>
                     <Group>
                         <Button variant="default" leftSection={<IconFile size={20} />}>Uusi</Button>
-                        <Button variant="default" leftSection={<IconFolderOpen size={20} />}>Lataa</Button>
+                        <Button
+                            variant="default"
+                            leftSection={<IconFolderOpen size={20} />}
+                            onClick={handleLoad}
+                        >
+                            Lataa
+                        </Button>
                         <Button
                             variant="default"
                             leftSection={<IconDeviceFloppy size={20} />}
