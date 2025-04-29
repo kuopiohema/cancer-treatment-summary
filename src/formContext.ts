@@ -8,9 +8,9 @@ interface ArrayItem {
 const newArrayItem = (): ArrayItem => ({ key: randomId() })
 
 interface Diagnosis extends ArrayItem {
+    date: string
     icd10: string
     text: string
-    date: Date | null
     subtype: string
     stage: string
     spread: string
@@ -18,9 +18,9 @@ interface Diagnosis extends ArrayItem {
 
 export const newDiagnosis = (): Diagnosis => ({
     ...newArrayItem(),
+    date: '',
     icd10: '',
     text: '',
-    date: null,
     subtype: '',
     stage: '',
     spread: ''

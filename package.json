@@ -12,12 +12,10 @@
   "dependencies": {
     "@hello-pangea/dnd": "^18.0.1",
     "@mantine/core": "^7.17.5",
-    "@mantine/dates": "^7.17.5",
     "@mantine/form": "^7.17.5",
     "@mantine/hooks": "^7.17.5",
     "@mantine/modals": "^7.17.5",
     "@tabler/icons-react": "^3.31.0",
-    "dayjs": "^1.11.13",
     "eslint-plugin-react-dom": "^1.48.5",
     "eslint-plugin-react-x": "^1.48.5",
     "react": "^19.0.0",

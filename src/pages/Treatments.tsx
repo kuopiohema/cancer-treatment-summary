@@ -1,14 +1,22 @@
-import { Group, SimpleGrid, Textarea, TextInput } from '@mantine/core'
-import { newDiagnosis, newProtocol, useFormContext } from '../formContext.ts'
+import {Checkbox, type ComboboxData, Select, SimpleGrid, Textarea, TextInput} from '@mantine/core'
+import {newDiagnosis, newProtocol, useFormContext} from '../formContext.ts'
 import ItemCard from '../components/ItemCard.tsx'
 import ItemList from '../components/ItemList.tsx'
-import DateInputFormatted from '../components/DateInputFormatted.tsx'
+import FormRow from '../components/FormRow.tsx'
 
 export default function Treatments() {
     const form = useFormContext()
 
+    const interruptionReasonOptions: ComboboxData = [
+        {value: 'unknown', label: 'Ei tiedossa'},
+        {value: 'toxicity', label: 'Toksisuus'},
+        {value: 'refractory', label: 'Riittämätön hoitovaste'},
+        {value: 'relapse', label: 'Relapsi'},
+        {value: 'other', label: 'Muu, mikä?'}
+    ]
+
     return (
-        <SimpleGrid spacing="lg" cols={{ base: 1, xl: 2 }}>
+        <SimpleGrid spacing="lg" cols={{base: 1, xl: 2}}>
             <ItemList
                 form={form}
                 formPath="treatments.diagnoses"
@@ -26,8 +34,8 @@ export default function Treatments() {
                             index={index}
                             draggableId={item.key}
                         >
-                            <Group grow w="100%" preventGrowOverflow={false}>
-                                <DateInputFormatted
+                            <FormRow>
+                                <TextInput
                                     key={form.key(`${key}.date`)}
                                     {...form.getInputProps(`${key}.date`)}
                                     label="Diagnoosipäivä"
@@ -46,8 +54,8 @@ export default function Treatments() {
                                     {...form.getInputProps(`${key}.text`)}
                                     label="Diagnoosi tekstinä"
                                 />
-                            </Group>
-                            <Group grow w="100%" preventGrowOverflow={false}>
+                            </FormRow>
+                            <FormRow>
                                 <TextInput
                                     key={form.key(`${key}.subtype`)}
                                     {...form.getInputProps(`${key}.subtype`)}
@@ -58,7 +66,7 @@ export default function Treatments() {
                                     {...form.getInputProps(`${key}.stage`)}
                                     label="Stage"
                                 />
-                            </Group>
+                            </FormRow>
                             <Textarea
                                 key={form.key(`${key}.spread`)}
                                 {...form.getInputProps(`${key}.spread`)}
@@ -74,7 +82,7 @@ export default function Treatments() {
                 formPath="treatments.protocols"
                 itemFactory={newProtocol}
                 title="Hoito-ohjelmat"
-                addButtonText='Lisää hoito-ohjelma'
+                addButtonText="Lisää hoito-ohjelma"
             >
                 {form.getValues().treatments.protocols.map((item, index) => {
                     const key = `treatments.protocols.${index}`
@@ -97,6 +105,36 @@ export default function Treatments() {
                                 {...form.getInputProps(`${key}.group`)}
                                 label="Hoitoryhmä"
                             />
+                            <FormRow>
+                                <TextInput
+                                    key={form.key(`${key}.startDate`)}
+                                    {...form.getInputProps(`${key}.startDate`)}
+                                    label="Aloituspäivä"
+                                />
+                                <TextInput
+                                    key={form.key(`${key}.endDate`)}
+                                    {...form.getInputProps(`${key}.endDate`)}
+                                    label="Lopetuspäivä"
+                                />
+                                <Checkbox
+                                    key={form.key(`${key}.interrupted`)}
+                                    {...form.getInputProps(`${key}.interrupted`, { type: 'checkbox' })}
+                                    label="Hoito keskeytetty"
+                                />
+                            </FormRow>
+                            <FormRow>
+                                <Select
+                                    key={form.key(`${key}.interruptionReason`)}
+                                    {...form.getInputProps(`${key}.interruptionReason`)}
+                                    label="Keskeytyksen syy"
+                                    disabled={!form.getValues().treatments.protocols[index].interrupted}
+                                    data={interruptionReasonOptions}
+                                />
+                                <TextInput
+                                    key={form.key(`${key}.interruptionReasonOther`)}
+                                    {...form.getInputProps(`${key}.interruptionReasonOther`)}
+                                />
+                            </FormRow>
                         </ItemCard>
                     )
                 })}

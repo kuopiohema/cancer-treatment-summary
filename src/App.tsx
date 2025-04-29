@@ -52,7 +52,7 @@ export default function App() {
     })
 
     const handleSave = () => {
-        console.log(form.getValues())
+        console.log(JSON.stringify(form.getValues()))
     }
 
     const handleLoad = () => {
