@@ -1,19 +1,19 @@
-import {ActionIcon, alpha, Card, Center, Text} from '@mantine/core'
-import type {UseFormReturnType} from '@mantine/form'
-import {PropsWithChildren} from 'react'
-import {IconGripHorizontal, IconTrash} from '@tabler/icons-react'
-import type {FormValues} from '../formContext.ts'
 import { Draggable } from '@hello-pangea/dnd'
+import { ActionIcon, alpha, Card, Center, Stack, Text } from '@mantine/core'
 import { modals } from '@mantine/modals'
+import { IconGripHorizontal, IconTrash } from '@tabler/icons-react'
+import { PropsWithChildren } from 'react'
+import { useFormContext } from '../formContext.ts'
 
 export interface ItemCardProps extends PropsWithChildren {
-    form: UseFormReturnType<FormValues>
-    formPath: string
+    path: string
     index: number
     draggableId: string
 }
 
-export default function ItemCard({form, formPath, index, draggableId, children}: ItemCardProps) {
+export default function ItemCard({path, index, draggableId, children}: ItemCardProps) {
+    const form = useFormContext()
+
     const confirmModal = () => modals.openConfirmModal({
         title: 'Poista kohde',
         children: (
@@ -22,7 +22,7 @@ export default function ItemCard({form, formPath, index, draggableId, children}:
             </Text>
         ),
         labels: { confirm: 'Poista', cancel: 'Peruuta' },
-        onConfirm: () => form.removeListItem(formPath, index)
+        onConfirm: () => form.removeListItem(path, index)
     })
 
     const cardBackgroundColor = alpha('var(--mantine-color-gray-6)', 0.2)
@@ -53,7 +53,9 @@ export default function ItemCard({form, formPath, index, draggableId, children}:
                             <IconTrash size={22} />
                         </ActionIcon>
                     </Card.Section>
-                    {children}
+                    <Stack gap="xs">
+                        {children}
+                    </Stack>
                 </Card>
             )}
         </Draggable>

@@ -7,7 +7,7 @@ interface ArrayItem {
 
 const newArrayItem = (): ArrayItem => ({ key: randomId() })
 
-interface Diagnosis extends ArrayItem {
+export interface Diagnosis extends ArrayItem {
     date: string
     icd10: string
     text: string
@@ -26,14 +26,13 @@ export const newDiagnosis = (): Diagnosis => ({
     spread: ''
 })
 
-interface Protocol extends ArrayItem {
+export interface Protocol extends ArrayItem {
     protocol: string
     group: string
     startDate: string
     endDate: string
-    interrupted: boolean
-    interruptionReason: string
-    interruptionReasonOther: string
+    stopReason: string
+    stopReasonOther: string
 }
 
 export const newProtocol = (): Protocol => ({
@@ -42,9 +41,8 @@ export const newProtocol = (): Protocol => ({
     group: '',
     startDate: '',
     endDate: '',
-    interrupted: false,
-    interruptionReason: '',
-    interruptionReasonOther: ''
+    stopReason: '',
+    stopReasonOther: ''
 })
 
 export interface FormValues {
