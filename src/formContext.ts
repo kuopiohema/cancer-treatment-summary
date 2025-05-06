@@ -46,8 +46,8 @@ export const newProtocol = (): Protocol => ({
 })
 
 export interface FormValues {
+    diagnoses: Diagnosis[]
     treatments: {
-        diagnoses: Diagnosis[]
         protocols: Protocol[]
     }
 }

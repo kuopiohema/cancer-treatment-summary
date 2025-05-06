@@ -1,25 +1,25 @@
 import { Textarea, TextInput } from "@mantine/core"
-import FormRow from "../../components/FormRow"
-import ItemCard from "../../components/ItemCard"
-import ItemList from "../../components/ItemList"
-import { newDiagnosis, useFormContext } from "../../formContext"
+import FormRow from "../components/FormRow"
+import ItemCard from "../components/ItemCard"
+import ItemList from "../components/ItemList"
+import { newDiagnosis, useFormContext } from "../formContext"
 
 export default function Diagnoses() {
     const form = useFormContext()
 
     return (
         <ItemList
-            path="treatments.diagnoses"
+            path="diagnoses"
             itemFactory={newDiagnosis}
             title="Diagnoosit"
             addButtonText="Lisää diagnoosi"
         >
-            {form.getValues().treatments.diagnoses.map((item, index) => {
-                const key = `treatments.diagnoses.${index}`
+            {form.getValues().diagnoses.map((item, index) => {
+                const key = `diagnoses.${index}`
                 return (
                     <ItemCard
                         key={item.key}
-                        path="treatments.diagnoses"
+                        path="diagnoses"
                         index={index}
                         draggableId={item.key}
                     >
