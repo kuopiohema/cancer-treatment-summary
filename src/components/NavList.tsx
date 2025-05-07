@@ -3,13 +3,24 @@ import {ActionIcon, Divider, Group, Stack, Text, Tooltip} from '@mantine/core'
 import {IconPlus} from '@tabler/icons-react'
 import {useFormContext} from '../formContext'
 import {ItemListProps} from './ItemList'
+import {NavContext} from '../navContext.tsx'
+import {use} from 'react'
+import getPageKey from '../utils/getPageKey.ts'
 
 interface NavListProps extends Omit<ItemListProps, 'addButtonText'> {
     addButtonTooltip: string
 }
 
 export default function NavList({path, itemFactory, title, addButtonTooltip, children}: NavListProps) {
+    const nav = use(NavContext)!
+
     const form = useFormContext()
+
+    const handleAdd = () => {
+        const newItem = itemFactory()
+        form.insertListItem(path, newItem)
+        nav?.setCurrentPage(getPageKey(path, newItem.id))
+    }
 
     return (
         <>
@@ -23,7 +34,7 @@ export default function NavList({path, itemFactory, title, addButtonTooltip, chi
                 <Tooltip label={addButtonTooltip}>
                     <ActionIcon
                         variant="subtle"
-                        onClick={() => form.insertListItem(path, itemFactory())}
+                        onClick={handleAdd}
                     >
                         <IconPlus />
                     </ActionIcon>

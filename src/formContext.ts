@@ -26,30 +26,30 @@ export const newDiagnosis = (): Diagnosis => ({
     spread: ''
 })
 
-export interface Protocol extends ArrayItem {
+export interface Treatment extends ArrayItem {
     protocol: string
     group: string
-    startDate: string
-    endDate: string
+    startDate: string | null
+    endDate: string | null
     stopReason: string
     stopReasonOther: string
+    chemotherapy: boolean
 }
 
-export const newProtocol = (): Protocol => ({
+export const newTreatment = (): Treatment => ({
     ...newArrayItem(),
     protocol: '',
     group: '',
-    startDate: '',
-    endDate: '',
-    stopReason: '',
-    stopReasonOther: ''
+    startDate: null,
+    endDate: null,
+    stopReason: 'completed',
+    stopReasonOther: '',
+    chemotherapy: false,
 })
 
 export interface FormValues {
     diagnoses: Diagnosis[]
-    treatments: {
-        protocols: Protocol[]
-    }
+    treatments: Treatment[]
 }
 
 export const [FormProvider, useFormContext, useForm] = createFormContext<FormValues>()

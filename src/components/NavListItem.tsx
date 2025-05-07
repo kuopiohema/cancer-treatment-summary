@@ -5,13 +5,14 @@ import {Draggable} from '@hello-pangea/dnd'
 import {IconGripVertical, IconTrash} from '@tabler/icons-react'
 import {ActionIcon, Center, NavLink, Text, Tooltip} from '@mantine/core'
 import {modals} from '@mantine/modals'
+import getPageKey from '../utils/getPageKey.ts'
 
 interface NavListItemProps {
     index: number
     path: string
     id: string
     label: string
-    removeButtonTooltip: string
+    itemName: string
 }
 
 export interface TypedNavListItemProps<T extends ArrayItem> {
@@ -19,17 +20,17 @@ export interface TypedNavListItemProps<T extends ArrayItem> {
     item: T
 }
 
-export default function NavListItem({index, path, id, label, removeButtonTooltip}: NavListItemProps) {
-    const {currentPage, setCurrentPage} = use(NavContext)!
+export default function NavListItem({index, path, id, label, itemName}: NavListItemProps) {
+    const nav = use(NavContext)
 
     const form = useFormContext()
-    const key = `${path}-${id}`
+    const key = getPageKey(path, id)
 
     const confirmModal = () => modals.openConfirmModal({
-        title: 'Poista kohde',
+        title: `Poista ${itemName}`,
         children: (
             <Text size="sm">
-                Poistetaanko kohde? Palauttaminen ei ole mahdollista!
+                Poistetaanko {itemName}? Palauttaminen ei ole mahdollista!
             </Text>
         ),
         labels: {confirm: 'Poista', cancel: 'Peruuta'},
@@ -50,11 +51,11 @@ export default function NavListItem({index, path, id, label, removeButtonTooltip
                 <NavLink
                     href="#"
                     label={label}
-                    active={currentPage === key}
-                    onClick={() => setCurrentPage(key)}
+                    active={nav?.currentPage === key}
+                    onClick={() => nav?.setCurrentPage(key)}
                     rightSection={
                         <Tooltip
-                            label={removeButtonTooltip}
+                            label={`Poista ${itemName}`}
                         >
                             <ActionIcon
                                 variant="subtle"

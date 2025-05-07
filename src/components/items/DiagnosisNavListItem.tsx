@@ -6,11 +6,10 @@ import formatDate from '../../utils/formatDate.ts'
 
 export function DiagnosisNavListItem({index, item}: TypedNavListItemProps<Diagnosis>) {
     const form = useFormContext()
-    const formValues = form.getValues().diagnoses[index]
 
     const emptyLabel = '(Uusi diagnoosi)'
-    const [icd10, setICD10] = useState(formValues.icd10)
-    const [date, setDate] = useState(formValues.date)
+    const [icd10, setICD10] = useState(item.icd10)
+    const [date, setDate] = useState(item.date)
 
     form.watch(`diagnoses.${index}.icd10`, ({value}) => {
         if (typeof value === 'string')
@@ -24,8 +23,7 @@ export function DiagnosisNavListItem({index, item}: TypedNavListItemProps<Diagno
 
     const label = useMemo(() => {
         let result = icd10 || emptyLabel
-        if (date)
-            result = `${result} (${formatDate(date)})`
+        result = `${result} (${formatDate(date)})`
         return result
     }, [icd10, date])
 
@@ -36,7 +34,7 @@ export function DiagnosisNavListItem({index, item}: TypedNavListItemProps<Diagno
             path="diagnoses"
             id={item.id}
             label={label}
-            removeButtonTooltip="Poista diagnoosi"
+            itemName="diagnoosi"
         />
     )
 }

@@ -24,6 +24,7 @@ export default function DiagnosisItemPage({index}: ItemPageProps) {
                     key={form.key(`${key}.icd10`)}
                     {...form.getInputProps(`${key}.icd10`)}
                     label="ICD-10"
+                    placeholder="ICD-10"
                     w={80}
                     flex="none"
                 />

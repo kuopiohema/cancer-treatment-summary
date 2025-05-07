@@ -1,11 +1,11 @@
 import {DragDropContext, Droppable} from '@hello-pangea/dnd'
 import {alpha, Button, Paper, Stack, Title} from '@mantine/core'
 import {PropsWithChildren} from 'react'
-import {useFormContext} from '../formContext'
+import {type ArrayItem, useFormContext} from '../formContext'
 
 export interface ItemListProps extends PropsWithChildren {
     path: string
-    itemFactory: () => unknown
+    itemFactory: () => ArrayItem
     title: string
     addButtonText: string
 }

@@ -13,11 +13,14 @@ import {useDisclosure} from '@mantine/hooks'
 import {IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, IconSun} from '@tabler/icons-react'
 import {useMemo, useState} from 'react'
 import DiagnosisItemPage from './pages/items/DiagnosisItemPage.tsx'
-import {FormProvider, newDiagnosis, newProtocol, useForm} from './formContext.ts'
+import {FormProvider, newDiagnosis, newTreatment, useForm} from './formContext.ts'
 import Start from './pages/Start'
 import {NavContext} from './navContext.tsx'
 import NavList from './components/NavList.tsx'
 import {DiagnosisNavListItem} from './components/items/DiagnosisNavListItem.tsx'
+import {TreatmentNavListItem} from './components/items/TreatmentNavListItem.tsx'
+import TreatmentItemPage from './pages/items/TreatmentItemPage.tsx'
+import getPageKey from './utils/getPageKey.ts'
 
 export default function App() {
     const {setColorScheme} = useMantineColorScheme()
@@ -34,9 +37,7 @@ export default function App() {
         mode: 'uncontrolled',
         initialValues: {
             diagnoses: [newDiagnosis()],
-            treatments: {
-                protocols: [newProtocol()]
-            }
+            treatments: [newTreatment()]
         }
     })
 
@@ -120,12 +121,30 @@ export default function App() {
                                 />
                             ))}
                         </NavList>
+                        <NavList
+                            path="treatments"
+                            itemFactory={newTreatment}
+                            title="Hoidot"
+                            addButtonTooltip="Lisää hoito"
+                        >
+                            {formValues.treatments.map((item, index) => (
+                                <TreatmentNavListItem
+                                    key={item.id}
+                                    item={item}
+                                    index={index}
+                                />
+                            ))}
+                        </NavList>
                     </AppShell.Navbar>
                     <AppShell.Main>
                         {currentPage === 'start' && <Start />}
                         {formValues.diagnoses.map((item, index) =>
-                            currentPage === `diagnoses-${item.id}` &&
+                            currentPage === getPageKey('diagnoses', item.id) &&
                             <DiagnosisItemPage key={item.id} index={index} />
+                        )}
+                        {formValues.treatments.map((item, index) =>
+                            currentPage === getPageKey('treatments', item.id) &&
+                            <TreatmentItemPage key={item.id} index={index} />
                         )}
                     </AppShell.Main>
                 </AppShell>
