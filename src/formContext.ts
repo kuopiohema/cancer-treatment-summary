@@ -1,7 +1,7 @@
 import {createFormContext} from '@mantine/form'
 import {randomId} from '@mantine/hooks'
 
-interface ArrayItem {
+export interface ArrayItem {
     key: string
 }
 

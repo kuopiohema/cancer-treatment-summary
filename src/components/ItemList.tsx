@@ -3,7 +3,7 @@ import { alpha, Button, Paper, Stack, Title } from "@mantine/core";
 import { PropsWithChildren } from "react";
 import { useFormContext } from "../formContext";
 
-interface ItemListProps extends PropsWithChildren {
+export interface ItemListProps extends PropsWithChildren {
     path: string
     itemFactory: () => unknown
     title: string

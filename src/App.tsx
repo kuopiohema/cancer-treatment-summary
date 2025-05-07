@@ -5,20 +5,19 @@ import {
     AppShell,
     Burger,
     Button,
-    Divider,
     Group,
     NavLink,
     Text,
     useComputedColorScheme,
     useMantineColorScheme
 } from '@mantine/core'
-import {IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, IconPlus, IconSun, IconTrash} from '@tabler/icons-react'
-import {useDisclosure} from '@mantine/hooks'
-import {useState} from 'react'
-import Start from './pages/Start'
-import {FormProvider, newDiagnosis, newProtocol, useForm} from './formContext.ts'
+import { useDisclosure } from '@mantine/hooks'
+import { IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, IconSun } from '@tabler/icons-react'
+import { useState } from 'react'
+import DiagnosisNavList from './components/diagnosis/DiagnosisNavList.tsx'
 import DiagnosisItem from './components/DiagnosisItem.tsx'
-import { DragDropContext } from '@hello-pangea/dnd'
+import { FormProvider, newDiagnosis, newProtocol, useForm } from './formContext.ts'
+import Start from './pages/Start'
 
 export default function App() {
     const {setColorScheme} = useMantineColorScheme()
@@ -43,7 +42,7 @@ export default function App() {
     const formValues = form.getValues()
 
     const handleSave = () => {
-        console.log(JSON.stringify(form.getValues()))
+        console.log(JSON.stringify(formValues))
     }
 
     const handleLoad = () => {
@@ -100,45 +99,15 @@ export default function App() {
                         active={currentTab === "start"}
                         onClick={() => setCurrentTab("start")}
                     />
-                    <Divider my="xs" />
-                    <Group px={8} justify="space-between">
-                        <Text>Diagnoosit</Text>
-                        <ActionIcon 
-                            variant="subtle"
-                            onClick={() => form.insertListItem('diagnoses', newDiagnosis())}
-                        >
-                            <IconPlus />
-                        </ActionIcon>
-                    </Group>
-                    <DragDropContext
-                        onDragEnd={({ destination, source }) =>
-                            destination?.index !== undefined && form.reorderListItem('diagnoses', { from: source.index, to: destination.index })
-                        }
-                    >
-                    {formValues.diagnoses.map((item, index) => (
-                        <NavLink
-                            href="#"
-                            key={item.key}
-                            label={item.icd10 || '(Tuntematon diagnoosi)'}
-                            active={currentTab === `diagnosis-${item.key}`}
-                            onClick={() => setCurrentTab(`diagnosis-${item.key}`)}
-                            rightSection={
-                                <ActionIcon
-                                    variant="subtle"
-                                    color="red"
-                                    onClick={() => form.removeListItem('diagnoses', index)}
-                                >
-                                    <IconTrash />
-                                </ActionIcon>
-                            }
-                        />
-                    ))}
-                    </DragDropContext>
+                    <DiagnosisNavList
+                        selectedItem={currentTab}
+                        onSelectItem={setCurrentTab}
+                    />
                 </AppShell.Navbar>
                 <AppShell.Main>
                     {currentTab === 'start' && <Start />}
                     {formValues.diagnoses.map((item, index) =>
-                        currentTab === `diagnosis-${item.key}` &&
+                        currentTab === `diagnoses-${item.key}` &&
                         <DiagnosisItem key={item.key} index={index} />
                     )}
                 </AppShell.Main>
