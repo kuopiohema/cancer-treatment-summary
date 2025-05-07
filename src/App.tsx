@@ -13,11 +13,12 @@ import {
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, IconSun } from '@tabler/icons-react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import DiagnosisNavList from './components/diagnosis/DiagnosisNavList.tsx'
 import DiagnosisItem from './components/DiagnosisItem.tsx'
 import { FormProvider, newDiagnosis, newProtocol, useForm } from './formContext.ts'
 import Start from './pages/Start'
+import { NavContext } from './navContext.tsx'
 
 export default function App() {
     const {setColorScheme} = useMantineColorScheme()
@@ -27,7 +28,8 @@ export default function App() {
     }
 
     const [navCollapsed, {toggle: toggleNavCollapsed}] = useDisclosure(true)
-    const [currentTab, setCurrentTab] = useState('start')
+    const [currentPage, setCurrentPage] = useState('start')
+    const navContextValue = useMemo(() => ({ currentPage, setCurrentPage }), [currentPage, setCurrentPage])
 
     const form = useForm({
         mode: 'uncontrolled',
@@ -51,67 +53,66 @@ export default function App() {
 
     return (
         <FormProvider form={form}>
-            <AppShell
-                header={{height: 60}}
-                navbar={{
-                    width: 300,
-                    breakpoint: 'sm',
-                    collapsed: {
-                        desktop: false,
-                        mobile: navCollapsed
-                    }
-                }}
-                padding="md"
-            >
-                <AppShell.Header color="black">
-                    <Group h="100%" px="md" justify="space-between">
-                        <Group>
-                            <Burger opened={!navCollapsed} onClick={toggleNavCollapsed} hiddenFrom="sm" size="sm" />
-                            <Text size="xl">Syöpähoitojen yhteenveto</Text>
+            <NavContext value={navContextValue}>
+                <AppShell
+                    header={{height: 60}}
+                    navbar={{
+                        width: 300,
+                        breakpoint: 'sm',
+                        collapsed: {
+                            desktop: false,
+                            mobile: navCollapsed
+                        }
+                    }}
+                    padding="md"
+                >
+                    <AppShell.Header color="black">
+                        <Group h="100%" px="md" justify="space-between">
+                            <Group>
+                                <Burger opened={!navCollapsed} onClick={toggleNavCollapsed} hiddenFrom="sm" size="sm" />
+                                <Text size="xl">Syöpähoitojen yhteenveto</Text>
+                            </Group>
+                            <Group>
+                                <Button variant="default" leftSection={<IconFile size={20} />}>Uusi</Button>
+                                <Button
+                                    variant="default"
+                                    leftSection={<IconFolderOpen size={20} />}
+                                    onClick={handleLoad}
+                                >
+                                    Lataa
+                                </Button>
+                                <Button
+                                    variant="default"
+                                    leftSection={<IconDeviceFloppy size={20} />}
+                                    onClick={handleSave}
+                                >
+                                    Tallenna
+                                </Button>
+                                <Button variant="default" leftSection={<IconFileWord size={20} />}>Luo Word-tiedosto</Button>
+                            </Group>
+                            <ActionIcon variant="subtle" onClick={toggleColorScheme}>
+                                {computedColorScheme === 'dark' ? <IconSun /> : <IconMoon />}
+                            </ActionIcon>
                         </Group>
-                        <Group>
-                            <Button variant="default" leftSection={<IconFile size={20} />}>Uusi</Button>
-                            <Button
-                                variant="default"
-                                leftSection={<IconFolderOpen size={20} />}
-                                onClick={handleLoad}
-                            >
-                                Lataa
-                            </Button>
-                            <Button
-                                variant="default"
-                                leftSection={<IconDeviceFloppy size={20} />}
-                                onClick={handleSave}
-                            >
-                                Tallenna
-                            </Button>
-                            <Button variant="default" leftSection={<IconFileWord size={20} />}>Luo Word-tiedosto</Button>
-                        </Group>
-                        <ActionIcon variant="subtle" onClick={toggleColorScheme}>
-                            {computedColorScheme === 'dark' ? <IconSun /> : <IconMoon />}
-                        </ActionIcon>
-                    </Group>
-                </AppShell.Header>
-                <AppShell.Navbar>
-                    <NavLink
-                        href="#"
-                        label="Aloitus"
-                        active={currentTab === "start"}
-                        onClick={() => setCurrentTab("start")}
-                    />
-                    <DiagnosisNavList
-                        selectedItem={currentTab}
-                        onSelectItem={setCurrentTab}
-                    />
-                </AppShell.Navbar>
-                <AppShell.Main>
-                    {currentTab === 'start' && <Start />}
-                    {formValues.diagnoses.map((item, index) =>
-                        currentTab === `diagnoses-${item.key}` &&
-                        <DiagnosisItem key={item.key} index={index} />
-                    )}
-                </AppShell.Main>
-            </AppShell>
+                    </AppShell.Header>
+                    <AppShell.Navbar>
+                        <NavLink
+                            href="#"
+                            label="Aloitus"
+                            active={currentPage === "start"}
+                            onClick={() => setCurrentPage("start")}
+                        />
+                        <DiagnosisNavList />
+                    </AppShell.Navbar>
+                    <AppShell.Main>
+                        {currentPage === 'start' && <Start />}
+                        {formValues.diagnoses.map((item, index) =>
+                            currentPage === `diagnoses-${item.id}` &&
+                            <DiagnosisItem key={item.id} index={index} />
+                        )}
+                    </AppShell.Main>
+                </AppShell>
+            </NavContext>
         </FormProvider>
     )
 }

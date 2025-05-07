@@ -1,13 +1,8 @@
 import { useMemo, useState } from "react"
 import { Diagnosis, newDiagnosis, useFormContext } from "../../formContext"
-import NavList, { NavListItemProps } from "../NavList"
+import NavList, { DefinedNavListItemProps } from "../NavList"
 
-interface DiagnosisNavListProps {
-    selectedItem: string
-    onSelectItem: (item: string) => void
-}
-
-function DiagnosisNavListItem({ item, index, ...props }: NavListItemProps<Diagnosis>) {
+function DiagnosisNavListItem({ item, index, ...props }: DefinedNavListItemProps<Diagnosis>) {
     const form = useFormContext()
     const formValues = form.getValues().diagnoses[index]
 
@@ -34,10 +29,10 @@ function DiagnosisNavListItem({ item, index, ...props }: NavListItemProps<Diagno
 
     return (
         <NavList.Item
-            key={item.key}
+            key={item.id}
             index={index}
-            listPath="diagnoses"
-            itemPath={item.key}
+            path="diagnoses"
+            id={item.id}
             label={label}
             removeButtonTooltip="Poista diagnoosi"
             {...props}
@@ -45,7 +40,7 @@ function DiagnosisNavListItem({ item, index, ...props }: NavListItemProps<Diagno
     )
 }
 
-export default function DiagnosisNavList(props: DiagnosisNavListProps) {
+export default function DiagnosisNavList() {
     const form = useFormContext()
     const diagnoses = form.getValues().diagnoses
 
@@ -58,10 +53,9 @@ export default function DiagnosisNavList(props: DiagnosisNavListProps) {
         >
             {diagnoses.map((item, index) => (
                 <DiagnosisNavListItem
-                    key={item.key}
+                    key={item.id}
                     item={item}
                     index={index}
-                    {...props}
                 />
             ))}
         </NavList>

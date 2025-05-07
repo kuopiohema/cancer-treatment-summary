@@ -27,10 +27,10 @@ const ProtocolItem = ({item, index}: {item: Protocol, index: number}) => {
 
     return (
         <ItemCard
-            key={item.key}
+            key={item.id}
             path="treatments.protocols"
             index={index}
-            draggableId={item.key}
+            draggableId={item.id}
         >
             <TextInput
                 key={form.key(`${key}.protocol`)}
@@ -84,7 +84,7 @@ export default function Protocols() {
                 title="Hoito-ohjelmat"
                 addButtonText="Lisää hoito-ohjelma"
         >
-            {form.getValues().treatments.protocols.map((item, index) => <ProtocolItem key={item.key} item={item} index={index} />)}
+            {form.getValues().treatments.protocols.map((item, index) => <ProtocolItem key={item.id} item={item} index={index} />)}
         </ItemList>
     )
 }

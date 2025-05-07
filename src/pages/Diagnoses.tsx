@@ -18,10 +18,10 @@ export default function Diagnoses() {
                 const key = `diagnoses.${index}`
                 return (
                     <ItemCard
-                        key={item.key}
+                        key={item.id}
                         path="diagnoses"
                         index={index}
-                        draggableId={item.key}
+                        draggableId={item.id}
                     >
                         <FormRow>
                             <TextInput

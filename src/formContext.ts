@@ -2,10 +2,10 @@ import {createFormContext} from '@mantine/form'
 import {randomId} from '@mantine/hooks'
 
 export interface ArrayItem {
-    key: string
+    id: string
 }
 
-const newArrayItem = (): ArrayItem => ({ key: randomId() })
+const newArrayItem = (): ArrayItem => ({ id: randomId() })
 
 export interface Diagnosis extends ArrayItem {
     date: string
