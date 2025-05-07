@@ -1,8 +1,10 @@
 import {useMemo, useState} from 'react'
-import {Diagnosis, newDiagnosis, useFormContext} from '../../formContext'
-import NavList, {DefinedNavListItemProps} from '../NavList'
+import {Diagnosis, useFormContext} from '../../formContext'
+import type {TypedNavListItemProps} from '../NavListItem.tsx'
+import NavListItem from '../NavListItem.tsx'
+import formatDate from '../../utils/formatDate.ts'
 
-function DiagnosisNavListItem({item, index, ...props}: DefinedNavListItemProps<Diagnosis>) {
+export function DiagnosisNavListItem({index, item}: TypedNavListItemProps<Diagnosis>) {
     const form = useFormContext()
     const formValues = form.getValues().diagnoses[index]
 
@@ -23,41 +25,18 @@ function DiagnosisNavListItem({item, index, ...props}: DefinedNavListItemProps<D
     const label = useMemo(() => {
         let result = icd10 || emptyLabel
         if (date)
-            result = `${result} (${date})`
+            result = `${result} (${formatDate(date)})`
         return result
     }, [icd10, date])
 
     return (
-        <NavList.Item
+        <NavListItem
             key={item.id}
             index={index}
             path="diagnoses"
             id={item.id}
             label={label}
             removeButtonTooltip="Poista diagnoosi"
-            {...props}
         />
-    )
-}
-
-export default function DiagnosisNavList() {
-    const form = useFormContext()
-    const diagnoses = form.getValues().diagnoses
-
-    return (
-        <NavList
-            path="diagnoses"
-            itemFactory={newDiagnosis}
-            title="Diagnoosit"
-            addButtonTooltip="Lisää diagnoosi"
-        >
-            {diagnoses.map((item, index) => (
-                <DiagnosisNavListItem
-                    key={item.id}
-                    item={item}
-                    index={index}
-                />
-            ))}
-        </NavList>
     )
 }

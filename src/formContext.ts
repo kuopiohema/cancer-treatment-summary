@@ -8,7 +8,7 @@ export interface ArrayItem {
 const newArrayItem = (): ArrayItem => ({id: randomId()})
 
 export interface Diagnosis extends ArrayItem {
-    date: string
+    date: string | null
     icd10: string
     text: string
     subtype: string
@@ -18,7 +18,7 @@ export interface Diagnosis extends ArrayItem {
 
 export const newDiagnosis = (): Diagnosis => ({
     ...newArrayItem(),
-    date: '',
+    date: null,
     icd10: '',
     text: '',
     subtype: '',

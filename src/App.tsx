@@ -1,5 +1,3 @@
-import '@mantine/core/styles.css'
-
 import {
     ActionIcon,
     AppShell,
@@ -14,11 +12,12 @@ import {
 import {useDisclosure} from '@mantine/hooks'
 import {IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, IconSun} from '@tabler/icons-react'
 import {useMemo, useState} from 'react'
-import DiagnosisNavList from './components/diagnosis/DiagnosisNavList.tsx'
-import DiagnosisItem from './components/DiagnosisItem.tsx'
+import DiagnosisItemPage from './pages/items/DiagnosisItemPage.tsx'
 import {FormProvider, newDiagnosis, newProtocol, useForm} from './formContext.ts'
 import Start from './pages/Start'
 import {NavContext} from './navContext.tsx'
+import NavList from './components/NavList.tsx'
+import {DiagnosisNavListItem} from './components/items/DiagnosisNavListItem.tsx'
 
 export default function App() {
     const {setColorScheme} = useMantineColorScheme()
@@ -43,8 +42,12 @@ export default function App() {
 
     const formValues = form.getValues()
 
+    const saveData = (values: typeof form.values) => {
+        console.log(JSON.stringify(values))
+    }
+
     const handleSave = () => {
-        console.log(JSON.stringify(formValues))
+        form.onSubmit(saveData)()
     }
 
     const handleLoad = () => {
@@ -103,13 +106,26 @@ export default function App() {
                             active={currentPage === 'start'}
                             onClick={() => setCurrentPage('start')}
                         />
-                        <DiagnosisNavList />
+                        <NavList
+                            path="diagnoses"
+                            itemFactory={newDiagnosis}
+                            title="Diagnoosit"
+                            addButtonTooltip="Lisää diagnoosi"
+                        >
+                            {formValues.diagnoses.map((item, index) => (
+                                <DiagnosisNavListItem
+                                    key={item.id}
+                                    item={item}
+                                    index={index}
+                                />
+                            ))}
+                        </NavList>
                     </AppShell.Navbar>
                     <AppShell.Main>
                         {currentPage === 'start' && <Start />}
                         {formValues.diagnoses.map((item, index) =>
                             currentPage === `diagnoses-${item.id}` &&
-                            <DiagnosisItem key={item.id} index={index} />
+                            <DiagnosisItemPage key={item.id} index={index} />
                         )}
                     </AppShell.Main>
                 </AppShell>
