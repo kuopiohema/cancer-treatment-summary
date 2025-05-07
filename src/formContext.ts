@@ -5,7 +5,7 @@ export interface ArrayItem {
     id: string
 }
 
-const newArrayItem = (): ArrayItem => ({ id: randomId() })
+const newArrayItem = (): ArrayItem => ({id: randomId()})
 
 export interface Diagnosis extends ArrayItem {
     date: string

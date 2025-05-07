@@ -1,7 +1,7 @@
-import { DragDropContext, Droppable } from "@hello-pangea/dnd";
-import { alpha, Button, Paper, Stack, Title } from "@mantine/core";
-import { PropsWithChildren } from "react";
-import { useFormContext } from "../formContext";
+import {DragDropContext, Droppable} from '@hello-pangea/dnd'
+import {alpha, Button, Paper, Stack, Title} from '@mantine/core'
+import {PropsWithChildren} from 'react'
+import {useFormContext} from '../formContext'
 
 export interface ItemListProps extends PropsWithChildren {
     path: string
@@ -10,7 +10,7 @@ export interface ItemListProps extends PropsWithChildren {
     addButtonText: string
 }
 
-export default function ItemList({ path, itemFactory, title, addButtonText, children }: ItemListProps) {
+export default function ItemList({path, itemFactory, title, addButtonText, children}: ItemListProps) {
     const form = useFormContext()
 
     const paperBackgroundColor = alpha('var(--mantine-color-gray-6)', 0.2)
@@ -19,9 +19,11 @@ export default function ItemList({ path, itemFactory, title, addButtonText, chil
         <Paper shadow="sm" withBorder p="md" bg={paperBackgroundColor}>
             <Title order={2}>{title}</Title>
             <DragDropContext
-                onDragEnd={({ destination, source }) =>
-                    destination?.index !== undefined && form.reorderListItem(path, { from: source.index, to: destination.index })
-
+                onDragEnd={({destination, source}) =>
+                    destination?.index !== undefined && form.reorderListItem(path, {
+                        from: source.index,
+                        to: destination.index
+                    })
                 }
             >
                 <Droppable droppableId={path} direction="vertical">

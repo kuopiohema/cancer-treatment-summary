@@ -1,17 +1,17 @@
-import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
-import { ActionIcon, Center, Divider, Group, NavLink, Stack, Text, Tooltip } from "@mantine/core";
-import { modals } from "@mantine/modals";
-import { IconGripVertical, IconPlus, IconTrash } from "@tabler/icons-react";
-import { MouseEventHandler, use } from "react";
-import { ArrayItem, useFormContext } from "../formContext";
-import { NavContext } from "../navContext";
-import { ItemListProps } from "./ItemList";
+import {DragDropContext, Draggable, Droppable} from '@hello-pangea/dnd'
+import {ActionIcon, Center, Divider, Group, NavLink, Stack, Text, Tooltip} from '@mantine/core'
+import {modals} from '@mantine/modals'
+import {IconGripVertical, IconPlus, IconTrash} from '@tabler/icons-react'
+import {MouseEventHandler, use} from 'react'
+import {ArrayItem, useFormContext} from '../formContext'
+import {NavContext} from '../navContext'
+import {ItemListProps} from './ItemList'
 
 interface NavListProps extends Omit<ItemListProps, 'addButtonText'> {
     addButtonTooltip: string
 }
 
-function NavList({ path, itemFactory, title, addButtonTooltip, children }: NavListProps) {
+function NavList({path, itemFactory, title, addButtonTooltip, children}: NavListProps) {
     const form = useFormContext()
 
     return (
@@ -33,9 +33,9 @@ function NavList({ path, itemFactory, title, addButtonTooltip, children }: NavLi
                 </Tooltip>
             </Group>
             <DragDropContext
-                onDragEnd={({ destination, source }) =>
+                onDragEnd={({destination, source}) =>
                     destination?.index !== undefined &&
-                    form.reorderListItem(path, { from: source.index, to: destination.index })
+                    form.reorderListItem(path, {from: source.index, to: destination.index})
                 }
             >
                 <Droppable
@@ -71,7 +71,7 @@ export interface DefinedNavListItemProps<T extends ArrayItem> {
     item: T
 }
 
-function Item({ index, path, id, label, removeButtonTooltip }: NavListItemProps) {
+function Item({index, path, id, label, removeButtonTooltip}: NavListItemProps) {
     const {currentPage, setCurrentPage} = use(NavContext)!
 
     const form = useFormContext()
@@ -84,7 +84,7 @@ function Item({ index, path, id, label, removeButtonTooltip }: NavListItemProps)
                 Poistetaanko kohde? Palauttaminen ei ole mahdollista!
             </Text>
         ),
-        labels: { confirm: 'Poista', cancel: 'Peruuta' },
+        labels: {confirm: 'Poista', cancel: 'Peruuta'},
         onConfirm: () => form.removeListItem(path, index)
     })
 

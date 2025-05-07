@@ -1,9 +1,9 @@
-import { Draggable } from '@hello-pangea/dnd'
-import { ActionIcon, alpha, Card, Center, Stack, Text } from '@mantine/core'
-import { modals } from '@mantine/modals'
-import { IconGripHorizontal, IconTrash } from '@tabler/icons-react'
-import { PropsWithChildren } from 'react'
-import { useFormContext } from '../formContext.ts'
+import {Draggable} from '@hello-pangea/dnd'
+import {ActionIcon, alpha, Card, Center, Stack, Text} from '@mantine/core'
+import {modals} from '@mantine/modals'
+import {IconGripHorizontal, IconTrash} from '@tabler/icons-react'
+import {PropsWithChildren} from 'react'
+import {useFormContext} from '../formContext.ts'
 
 export interface ItemCardProps extends PropsWithChildren {
     path: string
@@ -21,7 +21,7 @@ export default function ItemCard({path, index, draggableId, children}: ItemCardP
                 Poistetaanko kohde? Palauttaminen ei ole mahdollista!
             </Text>
         ),
-        labels: { confirm: 'Poista', cancel: 'Peruuta' },
+        labels: {confirm: 'Poista', cancel: 'Peruuta'},
         onConfirm: () => form.removeListItem(path, index)
     })
 

@@ -1,4 +1,4 @@
-import { createContext, Dispatch, SetStateAction } from "react"
+import {createContext, Dispatch, SetStateAction} from 'react'
 
 interface NavContextValue {
     currentPage: string

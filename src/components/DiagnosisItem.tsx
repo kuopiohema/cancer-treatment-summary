@@ -1,6 +1,6 @@
-import { Textarea, TextInput } from "@mantine/core";
-import { useFormContext } from "../formContext";
-import FormRow from "./FormRow";
+import {Textarea, TextInput} from '@mantine/core'
+import {useFormContext} from '../formContext'
+import FormRow from './FormRow'
 
 interface DiagnosisItemProps {
     index: number

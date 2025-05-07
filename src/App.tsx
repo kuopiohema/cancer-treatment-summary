@@ -11,14 +11,14 @@ import {
     useComputedColorScheme,
     useMantineColorScheme
 } from '@mantine/core'
-import { useDisclosure } from '@mantine/hooks'
-import { IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, IconSun } from '@tabler/icons-react'
-import { useMemo, useState } from 'react'
+import {useDisclosure} from '@mantine/hooks'
+import {IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, IconSun} from '@tabler/icons-react'
+import {useMemo, useState} from 'react'
 import DiagnosisNavList from './components/diagnosis/DiagnosisNavList.tsx'
 import DiagnosisItem from './components/DiagnosisItem.tsx'
-import { FormProvider, newDiagnosis, newProtocol, useForm } from './formContext.ts'
+import {FormProvider, newDiagnosis, newProtocol, useForm} from './formContext.ts'
 import Start from './pages/Start'
-import { NavContext } from './navContext.tsx'
+import {NavContext} from './navContext.tsx'
 
 export default function App() {
     const {setColorScheme} = useMantineColorScheme()
@@ -29,7 +29,7 @@ export default function App() {
 
     const [navCollapsed, {toggle: toggleNavCollapsed}] = useDisclosure(true)
     const [currentPage, setCurrentPage] = useState('start')
-    const navContextValue = useMemo(() => ({ currentPage, setCurrentPage }), [currentPage, setCurrentPage])
+    const navContextValue = useMemo(() => ({currentPage, setCurrentPage}), [currentPage, setCurrentPage])
 
     const form = useForm({
         mode: 'uncontrolled',
@@ -88,7 +88,8 @@ export default function App() {
                                 >
                                     Tallenna
                                 </Button>
-                                <Button variant="default" leftSection={<IconFileWord size={20} />}>Luo Word-tiedosto</Button>
+                                <Button variant="default" leftSection={<IconFileWord size={20} />}>Luo
+                                    Word-tiedosto</Button>
                             </Group>
                             <ActionIcon variant="subtle" onClick={toggleColorScheme}>
                                 {computedColorScheme === 'dark' ? <IconSun /> : <IconMoon />}
@@ -99,8 +100,8 @@ export default function App() {
                         <NavLink
                             href="#"
                             label="Aloitus"
-                            active={currentPage === "start"}
-                            onClick={() => setCurrentPage("start")}
+                            active={currentPage === 'start'}
+                            onClick={() => setCurrentPage('start')}
                         />
                         <DiagnosisNavList />
                     </AppShell.Navbar>
