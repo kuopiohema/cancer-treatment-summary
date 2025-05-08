@@ -1,28 +1,30 @@
-import NavListItem, {type TypedNavListItemProps} from '../NavListItem.tsx'
+import NavListItem from '../NavListItem.tsx'
 import {type Treatment, useFormContext} from '../../formContext.ts'
 import {useMemo, useState} from 'react'
 import formatDate from '../../utils/formatDate.ts'
+import type {ItemProps} from '../../types/itemProps.ts'
+import getListItemPath from '../../utils/getListItemPath.ts'
 
-export function TreatmentNavListItem({index, item}: TypedNavListItemProps<Treatment>) {
+export default function TreatmentNavListItem({path, index, item}: ItemProps<Treatment>) {
     const form = useFormContext()
-    const formValues = form.getValues().treatments[index]
+    const itemPath = getListItemPath(path, index)
 
     const emptyLabel = '(Uusi hoito)'
-    const [protocol, setProtocol] = useState(formValues.protocol)
-    const [startDate, setStartDate] = useState(formValues.startDate)
-    const [endDate, setEndDate] = useState(formValues.endDate)
 
-    form.watch(`treatments.${index}.protocol`, ({value}) => {
+    const [protocol, setProtocol] = useState(item.protocol)
+    form.watch(`${itemPath}.protocol`, ({value}) => {
         if (typeof value === 'string')
             setProtocol(value)
     })
 
-    form.watch(`treatments.${index}.startDate`, ({value}) => {
+    const [startDate, setStartDate] = useState(item.startDate)
+    form.watch(`${itemPath}.startDate`, ({value}) => {
         if (typeof value === 'string')
             setStartDate(value)
     })
 
-    form.watch(`treatments.${index}.endDate`, ({value}) => {
+    const [endDate, setEndDate] = useState(item.endDate)
+    form.watch(`${itemPath}.endDate`, ({value}) => {
         if (typeof value === 'string')
             setEndDate(value)
     })
@@ -34,8 +36,8 @@ export function TreatmentNavListItem({index, item}: TypedNavListItemProps<Treatm
     return (
         <NavListItem
             key={item.id}
+            path={path}
             index={index}
-            path="treatments"
             id={item.id}
             label={label}
             itemName="hoito"

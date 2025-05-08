@@ -1,6 +1,6 @@
 import {MouseEventHandler, use} from 'react'
 import {NavContext} from '../navContext.tsx'
-import {ArrayItem, useFormContext} from '../formContext.ts'
+import {useFormContext} from '../formContext.ts'
 import {Draggable} from '@hello-pangea/dnd'
 import {IconGripVertical, IconTrash} from '@tabler/icons-react'
 import {ActionIcon, Center, NavLink, Text, Tooltip} from '@mantine/core'
@@ -13,11 +13,6 @@ interface NavListItemProps {
     id: string
     label: string
     itemName: string
-}
-
-export interface TypedNavListItemProps<T extends ArrayItem> {
-    index: number
-    item: T
 }
 
 export default function NavListItem({index, path, id, label, itemName}: NavListItemProps) {

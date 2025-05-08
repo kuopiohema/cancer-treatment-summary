@@ -12,14 +12,14 @@ import {
 import {useDisclosure} from '@mantine/hooks'
 import {IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, IconSun} from '@tabler/icons-react'
 import {useMemo, useState} from 'react'
-import DiagnosisItemPage from './pages/items/DiagnosisItemPage.tsx'
+import DiagnosisItemPage from './pages/DiagnosisItemPage.tsx'
 import {FormProvider, newDiagnosis, newTreatment, useForm} from './formContext.ts'
 import Start from './pages/Start'
 import {NavContext} from './navContext.tsx'
 import NavList from './components/NavList.tsx'
-import {DiagnosisNavListItem} from './components/items/DiagnosisNavListItem.tsx'
-import {TreatmentNavListItem} from './components/items/TreatmentNavListItem.tsx'
-import TreatmentItemPage from './pages/items/TreatmentItemPage.tsx'
+import DiagnosisNavListItem from './components/items/DiagnosisNavListItem.tsx'
+import TreatmentNavListItem from './components/items/TreatmentNavListItem.tsx'
+import TreatmentItemPage from './pages/TreatmentItemPage.tsx'
 import getPageKey from './utils/getPageKey.ts'
 
 export default function App() {
@@ -36,8 +36,8 @@ export default function App() {
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: {
-            diagnoses: [newDiagnosis()],
-            treatments: [newTreatment()]
+            diagnoses: [],
+            treatments: []
         }
     })
 
@@ -111,11 +111,12 @@ export default function App() {
                             path="diagnoses"
                             itemFactory={newDiagnosis}
                             title="Diagnoosit"
-                            addButtonTooltip="Lisää diagnoosi"
+                            addButtonText="Lisää diagnoosi"
                         >
                             {formValues.diagnoses.map((item, index) => (
                                 <DiagnosisNavListItem
                                     key={item.id}
+                                    path="diagnoses"
                                     item={item}
                                     index={index}
                                 />
@@ -125,11 +126,12 @@ export default function App() {
                             path="treatments"
                             itemFactory={newTreatment}
                             title="Hoidot"
-                            addButtonTooltip="Lisää hoito"
+                            addButtonText="Lisää hoito"
                         >
                             {formValues.treatments.map((item, index) => (
                                 <TreatmentNavListItem
                                     key={item.id}
+                                    path="treatments"
                                     item={item}
                                     index={index}
                                 />
@@ -140,11 +142,21 @@ export default function App() {
                         {currentPage === 'start' && <Start />}
                         {formValues.diagnoses.map((item, index) =>
                             currentPage === getPageKey('diagnoses', item.id) &&
-                            <DiagnosisItemPage key={item.id} index={index} />
+                            <DiagnosisItemPage
+                                key={item.id}
+                                path="diagnoses"
+                                index={index}
+                                item={item}
+                            />
                         )}
                         {formValues.treatments.map((item, index) =>
                             currentPage === getPageKey('treatments', item.id) &&
-                            <TreatmentItemPage key={item.id} index={index} />
+                            <TreatmentItemPage
+                                key={item.id}
+                                path="treatments"
+                                index={index}
+                                item={item}
+                            />
                         )}
                     </AppShell.Main>
                 </AppShell>

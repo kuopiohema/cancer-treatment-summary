@@ -7,11 +7,7 @@ import {NavContext} from '../navContext.tsx'
 import {use} from 'react'
 import getPageKey from '../utils/getPageKey.ts'
 
-interface NavListProps extends Omit<ItemListProps, 'addButtonText'> {
-    addButtonTooltip: string
-}
-
-export default function NavList({path, itemFactory, title, addButtonTooltip, children}: NavListProps) {
+export default function NavList({path, itemFactory, title, addButtonText, children}: ItemListProps) {
     const nav = use(NavContext)!
 
     const form = useFormContext()
@@ -31,7 +27,7 @@ export default function NavList({path, itemFactory, title, addButtonTooltip, chi
                 justify="space-between"
             >
                 <Text fw="bold">{title}</Text>
-                <Tooltip label={addButtonTooltip}>
+                <Tooltip label={addButtonText}>
                     <ActionIcon
                         variant="subtle"
                         onClick={handleAdd}

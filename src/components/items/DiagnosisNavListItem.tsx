@@ -1,22 +1,24 @@
 import {useMemo, useState} from 'react'
 import {Diagnosis, useFormContext} from '../../formContext'
-import type {TypedNavListItemProps} from '../NavListItem.tsx'
 import NavListItem from '../NavListItem.tsx'
 import formatDate from '../../utils/formatDate.ts'
+import type {ItemProps} from '../../types/itemProps.ts'
+import getListItemPath from '../../utils/getListItemPath.ts'
 
-export function DiagnosisNavListItem({index, item}: TypedNavListItemProps<Diagnosis>) {
+export default function DiagnosisNavListItem({path, index, item}: ItemProps<Diagnosis>) {
     const form = useFormContext()
+    const itemPath = getListItemPath(path, index)
 
     const emptyLabel = '(Uusi diagnoosi)'
     const [icd10, setICD10] = useState(item.icd10)
     const [date, setDate] = useState(item.date)
 
-    form.watch(`diagnoses.${index}.icd10`, ({value}) => {
+    form.watch(`${itemPath}.icd10`, ({value}) => {
         if (typeof value === 'string')
             setICD10(value)
     })
 
-    form.watch(`diagnoses.${index}.date`, ({value}) => {
+    form.watch(`${itemPath}.date`, ({value}) => {
         if (typeof value === 'string')
             setDate(value)
     })
@@ -30,8 +32,8 @@ export function DiagnosisNavListItem({index, item}: TypedNavListItemProps<Diagno
     return (
         <NavListItem
             key={item.id}
+            path={path}
             index={index}
-            path="diagnoses"
             id={item.id}
             label={label}
             itemName="diagnoosi"

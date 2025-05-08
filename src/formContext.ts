@@ -11,7 +11,7 @@ export interface Diagnosis extends ArrayItem {
     date: string | null
     icd10: string
     text: string
-    subtype: string
+    detail: string
     stage: string
     spread: string
 }
@@ -21,9 +21,24 @@ export const newDiagnosis = (): Diagnosis => ({
     date: null,
     icd10: '',
     text: '',
-    subtype: '',
+    detail: '',
     stage: '',
     spread: ''
+})
+
+export interface Chemo extends ArrayItem {
+    drug: string
+    dose: number
+    doseType: string
+    notes: string
+}
+
+export const newChemo = (): Chemo => ({
+    ...newArrayItem(),
+    drug: '',
+    dose: 0,
+    doseType: 'mgm2',
+    notes: ''
 })
 
 export interface Treatment extends ArrayItem {
@@ -33,7 +48,12 @@ export interface Treatment extends ArrayItem {
     endDate: string | null
     stopReason: string
     stopReasonOther: string
-    chemotherapy: boolean
+    chemo: {
+        done: boolean
+        startDate: string | null
+        endDate: string | null,
+        drugs: Chemo[]
+    }
 }
 
 export const newTreatment = (): Treatment => ({
@@ -44,7 +64,12 @@ export const newTreatment = (): Treatment => ({
     endDate: null,
     stopReason: 'completed',
     stopReasonOther: '',
-    chemotherapy: false,
+    chemo: {
+        done: false,
+        startDate: null,
+        endDate: null,
+        drugs: []
+    }
 })
 
 export interface FormValues {
