@@ -1,0 +1,97 @@
+import { NumberInput, Select, Text, TextInput } from '@mantine/core'
+import FormattedDateInput from '../../components/FormattedDateInput'
+import FormRow from '../../components/FormRow'
+import ItemListItem from '../../components/ItemListItem'
+import { toComboboxData } from '../../data/dataUtils'
+import { radioModeOptions, type RadioModeValue } from '../../data/radioModeOptions'
+import { useFormContext, type Radiotherapy } from '../../formContext'
+import type { ItemProps } from '../../types/itemProps'
+import getListItemPath from '../../utils/getListItemPath'
+import { useState } from 'react'
+
+export default function RadioItem({path, index, item}: ItemProps<Radiotherapy>) {
+    const form = useFormContext()
+    const itemPath = getListItemPath(path, index)
+
+    const radioModeOptionsData = toComboboxData(radioModeOptions)
+
+    const [radioMode, setRadioMode] = useState(item.mode)
+    form.watch(`${itemPath}.mode`, ({ value }: { value: RadioModeValue }) => setRadioMode(value))
+
+    return (
+        <ItemListItem
+            path={path}
+            index={index}
+            draggableId={item.id}
+            itemName="sädehoito"
+        >
+            <FormRow>
+                <FormattedDateInput
+                    key={form.key(`${itemPath}.startDate`)}
+                    {...form.getInputProps(`${itemPath}.startDate`)}
+                    label="Aloituspäivä"
+                    placeholder="Aloituspäivä"
+                />
+                <FormattedDateInput
+                    key={form.key(`${itemPath}.endDate`)}
+                    {...form.getInputProps(`${itemPath}.endDate`)}
+                    label="Lopetuspäivä"
+                    placeholder="Lopetuspäivä"
+                />
+            </FormRow>
+            <TextInput
+                key={form.key(`${itemPath}.target`)}
+                {...form.getInputProps(`${itemPath}.target`)}
+                label="Kohde/kohteet"
+                placeholder="Kohde/kohteet"
+            />
+            <FormRow>
+                <Select
+                    key={form.key(`${itemPath}.mode`)}
+                    {...form.getInputProps(`${itemPath}.mode`)}
+                    label="Hoitomuoto"
+                    data={radioModeOptionsData}
+                    w={300}
+                    flex="none"
+                />
+                <TextInput
+                    key={form.key(`${itemPath}.modeOther`)}
+                    {...form.getInputProps(`${itemPath}.modeOther`)}
+                    label=" "
+                    placeholder="Muu, mikä?"
+                    disabled={radioMode !== 'other'}
+                />
+            </FormRow>
+            <FormRow>
+                <NumberInput
+                    key={form.key(`${itemPath}.singleDose`)}
+                    {...form.getInputProps(`${itemPath}.singleDose`)}
+                    label="Kerta-annos"
+                    allowNegative={false}
+                    decimalScale={2}
+                    decimalSeparator=','
+                    hideControls
+                    rightSection={<Text>Gy</Text>}
+                />
+                <NumberInput
+                    key={form.key(`${itemPath}.fractions`)}
+                    {...form.getInputProps(`${itemPath}.fractions`)}
+                    label="Fraktiot"
+                    allowNegative={false}
+                    allowDecimal={false}
+                    hideControls
+                />
+                <NumberInput
+                    key={form.key(`${itemPath}.totalDose`)}
+                    {...form.getInputProps(`${itemPath}.totalDose`)}
+                    label="Kokonaisannos"
+                    allowNegative={false}
+                    decimalScale={2}
+                    hideControls
+                    rightSection={<Text>Gy</Text>}
+                />
+                {////TODO: Add default props for NumberInput!!!}
+            </FormRow>
+        </ItemListItem>
+    )
+}

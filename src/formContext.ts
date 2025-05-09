@@ -2,14 +2,15 @@ import { createFormContext } from '@mantine/form'
 import { randomId } from '@mantine/hooks'
 import type { DrugDosingValue } from './data/drugDosingOptions'
 import type { StopReasonValue } from './data/stopReasonOptions'
+import type { RadioModeValue } from './data/radioModeOptions'
 
-export interface ArrayItem {
+export interface ListItem {
     id: string
 }
 
-const newArrayItem = (): ArrayItem => ({ id: randomId('') })
+const newListItem = (): ListItem => ({ id: randomId('') })
 
-export interface Diagnosis extends ArrayItem {
+export interface Diagnosis extends ListItem {
     date: string | null
     icd10: string
     text: string
@@ -19,7 +20,7 @@ export interface Diagnosis extends ArrayItem {
 }
 
 export const newDiagnosis = (): Diagnosis => ({
-    ...newArrayItem(),
+    ...newListItem(),
     date: null,
     icd10: '',
     text: '',
@@ -28,7 +29,7 @@ export const newDiagnosis = (): Diagnosis => ({
     spread: ''
 })
 
-export interface Chemo extends ArrayItem {
+export interface Chemo extends ListItem {
     drug: string
     dose: number
     dosingType: DrugDosingValue
@@ -36,14 +37,39 @@ export interface Chemo extends ArrayItem {
 }
 
 export const newChemo = (): Chemo => ({
-    ...newArrayItem(),
+    ...newListItem(),
     drug: '',
     dose: 0,
     dosingType: 'mgm2',
     notes: ''
 })
 
-export interface Treatment extends ArrayItem {
+export interface Radiotherapy extends ListItem {
+    startDate: string | null
+    endDate: string | null
+    target: string
+    mode: RadioModeValue
+    modeOther: string
+    singleDose: number
+    totalDose: number
+    fractions: number
+    notes: string
+}
+
+export const newRadiotherapy = (): Radiotherapy => ({
+    ...newListItem(),
+    startDate: null,
+    endDate: null,
+    target: '',
+    mode: 'photon',
+    modeOther: '',
+    singleDose: 0,
+    totalDose: 0,
+    fractions: 0,
+    notes: ''
+})
+
+export interface Treatment extends ListItem {
     protocol: string
     group: string
     startDate: string | null
@@ -56,10 +82,14 @@ export interface Treatment extends ArrayItem {
         endDate: string | null,
         drugs: Chemo[]
     }
+    radio: {
+        done: boolean
+        therapies: Radiotherapy[]
+    }
 }
 
 export const newTreatment = (): Treatment => ({
-    ...newArrayItem(),
+    ...newListItem(),
     protocol: '',
     group: '',
     startDate: null,
@@ -71,6 +101,10 @@ export const newTreatment = (): Treatment => ({
         startDate: null,
         endDate: null,
         drugs: []
+    },
+    radio: {
+        done: false,
+        therapies: []
     }
 })
 

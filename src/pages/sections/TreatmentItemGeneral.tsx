@@ -3,7 +3,7 @@ import { useState } from 'react'
 import FormattedDateInput from '../../components/FormattedDateInput'
 import FormRow from '../../components/FormRow'
 import { stopReasonOptions, type StopReasonValue } from '../../data/stopReasonOptions'
-import { toComboboxData } from '../../data/toComboboxData'
+import { toComboboxData } from '../../data/dataUtils'
 import { useFormContext, type Treatment } from '../../formContext'
 import type { ItemProps } from '../../types/itemProps'
 import getListItemPath from '../../utils/getListItemPath'
@@ -15,9 +15,7 @@ export default function TreatmentItemGeneral({ path, index, item }: ItemProps<Tr
     const stopReasonOptionsData = toComboboxData(stopReasonOptions)
 
     const [stopReason, setStopReason] = useState(item.stopReason)
-    form.watch(`${itemPath}.stopReason`, ({ value }: { value: StopReasonValue }) => {
-        setStopReason(value)
-    })
+    form.watch(`${itemPath}.stopReason`, ({ value }: { value: StopReasonValue }) => setStopReason(value))
 
     return (
         <>

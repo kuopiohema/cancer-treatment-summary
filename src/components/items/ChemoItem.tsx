@@ -4,7 +4,7 @@ import type {ItemProps} from '../../types/itemProps.ts'
 import getListItemPath from '../../utils/getListItemPath.ts'
 import {NumberInput, Select, Textarea, TextInput} from '@mantine/core'
 import FormRow from '../FormRow.tsx'
-import { toComboboxData } from '../../data/toComboboxData.ts'
+import { toComboboxData } from '../../data/dataUtils.ts'
 import { drugDosingOptions } from '../../data/drugDosingOptions.ts'
 
 export default function ChemoItem({path, index, item}: ItemProps<Chemo>) {

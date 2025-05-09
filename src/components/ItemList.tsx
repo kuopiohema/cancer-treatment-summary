@@ -1,12 +1,12 @@
 import { DragDropContext, Droppable } from '@hello-pangea/dnd'
 import { Button, Fieldset, Stack } from '@mantine/core'
 import { PropsWithChildren } from 'react'
-import { type ArrayItem, useFormContext } from '../formContext'
+import { type ListItem, useFormContext } from '../formContext'
 import { IconPlus } from '@tabler/icons-react'
 
 export interface ItemListProps extends PropsWithChildren {
     path: string
-    itemFactory: () => ArrayItem
+    itemFactory: () => ListItem
     title: string
     addButtonText: string
 }
