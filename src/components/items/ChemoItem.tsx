@@ -1,4 +1,4 @@
-import ItemCard from '../ItemCard.tsx'
+import ItemListItem from '../ItemListItem.tsx'
 import {type Chemo, useFormContext} from '../../formContext.ts'
 import type {ItemProps} from '../../types/itemProps.ts'
 import getListItemPath from '../../utils/getListItemPath.ts'
@@ -22,10 +22,11 @@ export default function ChemoItem({path, index, item}: ItemProps<Chemo>) {
     const itemPath = getListItemPath(path, index)
 
     return (
-        <ItemCard
+        <ItemListItem
             path={path}
             index={index}
             draggableId={item.id}
+            itemName="sytostaatti"
         >
             <FormRow>
                 <TextInput
@@ -51,6 +52,6 @@ export default function ChemoItem({path, index, item}: ItemProps<Chemo>) {
                     flex="none"
                 />
             </FormRow>
-        </ItemCard>
+        </ItemListItem>
     )
 }

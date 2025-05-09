@@ -1,3 +1,3 @@
-export default function getPageKey(path: string, id: string) {
+export default function getPageKey(path: string, id: string): string {
     return `${path}-${id}`
 }

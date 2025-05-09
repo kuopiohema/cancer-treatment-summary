@@ -1,7 +1,7 @@
-import {DragDropContext, Droppable} from '@hello-pangea/dnd'
-import {alpha, Button, Paper, Stack, Title} from '@mantine/core'
-import {PropsWithChildren} from 'react'
-import {type ArrayItem, useFormContext} from '../formContext'
+import { DragDropContext, Droppable } from '@hello-pangea/dnd'
+import { Button, Fieldset, Stack } from '@mantine/core'
+import { PropsWithChildren } from 'react'
+import { type ArrayItem, useFormContext } from '../formContext'
 
 export interface ItemListProps extends PropsWithChildren {
     path: string
@@ -13,11 +13,8 @@ export interface ItemListProps extends PropsWithChildren {
 export default function ItemList({path, itemFactory, title, addButtonText, children}: ItemListProps) {
     const form = useFormContext()
 
-    const paperBackgroundColor = alpha('var(--mantine-color-gray-6)', 0.2)
-
     return (
-        <Paper shadow="sm" withBorder p="md" bg={paperBackgroundColor}>
-            <Title order={2}>{title}</Title>
+        <Fieldset legend={title} my="md">
             <DragDropContext
                 onDragEnd={({destination, source}) =>
                     destination?.index !== undefined && form.reorderListItem(path, {
@@ -30,7 +27,7 @@ export default function ItemList({path, itemFactory, title, addButtonText, child
                     {(provided) => (
                         <Stack
                             gap="md"
-                            my="md"
+                            mb="md"
                             {...provided.droppableProps}
                             ref={provided.innerRef}
                         >
@@ -43,6 +40,6 @@ export default function ItemList({path, itemFactory, title, addButtonText, child
             <Button onClick={() => form.insertListItem(path, itemFactory())}>
                 {addButtonText}
             </Button>
-        </Paper>
+        </Fieldset>
     )
 }

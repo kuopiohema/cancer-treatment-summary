@@ -2,7 +2,7 @@ import type {ItemProps} from '../types/itemProps.ts'
 import {newChemo, type Treatment, useFormContext} from '../formContext.ts'
 import ItemPage from './ItemPage.tsx'
 import {useState} from 'react'
-import {Box, ComboboxData, Fieldset, Select, Switch, TextInput} from '@mantine/core'
+import {Box, ComboboxData, Fieldset, Select, Switch, TextInput, Text} from '@mantine/core'
 import FormRow from '../components/FormRow.tsx'
 import FormattedDateInput from '../components/FormattedDateInput.tsx'
 import ItemList from '../components/ItemList.tsx'
@@ -107,6 +107,7 @@ export default function TreatmentItemPage({path, index, item}: ItemProps<Treatme
                             title="Sytostaatit"
                             addButtonText="Lisää sytostaatti"
                         >
+                            {item.chemo.drugs.length === 0 && <Text>Ei sytostaatteja</Text>}
                             {item.chemo.drugs.map((item, index) => (
                                 <ChemoItem
                                     key={item.id}

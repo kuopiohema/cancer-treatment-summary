@@ -1,10 +1,10 @@
-import {MouseEventHandler, use} from 'react'
-import {NavContext} from '../navContext.tsx'
-import {useFormContext} from '../formContext.ts'
-import {Draggable} from '@hello-pangea/dnd'
-import {IconGripVertical, IconTrash} from '@tabler/icons-react'
-import {ActionIcon, Center, NavLink, Text, Tooltip} from '@mantine/core'
-import {modals} from '@mantine/modals'
+import { Draggable } from '@hello-pangea/dnd'
+import { ActionIcon, Center, NavLink, Tooltip } from '@mantine/core'
+import { IconGripVertical, IconTrash } from '@tabler/icons-react'
+import { use } from 'react'
+import { useFormContext } from '../formContext.ts'
+import { useRemoveConfirmModal } from '../hooks/useRemoveConfirmModal.tsx'
+import { NavContext } from '../navContext.tsx'
 import getPageKey from '../utils/getPageKey.ts'
 
 interface NavListItemProps {
@@ -21,21 +21,7 @@ export default function NavListItem({index, path, id, label, itemName}: NavListI
     const form = useFormContext()
     const key = getPageKey(path, id)
 
-    const confirmModal = () => modals.openConfirmModal({
-        title: `Poista ${itemName}`,
-        children: (
-            <Text size="sm">
-                Poistetaanko {itemName}? Palauttaminen ei ole mahdollista!
-            </Text>
-        ),
-        labels: {confirm: 'Poista', cancel: 'Peruuta'},
-        onConfirm: () => form.removeListItem(path, index)
-    })
-
-    const handleClick: MouseEventHandler = (e) => {
-        confirmModal()
-        e.stopPropagation()
-    }
+    const handleRemove = useRemoveConfirmModal(itemName, () => form.removeListItem(path, index))
 
     return (
         <Draggable
@@ -55,7 +41,7 @@ export default function NavListItem({index, path, id, label, itemName}: NavListI
                             <ActionIcon
                                 variant="subtle"
                                 color="red"
-                                onClick={handleClick}
+                                onClick={handleRemove}
                             >
                                 <IconTrash />
                             </ActionIcon>
