@@ -2,6 +2,7 @@ import { DragDropContext, Droppable } from '@hello-pangea/dnd'
 import { Button, Fieldset, Stack } from '@mantine/core'
 import { PropsWithChildren } from 'react'
 import { type ArrayItem, useFormContext } from '../formContext'
+import { IconPlus } from '@tabler/icons-react'
 
 export interface ItemListProps extends PropsWithChildren {
     path: string
@@ -37,7 +38,10 @@ export default function ItemList({path, itemFactory, title, addButtonText, child
                     )}
                 </Droppable>
             </DragDropContext>
-            <Button onClick={() => form.insertListItem(path, itemFactory())}>
+            <Button
+                leftSection={<IconPlus size={20}/>}
+                onClick={() => form.insertListItem(path, itemFactory())}
+            >
                 {addButtonText}
             </Button>
         </Fieldset>

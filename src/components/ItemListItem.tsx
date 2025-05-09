@@ -24,31 +24,30 @@ export default function ItemListItem({path, index, draggableId, itemName, childr
                 <Card
                     shadow="sm"
                     withBorder
-                    px={0}
-                    py="xs"
+                    p={0}
                     bg={cardBackgroundColor}
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                 >
                     <Group align="stretch">
-                        <Group gap="0">
+                        <Group align="stretch" gap="0" bg={cardBackgroundColor}>
                             <Center {...provided.dragHandleProps}>
                                 <IconGripVertical size={18} />
                             </Center>
                             <Divider orientation="vertical" />
                         </Group>
-                        <Stack gap="xs" flex="auto">
+                        <Stack gap="xs" flex="auto" py="xs">
                             {children}
                         </Stack>
-                        <Group gap="0">
-                        <Divider orientation="vertical" />
-                        <ActionIcon
-                            color="red"
-                            variant="subtle"
-                            onClick={handleRemove}
-                        >
-                            <IconTrash size={22} />
-                        </ActionIcon>
+                        <Group align="stretch" gap="0">
+                            <ActionIcon
+                                color="red"
+                                mih="100%"
+                                style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0}}
+                                onClick={handleRemove}
+                            >
+                                <IconTrash size={22} />
+                            </ActionIcon>
                         </Group>
                     </Group>
                 </Card>

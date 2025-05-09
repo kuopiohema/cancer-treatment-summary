@@ -48,6 +48,8 @@ export default function ChemoItem({path, index, item}: ItemProps<Chemo>) {
                     {...form.getInputProps(`${itemPath}.notes`)}
                     label="Lisätiedot"
                     placeholder="Keskeytys, haittavaikutus jne."
+                    minRows={1}
+                    autosize
                 />
             </FormRow>
         </ItemListItem>

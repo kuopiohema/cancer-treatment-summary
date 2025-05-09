@@ -11,6 +11,7 @@ export function useRemoveConfirmModal(itemName: string, onRemove: () => void) {
             </Text>
         ),
         labels: {confirm: 'Poista', cancel: 'Peruuta'},
+        confirmProps: {color: 'red'},
         onConfirm: onRemove
     })
 
