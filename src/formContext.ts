@@ -1,5 +1,7 @@
 import { createFormContext } from '@mantine/form'
 import { randomId } from '@mantine/hooks'
+import type { DrugDosingValue } from './data/drugDosingOptions'
+import type { StopReasonValue } from './data/stopReasonOptions'
 
 export interface ArrayItem {
     id: string
@@ -29,7 +31,7 @@ export const newDiagnosis = (): Diagnosis => ({
 export interface Chemo extends ArrayItem {
     drug: string
     dose: number
-    doseType: string
+    dosingType: DrugDosingValue
     notes: string
 }
 
@@ -37,7 +39,7 @@ export const newChemo = (): Chemo => ({
     ...newArrayItem(),
     drug: '',
     dose: 0,
-    doseType: 'mgm2',
+    dosingType: 'mgm2',
     notes: ''
 })
 
@@ -46,7 +48,7 @@ export interface Treatment extends ArrayItem {
     group: string
     startDate: string | null
     endDate: string | null
-    stopReason: string
+    stopReason: StopReasonValue
     stopReasonOther: string
     chemo: {
         done: boolean
