@@ -1,11 +1,11 @@
-import ItemListItem from '../ItemListItem.tsx'
+import {NumberInput, Select, Textarea, TextInput} from '@mantine/core'
+import {toComboboxData} from '../../data/dataUtils.ts'
+import {drugDosingOptions} from '../../data/drugDosingOptions.ts'
 import {type Chemo, useFormContext} from '../../formContext.ts'
 import type {ItemProps} from '../../types/itemProps.ts'
 import getListItemPath from '../../utils/getListItemPath.ts'
-import {NumberInput, Select, Textarea, TextInput} from '@mantine/core'
 import FormRow from '../FormRow.tsx'
-import { toComboboxData } from '../../data/dataUtils.ts'
-import { drugDosingOptions } from '../../data/drugDosingOptions.ts'
+import ItemListItem from '../ItemListItem.tsx'
 
 export default function ChemoItem({path, index, item}: ItemProps<Chemo>) {
     const form = useFormContext()
@@ -31,7 +31,6 @@ export default function ChemoItem({path, index, item}: ItemProps<Chemo>) {
                     key={form.key(`${itemPath}.dose`)}
                     {...form.getInputProps(`${itemPath}.dose`)}
                     label="Annos"
-                    allowNegative={false}
                     w={100}
                     flex="none"
                 />
@@ -49,7 +48,6 @@ export default function ChemoItem({path, index, item}: ItemProps<Chemo>) {
                     label="Lisätiedot"
                     placeholder="Keskeytys, haittavaikutus jne."
                     minRows={1}
-                    autosize
                 />
             </FormRow>
         </ItemListItem>

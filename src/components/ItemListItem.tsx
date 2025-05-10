@@ -29,7 +29,7 @@ export default function ItemListItem({path, index, draggableId, itemName, childr
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                 >
-                    <Group align="stretch">
+                    <Group align="stretch" wrap="nowrap">
                         <Group align="stretch" gap="0" bg={cardBackgroundColor}>
                             <Center {...provided.dragHandleProps}>
                                 <IconGripVertical size={18} />

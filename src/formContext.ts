@@ -1,14 +1,14 @@
-import { createFormContext } from '@mantine/form'
-import { randomId } from '@mantine/hooks'
-import type { DrugDosingValue } from './data/drugDosingOptions'
-import type { StopReasonValue } from './data/stopReasonOptions'
-import type { RadioModeValue } from './data/radioModeOptions'
+import {createFormContext} from '@mantine/form'
+import {randomId} from '@mantine/hooks'
+import type {DrugDosingValue} from './data/drugDosingOptions'
+import type {RadioModeValue} from './data/radioModeOptions'
+import type {StopReasonValue} from './data/stopReasonOptions'
 
 export interface ListItem {
     id: string
 }
 
-const newListItem = (): ListItem => ({ id: randomId('') })
+const newListItem = (): ListItem => ({id: randomId('')})
 
 export interface Diagnosis extends ListItem {
     date: string | null

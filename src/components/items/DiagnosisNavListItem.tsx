@@ -1,9 +1,9 @@
 import {useMemo, useState} from 'react'
 import {Diagnosis, useFormContext} from '../../formContext'
-import NavListItem from '../NavListItem.tsx'
-import formatDate from '../../utils/formatDate.ts'
 import type {ItemProps} from '../../types/itemProps.ts'
+import formatDate from '../../utils/formatDate.ts'
 import getListItemPath from '../../utils/getListItemPath.ts'
+import NavListItem from '../NavListItem.tsx'
 
 export default function DiagnosisNavListItem({path, index, item}: ItemProps<Diagnosis>) {
     const form = useFormContext()

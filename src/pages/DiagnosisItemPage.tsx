@@ -1,10 +1,10 @@
 import {Textarea, TextInput} from '@mantine/core'
-import {type Diagnosis, useFormContext} from '../formContext.ts'
-import FormRow from '../components/FormRow.tsx'
-import type {ItemProps} from '../types/itemProps.ts'
-import ItemPage from './ItemPage.tsx'
 import FormattedDateInput from '../components/FormattedDateInput.tsx'
+import FormRow from '../components/FormRow.tsx'
+import {type Diagnosis, useFormContext} from '../formContext.ts'
+import type {ItemProps} from '../types/itemProps.ts'
 import getListItemPath from '../utils/getListItemPath.ts'
+import ItemPage from './ItemPage.tsx'
 
 export default function DiagnosisItemPage({path, index}: ItemProps<Diagnosis>) {
     const form = useFormContext()
@@ -42,7 +42,6 @@ export default function DiagnosisItemPage({path, index}: ItemProps<Diagnosis>) {
                 label="Tarkempi kuvaus"
                 placeholder="Esim. 'Ganglioblastoomakomponentti, ei NMYC-amplifikaatiota, ALK-mutaatio'"
                 minRows={3}
-                autosize
             />
             <TextInput
                 key={form.key(`${itemPath}.stage`)}
@@ -56,7 +55,6 @@ export default function DiagnosisItemPage({path, index}: ItemProps<Diagnosis>) {
                 label="Levinneisyys"
                 placeholder="Esim. 'Oikea lisämunuainen, ylittää keskiviivan, ei metastasointia'"
                 minRows={3}
-                autosize
             />
         </ItemPage>
     )
