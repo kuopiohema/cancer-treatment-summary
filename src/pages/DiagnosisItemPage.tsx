@@ -1,26 +1,16 @@
-import {Textarea, TextInput} from '@mantine/core'
-import FormattedDateInput from '../components/FormattedDateInput.tsx'
-import FormRow from '../components/FormRow.tsx'
+import {Group, Stack, Textarea, TextInput} from '@mantine/core'
+import {DateInput} from '@mantine/dates'
 import {type Diagnosis, useFormContext} from '../formContext.ts'
 import type {ItemProps} from '../types/itemProps.ts'
 import getListItemPath from '../utils/getListItemPath.ts'
-import ItemPage from './ItemPage.tsx'
 
 export default function DiagnosisItemPage({path, index}: ItemProps<Diagnosis>) {
     const form = useFormContext()
     const itemPath = getListItemPath(path, index)
 
     return (
-        <ItemPage>
-            <FormRow>
-                <FormattedDateInput
-                    key={form.key(`${itemPath}.date`)}
-                    {...form.getInputProps(`${itemPath}.date`)}
-                    label="Diagnoosipäivä"
-                    placeholder="Diagnoosipäivä"
-                    w={120}
-                    flex="none"
-                />
+        <Stack gap="sm" w="600px">
+            <Group preventGrowOverflow={false} grow>
                 <TextInput
                     key={form.key(`${itemPath}.icd10`)}
                     {...form.getInputProps(`${itemPath}.icd10`)}
@@ -35,7 +25,13 @@ export default function DiagnosisItemPage({path, index}: ItemProps<Diagnosis>) {
                     label="Diagnoosi tekstinä"
                     placeholder="Esim. 'Neuroblastooma'"
                 />
-            </FormRow>
+            </Group>
+            <DateInput
+                key={form.key(`${itemPath}.date`)}
+                {...form.getInputProps(`${itemPath}.date`)}
+                label="Diagnoosipäivä"
+                placeholder="Diagnoosipäivä"
+            />
             <Textarea
                 key={form.key(`${itemPath}.detail`)}
                 {...form.getInputProps(`${itemPath}.detail`)}
@@ -56,6 +52,6 @@ export default function DiagnosisItemPage({path, index}: ItemProps<Diagnosis>) {
                 placeholder="Esim. 'Oikea lisämunuainen, ylittää keskiviivan, ei metastasointia'"
                 minRows={3}
             />
-        </ItemPage>
+        </Stack>
     )
 }

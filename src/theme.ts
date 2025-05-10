@@ -1,4 +1,15 @@
 import {createTheme, NumberInput, Textarea} from '@mantine/core'
+import {DateInput, type DateInputProps} from '@mantine/dates'
+import dayjs, {type Dayjs} from 'dayjs'
+
+const defaultDateParser: DateInputProps['dateParser'] = (input) =>{
+    let date: Dayjs
+    if (input === 't')
+        date = dayjs()
+    else
+        date = dayjs(input, ['D.M.YYYY', 'D.M.YY', 'D.M', 'D'])
+    return date.isValid() ? date.format('YYYY-MM-DD') : null
+}
 
 export const theme = createTheme({
     cursorType: 'pointer',
@@ -14,6 +25,14 @@ export const theme = createTheme({
         Textarea: Textarea.extend({
             defaultProps: {
                 autosize: true
+            }
+        }),
+        DateInput: DateInput.extend({
+            defaultProps: {
+                valueFormat: 'DD.MM.YYYY',
+                dateParser: defaultDateParser,
+                w: 120,
+                flex: 'none',
             }
         })
     }

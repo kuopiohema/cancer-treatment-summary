@@ -1,7 +1,6 @@
-import {Button, NumberInput, Select, Text, TextInput} from '@mantine/core'
+import {Group, NumberInput, Select, Text, Textarea, TextInput} from '@mantine/core'
+import {DateInput} from '@mantine/dates'
 import {useState} from 'react'
-import FormattedDateInput from '../../components/FormattedDateInput'
-import FormRow from '../../components/FormRow'
 import ItemListItem from '../../components/ItemListItem'
 import {toComboboxData} from '../../data/dataUtils'
 import {radioModeOptions, type RadioModeValue} from '../../data/radioModeOptions'
@@ -25,27 +24,27 @@ export default function RadioItem({path, index, item}: ItemProps<Radiotherapy>) 
             draggableId={item.id}
             itemName="sädehoito"
         >
-            <FormRow>
-                <FormattedDateInput
+            <Group>
+                <DateInput
                     key={form.key(`${itemPath}.startDate`)}
                     {...form.getInputProps(`${itemPath}.startDate`)}
                     label="Aloituspäivä"
                     placeholder="Aloituspäivä"
                 />
-                <FormattedDateInput
+                <DateInput
                     key={form.key(`${itemPath}.endDate`)}
                     {...form.getInputProps(`${itemPath}.endDate`)}
                     label="Lopetuspäivä"
                     placeholder="Lopetuspäivä"
                 />
-            </FormRow>
+            </Group>
             <TextInput
                 key={form.key(`${itemPath}.target`)}
                 {...form.getInputProps(`${itemPath}.target`)}
                 label="Kohde/kohteet"
                 placeholder="Kohde/kohteet"
             />
-            <FormRow>
+            <Group grow preventGrowOverflow={false}>
                 <Select
                     key={form.key(`${itemPath}.mode`)}
                     {...form.getInputProps(`${itemPath}.mode`)}
@@ -61,30 +60,39 @@ export default function RadioItem({path, index, item}: ItemProps<Radiotherapy>) 
                     placeholder="Muu, mikä?"
                     disabled={radioMode !== 'other'}
                 />
-            </FormRow>
-            <FormRow>
+            </Group>
+            <Group>
                 <NumberInput
                     key={form.key(`${itemPath}.singleDose`)}
                     {...form.getInputProps(`${itemPath}.singleDose`)}
                     label="Kerta-annos"
                     rightSection={<Text>Gy</Text>}
+                    w={100}
+                    flex="none"
                 />
                 <NumberInput
                     key={form.key(`${itemPath}.fractions`)}
                     {...form.getInputProps(`${itemPath}.fractions`)}
                     label="Fraktiot"
                     allowDecimal={false}
+                    w={100}
+                    flex="none"
                 />
                 <NumberInput
                     key={form.key(`${itemPath}.totalDose`)}
                     {...form.getInputProps(`${itemPath}.totalDose`)}
                     label="Kokonaisannos"
                     rightSection={<Text>Gy</Text>}
+                    w={100}
+                    flex="none"
                 />
-                <Button style={{alignSelf: 'end'}}>
-                    Laske puuttuvat arvot
-                </Button>
-            </FormRow>
+            </Group>
+            <Textarea
+                key={form.key(`${itemPath}.notes`)}
+                {...form.getInputProps(`${itemPath}.notes`)}
+                label="Lisätiedot"
+                placeholder="Keskeytys, haittavaikutus jne."
+            />
         </ItemListItem>
     )
 }

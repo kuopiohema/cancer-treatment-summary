@@ -1,10 +1,9 @@
-import {NumberInput, Select, Textarea, TextInput} from '@mantine/core'
+import {Group, NumberInput, Select, Textarea, TextInput} from '@mantine/core'
 import {toComboboxData} from '../../data/dataUtils.ts'
 import {drugDosingOptions} from '../../data/drugDosingOptions.ts'
 import {type Chemo, useFormContext} from '../../formContext.ts'
 import type {ItemProps} from '../../types/itemProps.ts'
 import getListItemPath from '../../utils/getListItemPath.ts'
-import FormRow from '../FormRow.tsx'
 import ItemListItem from '../ItemListItem.tsx'
 
 export default function ChemoItem({path, index, item}: ItemProps<Chemo>) {
@@ -20,18 +19,20 @@ export default function ChemoItem({path, index, item}: ItemProps<Chemo>) {
             draggableId={item.id}
             itemName="sytostaatti"
         >
-            <FormRow>
+            <Group grow preventGrowOverflow={false} align="flex-start">
                 <TextInput
                     key={form.key(`${itemPath}.drug`)}
                     {...form.getInputProps(`${itemPath}.drug`)}
                     label="Lääke"
                     placeholder="Lääke"
+                    w={220}
+                    flex="none"
                 />
                 <NumberInput
                     key={form.key(`${itemPath}.dose`)}
                     {...form.getInputProps(`${itemPath}.dose`)}
                     label="Annos"
-                    w={100}
+                    w={80}
                     flex="none"
                 />
                 <Select
@@ -49,7 +50,8 @@ export default function ChemoItem({path, index, item}: ItemProps<Chemo>) {
                     placeholder="Keskeytys, haittavaikutus jne."
                     minRows={1}
                 />
-            </FormRow>
+
+            </Group>
         </ItemListItem>
     )
 }

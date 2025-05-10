@@ -1,17 +1,17 @@
-import { useState } from 'react'
-import { newRadiotherapy, useFormContext, type Treatment } from '../../formContext'
-import type { ItemProps } from '../../types/itemProps'
-import getListItemPath from '../../utils/getListItemPath'
-import { Fieldset, Switch, Text } from '@mantine/core'
+import {Fieldset, Switch, Text} from '@mantine/core'
+import {useState} from 'react'
 import ItemList from '../../components/ItemList'
 import RadioItem from '../../components/items/RadioItem'
+import {newRadiotherapy, type Treatment, useFormContext} from '../../formContext'
+import type {ItemProps} from '../../types/itemProps'
+import getListItemPath from '../../utils/getListItemPath'
 
-export default function TreatmentItemRadio({ path, index, item }: ItemProps<Treatment>) {
+export default function TreatmentItemRadio({path, index, item}: ItemProps<Treatment>) {
     const form = useFormContext()
     const itemPath = getListItemPath(path, index)
 
     const [radioDone, setRadioDone] = useState(item.radio.done)
-    form.watch(`${itemPath}.radio.done`, ({ value }: { value: boolean }) => {
+    form.watch(`${itemPath}.radio.done`, ({value}: { value: boolean }) => {
         setRadioDone(value)
     })
 
@@ -19,8 +19,9 @@ export default function TreatmentItemRadio({ path, index, item }: ItemProps<Trea
         <Fieldset legend="Sädehoito">
             <Switch
                 key={form.key(`${itemPath}.radio.done`)}
-                {...form.getInputProps(`${itemPath}.radio.done`, { type: 'checkbox' })}
+                {...form.getInputProps(`${itemPath}.radio.done`, {type: 'checkbox'})}
                 label="Sädehoitoa annettu"
+                pb={radioDone ? 'md' : '0'}
             />
             {radioDone && (
                 <ItemList

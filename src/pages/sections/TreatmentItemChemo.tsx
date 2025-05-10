@@ -1,19 +1,18 @@
-import { Box, Fieldset, Switch, Text } from '@mantine/core'
-import { useState } from 'react'
-import FormattedDateInput from '../../components/FormattedDateInput'
-import FormRow from '../../components/FormRow'
+import {Fieldset, Group, Stack, Switch, Text} from '@mantine/core'
+import {DateInput} from '@mantine/dates'
+import {useState} from 'react'
 import ItemList from '../../components/ItemList'
 import ChemoItem from '../../components/items/ChemoItem'
-import { newChemo, type Treatment, useFormContext } from '../../formContext'
-import type { ItemProps } from '../../types/itemProps'
+import {newChemo, type Treatment, useFormContext} from '../../formContext'
+import type {ItemProps} from '../../types/itemProps'
 import getListItemPath from '../../utils/getListItemPath'
 
-export default function TreatmentItemChemo({ path, index, item }: ItemProps<Treatment>) {
+export default function TreatmentItemChemo({path, index, item}: ItemProps<Treatment>) {
     const form = useFormContext()
     const itemPath = getListItemPath(path, index)
 
     const [chemoDone, setChemoDone] = useState(item.chemo.done)
-    form.watch(`${itemPath}.chemo.done`, ({ value }: { value: boolean }) => {
+    form.watch(`${itemPath}.chemo.done`, ({value}: { value: boolean }) => {
         setChemoDone(value)
     })
 
@@ -21,25 +20,26 @@ export default function TreatmentItemChemo({ path, index, item }: ItemProps<Trea
         <Fieldset legend="Kemoterapia">
             <Switch
                 key={form.key(`${itemPath}.chemo.done`)}
-                {...form.getInputProps(`${itemPath}.chemo.done`, { type: 'checkbox' })}
+                {...form.getInputProps(`${itemPath}.chemo.done`, {type: 'checkbox'})}
                 label="Kemoterapiaa annettu"
+                pb={chemoDone ? 'md' : '0'}
             />
             {chemoDone && (
-                <Box pt="md">
-                    <FormRow>
-                        <FormattedDateInput
+                <Stack gap="sm">
+                    <Group>
+                        <DateInput
                             key={form.key(`${itemPath}.chemo.startDate`)}
                             {...form.getInputProps(`${itemPath}.chemo.startDate`)}
                             label="Aloituspäivä"
                             placeholder="Aloituspäivä"
                         />
-                        <FormattedDateInput
+                        <DateInput
                             key={form.key(`${itemPath}.chemo.endDate`)}
                             {...form.getInputProps(`${itemPath}.chemo.endDate`)}
                             label="Lopetuspäivä"
                             placeholder="Lopetuspäivä"
                         />
-                    </FormRow>
+                    </Group>
                     <ItemList
                         path={`${itemPath}.chemo.drugs`}
                         itemFactory={newChemo}
@@ -56,7 +56,7 @@ export default function TreatmentItemChemo({ path, index, item }: ItemProps<Trea
                             />
                         ))}
                     </ItemList>
-                </Box>
+                </Stack>
             )}
         </Fieldset>
     )

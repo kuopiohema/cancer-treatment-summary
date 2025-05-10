@@ -15,7 +15,7 @@ export default function ItemList({path, itemFactory, title, addButtonText, child
     const form = useFormContext()
 
     return (
-        <Fieldset legend={title} my="md">
+        <Fieldset legend={title}>
             <DragDropContext
                 onDragEnd={({destination, source}) =>
                     destination?.index !== undefined && form.reorderListItem(path, {

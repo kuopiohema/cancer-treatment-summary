@@ -3,6 +3,7 @@ import {
     AppShell,
     Burger,
     Button,
+    Container,
     Group,
     NavLink,
     Text,
@@ -43,6 +44,8 @@ export default function App() {
 
     const formValues = form.getValues()
 
+    const handleReset = () => form.reset()
+
     const saveData = (values: typeof form.values) => {
         console.log(JSON.stringify(values))
     }
@@ -77,7 +80,13 @@ export default function App() {
                                 <Text size="xl">Syöpähoitojen yhteenveto</Text>
                             </Group>
                             <Group>
-                                <Button variant="default" leftSection={<IconFile size={20} />}>Uusi</Button>
+                                <Button
+                                    variant="default"
+                                    leftSection={<IconFile size={20} />}
+                                    onClick={handleReset}
+                                >
+                                    Uusi
+                                </Button>
                                 <Button
                                     variant="default"
                                     leftSection={<IconFolderOpen size={20} />}
@@ -139,25 +148,27 @@ export default function App() {
                         </NavList>
                     </AppShell.Navbar>
                     <AppShell.Main>
-                        {currentPage === 'start' && <Start />}
-                        {formValues.diagnoses.map((item, index) =>
-                            currentPage === getPageKey('diagnoses', item.id) &&
-                            <DiagnosisItemPage
-                                key={item.id}
-                                path="diagnoses"
-                                index={index}
-                                item={item}
-                            />
-                        )}
-                        {formValues.treatments.map((item, index) =>
-                            currentPage === getPageKey('treatments', item.id) &&
-                            <TreatmentItemPage
-                                key={item.id}
-                                path="treatments"
-                                index={index}
-                                item={item}
-                            />
-                        )}
+                        <Container ml={0} size="md">
+                            {currentPage === 'start' && <Start />}
+                            {formValues.diagnoses.map((item, index) =>
+                                currentPage === getPageKey('diagnoses', item.id) &&
+                                <DiagnosisItemPage
+                                    key={item.id}
+                                    path="diagnoses"
+                                    index={index}
+                                    item={item}
+                                />
+                            )}
+                            {formValues.treatments.map((item, index) =>
+                                currentPage === getPageKey('treatments', item.id) &&
+                                <TreatmentItemPage
+                                    key={item.id}
+                                    path="treatments"
+                                    index={index}
+                                    item={item}
+                                />
+                            )}
+                        </Container>
                     </AppShell.Main>
                 </AppShell>
             </NavContext>
