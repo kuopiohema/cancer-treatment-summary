@@ -8,6 +8,6 @@ export const drugDosingOptions = {
     ugm2: { label: 'µg/m²' },
     ugkg: { label: 'µg/kg' },
     ug: { label: 'µg' }
-}
+} as const
 
 export type DrugDosingValue = keyof typeof drugDosingOptions | ''

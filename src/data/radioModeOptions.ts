@@ -8,6 +8,6 @@ export const radioModeOptions = {
     gamma: { label: 'Stereotaktinen ("gammaveitsi")' },
     brachy: { label: 'Sisäinen (brakyterapia)' },
     ...other
-}
+} as const
 
 export type RadioModeValue = keyof typeof radioModeOptions | ''

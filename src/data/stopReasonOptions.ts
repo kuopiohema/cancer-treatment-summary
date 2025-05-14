@@ -7,6 +7,6 @@ export const stopReasonOptions = {
     relapse: { label: 'Relapsi' },
     unknown: { label: 'Ei tiedossa' },
     ...other
-}
+} as const
 
 export type StopReasonValue = keyof typeof stopReasonOptions | ''

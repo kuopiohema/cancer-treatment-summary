@@ -66,7 +66,7 @@ export default function RadioItem({path, index, item}: ItemProps<Radiotherapy>) 
                     key={form.key(`${itemPath}.singleDose`)}
                     {...form.getInputProps(`${itemPath}.singleDose`)}
                     label="Kerta-annos"
-                    rightSection={<Text>Gy</Text>}
+                    rightSection={<Text pr="sm">Gy</Text>}
                     w={100}
                     flex="none"
                 />
@@ -82,7 +82,7 @@ export default function RadioItem({path, index, item}: ItemProps<Radiotherapy>) 
                     key={form.key(`${itemPath}.totalDose`)}
                     {...form.getInputProps(`${itemPath}.totalDose`)}
                     label="Kokonaisannos"
-                    rightSection={<Text>Gy</Text>}
+                    rightSection={<Text pr="sm">Gy</Text>}
                     w={100}
                     flex="none"
                 />

@@ -4,6 +4,7 @@ import type {ItemProps} from '../types/itemProps.ts'
 import TreatmentItemChemo from './sections/TreatmentItemChemo.tsx'
 import TreatmentItemGeneral from './sections/TreatmentItemGeneral.tsx'
 import TreatmentItemRadio from './sections/TreatmentItemRadio.tsx'
+import TreatmentItemProcedures from './sections/TreatmentItemProcedures.tsx'
 
 export default function TreatmentItemPage({path, index, item}: ItemProps<Treatment>) {
     return (
@@ -11,6 +12,7 @@ export default function TreatmentItemPage({path, index, item}: ItemProps<Treatme
             <TreatmentItemGeneral path={path} index={index} item={item} />
             <TreatmentItemChemo path={path} index={index} item={item} />
             <TreatmentItemRadio path={path} index={index} item={item} />
+            <TreatmentItemProcedures path={path} index={index} item={item} />
         </Stack>
     )
 }

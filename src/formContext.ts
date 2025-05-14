@@ -69,6 +69,25 @@ export const newRadiotherapy = (): Radiotherapy => ({
     notes: ''
 })
 
+export interface Procedure extends ListItem {
+    date: string | null
+    procedure: string
+    details: string
+    complications: string
+}
+
+export const newProcedure = (): Procedure => ({
+    ...newListItem(),
+    date: null,
+    procedure: '',
+    details: '',
+    complications: ''
+})
+
+export interface CellTherapy extends ListItem {
+    
+}
+
 export interface Treatment extends ListItem {
     protocol: string
     group: string
@@ -77,15 +96,12 @@ export interface Treatment extends ListItem {
     stopReason: StopReasonValue
     stopReasonOther: string
     chemo: {
-        done: boolean
         startDate: string | null
-        endDate: string | null,
+        endDate: string | null
         drugs: Chemo[]
     }
-    radio: {
-        done: boolean
-        therapies: Radiotherapy[]
-    }
+    radiotherapies: Radiotherapy[]
+    procedures: Procedure[]
 }
 
 export const newTreatment = (): Treatment => ({
@@ -97,15 +113,12 @@ export const newTreatment = (): Treatment => ({
     stopReason: 'completed',
     stopReasonOther: '',
     chemo: {
-        done: false,
         startDate: null,
         endDate: null,
         drugs: []
     },
-    radio: {
-        done: false,
-        therapies: []
-    }
+    radiotherapies: [],
+    procedures: []
 })
 
 export interface FormValues {
