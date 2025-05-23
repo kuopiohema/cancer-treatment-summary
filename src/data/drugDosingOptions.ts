@@ -1,13 +1,13 @@
 export const drugDosingOptions = {
-    mgm2: { label: 'mg/m²' },
-    mgkg: { label: 'mg/kg' },
-    mg: { label: 'mg' },
-    um2: { label: 'U/m²' },
-    ukg: { label: 'U/kg' },
-    u: { label: 'U' },
-    ugm2: { label: 'µg/m²' },
-    ugkg: { label: 'µg/kg' },
-    ug: { label: 'µg' }
+    mgm2: 'mg/m²',
+    mgkg: 'mg/kg',
+    mg: 'mg',
+    um2: 'U/m²',
+    ukg: 'U/kg',
+    u: 'U',
+    ugm2: 'µg/m²',
+    ugkg: 'µg/kg',
+    ug: 'µg'
 } as const
 
 export type DrugDosingValue = keyof typeof drugDosingOptions | ''

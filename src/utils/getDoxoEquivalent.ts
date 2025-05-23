@@ -1,7 +1,7 @@
 import { doxoEquivalents } from "../data/doxoEquivalents";
-import { Chemo } from "../formContext";
+import { Drug } from "../formContext";
 
-export default function getDoxoEquivalent(drugs: Chemo[]): number {
+export default function getDoxoEquivalent(drugs: Drug[]): number {
     return drugs.reduce((value, drug) => {
         const factor = doxoEquivalents.find((value) => value.drug === drug.drug.toLocaleLowerCase())?.factor
         if (factor && drug.dosingType == 'mgm2')

@@ -5,7 +5,7 @@ import { newRadiotherapy, type Treatment } from '../../formContext'
 import type { ItemProps } from '../../types/itemProps'
 import getListItemPath from '../../utils/getListItemPath'
 
-export default function TreatmentItemRadio({path, index, item}: ItemProps<Treatment>) {
+export default function TreatmentSectionRadio({path, index, item}: ItemProps<Treatment>) {
     const itemPath = getListItemPath(path, index)
 
     return (

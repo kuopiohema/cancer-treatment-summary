@@ -7,7 +7,7 @@ import {type Treatment, useFormContext} from '../../formContext'
 import type {ItemProps} from '../../types/itemProps'
 import getListItemPath from '../../utils/getListItemPath'
 
-export default function TreatmentItemGeneral({path, index, item}: ItemProps<Treatment>) {
+export default function TreatmentSectionGeneral({path, index, item}: ItemProps<Treatment>) {
     const form = useFormContext()
     const itemPath = getListItemPath(path, index)
 

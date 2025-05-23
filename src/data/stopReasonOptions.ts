@@ -1,11 +1,11 @@
 import { other } from './dataUtils'
 
 export const stopReasonOptions = {
-    completed: { label: 'Hoito päättynyt' },
-    toxicity: { label: 'Toksisuus' },
-    refractory: { label: 'Riittämätön hoitovaste' },
-    relapse: { label: 'Relapsi' },
-    unknown: { label: 'Ei tiedossa' },
+    completed: 'Hoito päättynyt',
+    toxicity: 'Toksisuus',
+    refractory: 'Riittämätön hoitovaste',
+    relapse: 'Relapsi',
+    unknown: 'Ei tiedossa',
     ...other
 } as const
 

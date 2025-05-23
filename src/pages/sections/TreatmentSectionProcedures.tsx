@@ -5,7 +5,7 @@ import { newProcedure, Treatment } from "../../formContext";
 import { ItemProps } from "../../types/itemProps";
 import getListItemPath from "../../utils/getListItemPath";
 
-export default function TreatmentItemProcedures({ path, index, item }: ItemProps<Treatment>) {
+export default function TreatmentSectionProcedures({ path, index, item }: ItemProps<Treatment>) {
     const itemPath = getListItemPath(path, index)
 
     return (

@@ -3,6 +3,8 @@ import {randomId} from '@mantine/hooks'
 import type {DrugDosingValue} from './data/drugDosingOptions'
 import type {RadioModeValue} from './data/radioModeOptions'
 import type {StopReasonValue} from './data/stopReasonOptions'
+import { CellTherapyTypeValue, DonorValues as DonorValue, HlaMatchValues as HlaMatchValue } from './data/cellTherapy'
+import { SexValues as SexValue } from './data/sexOptions'
 
 export interface ListItem {
     id: string
@@ -29,14 +31,14 @@ export const newDiagnosis = (): Diagnosis => ({
     spread: ''
 })
 
-export interface Chemo extends ListItem {
+export interface Drug extends ListItem {
     drug: string
     dose: number
     dosingType: DrugDosingValue
     notes: string
 }
 
-export const newChemo = (): Chemo => ({
+export const newChemo = (): Drug => ({
     ...newListItem(),
     drug: '',
     dose: 0,
@@ -85,8 +87,29 @@ export const newProcedure = (): Procedure => ({
 })
 
 export interface CellTherapy extends ListItem {
-    
+    date: string | null
+    type: CellTherapyTypeValue
+    source: DonorValue
+    donorSex: SexValue
+    hlaMatch: HlaMatchValue
+    conditioning: string
+    tbiDoseOverall: number
+    tbiDoseLungs: number
+    drugs: Drug[]
 }
+
+export const newCellTherapy = (): CellTherapy => ({
+    ...newListItem(),
+    date: null,
+    type: '',
+    source: '',
+    donorSex: '',
+    hlaMatch: '',
+    conditioning: '',
+    tbiDoseOverall: 0,
+    tbiDoseLungs: 0,
+    drugs: []
+})
 
 export interface Treatment extends ListItem {
     protocol: string
@@ -98,7 +121,7 @@ export interface Treatment extends ListItem {
     chemo: {
         startDate: string | null
         endDate: string | null
-        drugs: Chemo[]
+        drugs: Drug[]
     }
     radiotherapies: Radiotherapy[]
     procedures: Procedure[]
