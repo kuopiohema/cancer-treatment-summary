@@ -1,10 +1,10 @@
 import {Stack} from '@mantine/core'
-import {type Treatment} from '../form/treatment.ts'
-import type {ItemProps} from '../types/itemProps.ts'
-import TreatmentSectionChemo from './sections/TreatmentSectionChemo.tsx'
-import TreatmentSectionGeneral from './sections/TreatmentSectionGeneral.tsx'
-import TreatmentSectionRadio from './sections/TreatmentSectionRadio.tsx'
-import TreatmentSectionProcedures from './sections/TreatmentSectionProcedures.tsx'
+import {type Treatment} from '../form/treatment'
+import type {ItemProps} from '../types/itemProps'
+import TreatmentSectionChemo from './sections/TreatmentSectionChemo'
+import TreatmentSectionGeneral from './sections/TreatmentSectionGeneral'
+import TreatmentSectionRadio from './sections/TreatmentSectionRadio'
+import TreatmentSectionProcedures from './sections/TreatmentSectionProcedures'
 
 export default function TreatmentItemPage({path, index, item}: ItemProps<Treatment>) {
     return (

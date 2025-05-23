@@ -24,6 +24,7 @@ import TreatmentItemPage from './pages/TreatmentItemPage.tsx'
 import getPageKey from './utils/getPageKey.ts'
 import { newDiagnosis } from './form/diagnosis.ts'
 import { newTreatment } from './form/treatment.ts'
+import Test from './pages/Test.tsx'
 
 export default function App() {
     const {setColorScheme} = useMantineColorScheme()
@@ -151,6 +152,7 @@ export default function App() {
                     </AppShell.Navbar>
                     <AppShell.Main>
                         <Container ml={0} size="md">
+                            <Test />
                             {currentPage === 'start' && <Start />}
                             {formValues.diagnoses.map((item, index) =>
                                 currentPage === getPageKey('diagnoses', item.id) &&
