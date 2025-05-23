@@ -1,11 +1,11 @@
 import { Fieldset, Group, Stack, Text } from '@mantine/core'
 import { DateInput } from '@mantine/dates'
 import ItemList from '../../components/ItemList'
-import ChemoItem from '../../components/items/ChemoItem'
+import DrugItem from '../../components/items/DrugItem.tsx'
 import { useFormContext } from '../../form/formContext'
 import type { ItemProps } from '../../types/itemProps'
 import getListItemPath from '../../utils/getListItemPath'
-import { newChemo } from '../../form/drug'
+import { newDrug } from '../../form/drug'
 import type { Treatment } from '../../form/treatment'
 
 export default function TreatmentSectionChemo({ path, index, item }: ItemProps<Treatment>) {
@@ -31,13 +31,13 @@ export default function TreatmentSectionChemo({ path, index, item }: ItemProps<T
                 </Group>
                 <ItemList
                     path={`${itemPath}.chemo.drugs`}
-                    itemFactory={newChemo}
+                    itemFactory={newDrug}
                     title="Sytostaatit"
                     addButtonText="Lisää sytostaatti"
                 >
                     {item.chemo.drugs.length === 0 && <Text>Ei sytostaatteja</Text>}
                     {item.chemo.drugs.map((item, index) => (
-                        <ChemoItem
+                        <DrugItem
                             key={item.id}
                             path={`${itemPath}.chemo.drugs`}
                             index={index}

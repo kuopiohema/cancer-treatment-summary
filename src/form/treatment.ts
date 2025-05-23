@@ -1,4 +1,5 @@
 import type { StopReasonValue } from '../data/stopReasonOptions'
+import type {StemCellTherapy} from './stemCellTherapy.ts'
 import type { Drug } from './drug'
 import { newListItem, type ListItem } from './listItem'
 import type { Procedure } from './procedure'
@@ -16,8 +17,9 @@ export interface Treatment extends ListItem {
         endDate: string | null
         drugs: Drug[]
     }
-    radiotherapies: Radiotherapy[]
+    radioTherapies: Radiotherapy[]
     procedures: Procedure[]
+    stemCellTherapies: StemCellTherapy[]
 }
 
 export const newTreatment = (): Treatment => ({
@@ -33,6 +35,7 @@ export const newTreatment = (): Treatment => ({
         endDate: null,
         drugs: []
     },
-    radiotherapies: [],
-    procedures: []
+    radioTherapies: [],
+    procedures: [],
+    stemCellTherapies: []
 })

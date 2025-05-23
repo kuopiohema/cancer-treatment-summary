@@ -11,16 +11,16 @@ export default function TreatmentSectionRadio({path, index, item}: ItemProps<Tre
 
     return (
         <ItemList
-            path={`${itemPath}.radiotherapies`}
+            path={`${itemPath}.radioTherapies`}
             itemFactory={newRadiotherapy}
             title="Sädehoito"
             addButtonText="Lisää sädehoito"
         >
-            {item.radiotherapies.length === 0 && <Text>Ei sädehoitoja</Text>}
-            {item.radiotherapies.map((item, index) => (
+            {item.radioTherapies.length === 0 && <Text>Ei sädehoitoja</Text>}
+            {item.radioTherapies.map((item, index) => (
                 <RadioItem
                     key={item.id}
-                    path={`${itemPath}.radiotherapies`}
+                    path={`${itemPath}.radioTherapies`}
                     index={index}
                     item={item}
                 />

@@ -8,7 +8,7 @@ export interface Drug extends ListItem {
     notes: string
 }
 
-export const newChemo = (): Drug => ({
+export const newDrug = (): Drug => ({
     ...newListItem(),
     drug: '',
     dose: 0,

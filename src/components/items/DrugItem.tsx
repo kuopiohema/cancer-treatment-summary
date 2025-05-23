@@ -7,7 +7,7 @@ import ItemListItem from '../ItemListItem.tsx'
 import type { Drug } from '../../form/drug.ts'
 import { useFormContext } from '../../form/formContext.ts'
 
-export default function ChemoItem({path, index, item}: ItemProps<Drug>) {
+export default function DrugItem({path, index, item}: ItemProps<Drug>) {
     const form = useFormContext()
     const itemPath = getListItemPath(path, index)
 

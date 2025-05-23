@@ -16,15 +16,14 @@ import {useMemo, useState} from 'react'
 import DiagnosisNavListItem from './components/items/DiagnosisNavListItem.tsx'
 import TreatmentNavListItem from './components/items/TreatmentNavListItem.tsx'
 import NavList from './components/NavList.tsx'
+import {newDiagnosis} from './form/diagnosis.ts'
 import {FormProvider, useForm} from './form/formContext.ts'
+import {newTreatment} from './form/treatment.ts'
 import {NavContext} from './navContext.tsx'
 import DiagnosisItemPage from './pages/DiagnosisItemPage.tsx'
 import Start from './pages/Start'
 import TreatmentItemPage from './pages/TreatmentItemPage.tsx'
 import getPageKey from './utils/getPageKey.ts'
-import { newDiagnosis } from './form/diagnosis.ts'
-import { newTreatment } from './form/treatment.ts'
-import Test from './pages/Test.tsx'
 
 export default function App() {
     const {setColorScheme} = useMantineColorScheme()
@@ -40,8 +39,8 @@ export default function App() {
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: {
-            diagnoses: [],
-            treatments: []
+            diagnoses: [newDiagnosis()],
+            treatments: [newTreatment()],
         }
     })
 
@@ -152,7 +151,6 @@ export default function App() {
                     </AppShell.Navbar>
                     <AppShell.Main>
                         <Container ml={0} size="md">
-                            <Test />
                             {currentPage === 'start' && <Start />}
                             {formValues.diagnoses.map((item, index) =>
                                 currentPage === getPageKey('diagnoses', item.id) &&
