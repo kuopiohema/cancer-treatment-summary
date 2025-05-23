@@ -2,7 +2,7 @@ import { Draggable } from '@hello-pangea/dnd'
 import { ActionIcon, Center, NavLink, Tooltip } from '@mantine/core'
 import { IconGripVertical, IconTrash } from '@tabler/icons-react'
 import { use } from 'react'
-import { useFormContext } from '../formContext.ts'
+import { useFormContext } from '../form/formContext.ts'
 import { useRemoveConfirmModal } from '../hooks/useRemoveConfirmModal.tsx'
 import { NavContext } from '../navContext.tsx'
 import getPageKey from '../utils/getPageKey.ts'
@@ -12,10 +12,11 @@ interface NavListItemProps {
     path: string
     id: string
     label: string
+    sublabel?: string
     itemName: string
 }
 
-export default function NavListItem({index, path, id, label, itemName}: NavListItemProps) {
+export default function NavListItem({index, path, id, label, sublabel, itemName}: NavListItemProps) {
     const nav = use(NavContext)
 
     const form = useFormContext()
@@ -32,6 +33,7 @@ export default function NavListItem({index, path, id, label, itemName}: NavListI
                 <NavLink
                     href="#"
                     label={label}
+                    description={sublabel}
                     active={nav?.currentPage === key}
                     onClick={() => nav?.setCurrentPage(key)}
                     rightSection={

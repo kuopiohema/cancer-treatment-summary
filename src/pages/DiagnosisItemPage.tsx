@@ -1,8 +1,9 @@
 import {Group, Stack, Textarea, TextInput} from '@mantine/core'
 import {DateInput} from '@mantine/dates'
-import {type Diagnosis, useFormContext} from '../formContext.ts'
+import {useFormContext} from '../form/formContext.ts'
 import type {ItemProps} from '../types/itemProps.ts'
 import getListItemPath from '../utils/getListItemPath.ts'
+import type { Diagnosis } from '../form/diagnosis.ts'
 
 export default function DiagnosisItemPage({path, index}: ItemProps<Diagnosis>) {
     const form = useFormContext()

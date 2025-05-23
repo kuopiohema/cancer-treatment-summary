@@ -2,9 +2,11 @@ import { Fieldset, Group, Stack, Text } from '@mantine/core'
 import { DateInput } from '@mantine/dates'
 import ItemList from '../../components/ItemList'
 import ChemoItem from '../../components/items/ChemoItem'
-import { newChemo, type Treatment, useFormContext } from '../../formContext'
+import { useFormContext } from '../../form/formContext'
 import type { ItemProps } from '../../types/itemProps'
 import getListItemPath from '../../utils/getListItemPath'
+import { newChemo } from '../../form/drug'
+import type { Treatment } from '../../form/treatment'
 
 export default function TreatmentSectionChemo({ path, index, item }: ItemProps<Treatment>) {
     const form = useFormContext()

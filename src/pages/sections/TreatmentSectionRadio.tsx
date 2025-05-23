@@ -1,9 +1,10 @@
 import { Text } from '@mantine/core'
 import ItemList from '../../components/ItemList'
 import RadioItem from '../../components/items/RadioItem'
-import { newRadiotherapy, type Treatment } from '../../formContext'
 import type { ItemProps } from '../../types/itemProps'
 import getListItemPath from '../../utils/getListItemPath'
+import type { Treatment } from '../../form/treatment'
+import { newRadiotherapy } from '../../form/radiotherapy'
 
 export default function TreatmentSectionRadio({path, index, item}: ItemProps<Treatment>) {
     const itemPath = getListItemPath(path, index)

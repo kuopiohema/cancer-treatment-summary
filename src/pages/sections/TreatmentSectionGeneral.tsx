@@ -3,9 +3,10 @@ import {DateInput} from '@mantine/dates'
 import {useState} from 'react'
 import {toComboboxData} from '../../data/dataUtils'
 import {stopReasonOptions, type StopReasonValue} from '../../data/stopReasonOptions'
-import {type Treatment, useFormContext} from '../../formContext'
+import {useFormContext} from '../../form/formContext'
 import type {ItemProps} from '../../types/itemProps'
 import getListItemPath from '../../utils/getListItemPath'
+import type { Treatment } from '../../form/treatment'
 
 export default function TreatmentSectionGeneral({path, index, item}: ItemProps<Treatment>) {
     const form = useFormContext()

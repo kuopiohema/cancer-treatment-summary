@@ -1,21 +1,27 @@
 import {useMemo, useState} from 'react'
-import {Diagnosis, useFormContext} from '../../formContext'
 import type {ItemProps} from '../../types/itemProps.ts'
 import formatDate from '../../utils/formatDate.ts'
 import getListItemPath from '../../utils/getListItemPath.ts'
 import NavListItem from '../NavListItem.tsx'
+import type { Diagnosis } from '../../form/diagnosis.ts'
+import { useFormContext } from '../../form/formContext.ts'
 
 export default function DiagnosisNavListItem({path, index, item}: ItemProps<Diagnosis>) {
     const form = useFormContext()
     const itemPath = getListItemPath(path, index)
 
-    const emptyLabel = '(Uusi diagnoosi)'
     const [icd10, setICD10] = useState(item.icd10)
+    const [text, setText] = useState(item.text)
     const [date, setDate] = useState(item.date)
 
     form.watch(`${itemPath}.icd10`, ({value}) => {
         if (typeof value === 'string')
             setICD10(value)
+    })
+
+    form.watch(`${itemPath}.text`, ({value}) => {
+        if (typeof value === 'string')
+            setText(value)
     })
 
     form.watch(`${itemPath}.date`, ({value}) => {
@@ -24,10 +30,15 @@ export default function DiagnosisNavListItem({path, index, item}: ItemProps<Diag
     })
 
     const label = useMemo(() => {
-        let result = icd10 || emptyLabel
-        result = `${result} (${formatDate(date)})`
-        return result
-    }, [icd10, date])
+        if (!icd10 && !text)
+            return '(Uusi diagnoosi)'
+        if (!text)
+            return icd10
+        if (!icd10)
+            return text
+        return `${icd10} ${text}`
+    }, [icd10, text])
+    const sublabel = useMemo(() => formatDate(date), [date])
 
     return (
         <NavListItem
@@ -36,6 +47,7 @@ export default function DiagnosisNavListItem({path, index, item}: ItemProps<Diag
             index={index}
             id={item.id}
             label={label}
+            sublabel={sublabel}
             itemName="diagnoosi"
         />
     )

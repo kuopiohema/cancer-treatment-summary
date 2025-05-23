@@ -16,12 +16,14 @@ import {useMemo, useState} from 'react'
 import DiagnosisNavListItem from './components/items/DiagnosisNavListItem.tsx'
 import TreatmentNavListItem from './components/items/TreatmentNavListItem.tsx'
 import NavList from './components/NavList.tsx'
-import {FormProvider, newDiagnosis, newTreatment, useForm} from './formContext.ts'
+import {FormProvider, useForm} from './form/formContext.ts'
 import {NavContext} from './navContext.tsx'
 import DiagnosisItemPage from './pages/DiagnosisItemPage.tsx'
 import Start from './pages/Start'
 import TreatmentItemPage from './pages/TreatmentItemPage.tsx'
 import getPageKey from './utils/getPageKey.ts'
+import { newDiagnosis } from './form/diagnosis.ts'
+import { newTreatment } from './form/treatment.ts'
 
 export default function App() {
     const {setColorScheme} = useMantineColorScheme()
@@ -64,7 +66,7 @@ export default function App() {
                 <AppShell
                     header={{height: 60}}
                     navbar={{
-                        width: 300,
+                        width: 400,
                         breakpoint: 'sm',
                         collapsed: {
                             desktop: false,

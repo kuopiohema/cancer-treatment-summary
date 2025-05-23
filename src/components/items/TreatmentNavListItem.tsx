@@ -1,15 +1,14 @@
 import NavListItem from '../NavListItem.tsx'
-import {type Treatment, useFormContext} from '../../formContext.ts'
 import {useMemo, useState} from 'react'
 import formatDate from '../../utils/formatDate.ts'
 import type {ItemProps} from '../../types/itemProps.ts'
 import getListItemPath from '../../utils/getListItemPath.ts'
+import { useFormContext } from '../../form/formContext.ts'
+import type { Treatment } from '../../form/treatment.ts'
 
 export default function TreatmentNavListItem({path, index, item}: ItemProps<Treatment>) {
     const form = useFormContext()
     const itemPath = getListItemPath(path, index)
-
-    const emptyLabel = '(Uusi hoito)'
 
     const [protocol, setProtocol] = useState(item.protocol)
     form.watch(`${itemPath}.protocol`, ({value}) => {
@@ -29,9 +28,8 @@ export default function TreatmentNavListItem({path, index, item}: ItemProps<Trea
             setEndDate(value)
     })
 
-    const label = useMemo(() => {
-        return `${protocol || emptyLabel} (${formatDate(startDate)} - ${formatDate(endDate)})`
-    }, [protocol, startDate, endDate])
+    const label = useMemo(() => protocol || '(Uusi hoito)', [protocol])
+    const sublabel = useMemo(() => `${formatDate(startDate)} - ${formatDate(endDate)}`, [startDate, endDate])
 
     return (
         <NavListItem
@@ -40,6 +38,7 @@ export default function TreatmentNavListItem({path, index, item}: ItemProps<Trea
             index={index}
             id={item.id}
             label={label}
+            sublabel={sublabel}
             itemName="hoito"
         />
     )

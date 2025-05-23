@@ -1,5 +1,5 @@
 import {Stack} from '@mantine/core'
-import {type Treatment} from '../formContext.ts'
+import {type Treatment} from '../form/treatment.ts'
 import type {ItemProps} from '../types/itemProps.ts'
 import TreatmentSectionChemo from './sections/TreatmentSectionChemo.tsx'
 import TreatmentSectionGeneral from './sections/TreatmentSectionGeneral.tsx'

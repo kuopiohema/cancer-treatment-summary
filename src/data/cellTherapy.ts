@@ -12,7 +12,7 @@ export const donorOptions = {
     mud: 'Rekisteriluovuttaja'
 } as const
 
-export type DonorValues = keyof typeof donorOptions | ''
+export type DonorValue = keyof typeof donorOptions | ''
 
 export const hlaMatchOptions = {
     haplo: 'Haploidenttinen',
@@ -25,4 +25,4 @@ export const hlaMatchOptions = {
     identical: 'Identtinen'
 } as const
 
-export type HlaMatchValues = keyof typeof hlaMatchOptions | ''
+export type HlaMatchValue = keyof typeof hlaMatchOptions | ''

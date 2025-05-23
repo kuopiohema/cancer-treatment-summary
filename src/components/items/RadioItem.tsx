@@ -4,9 +4,10 @@ import {useState} from 'react'
 import ItemListItem from '../../components/ItemListItem'
 import {toComboboxData} from '../../data/dataUtils'
 import {radioModeOptions, type RadioModeValue} from '../../data/radioModeOptions'
-import {type Radiotherapy, useFormContext} from '../../formContext'
 import type {ItemProps} from '../../types/itemProps'
 import getListItemPath from '../../utils/getListItemPath'
+import type { Radiotherapy } from '../../form/radiotherapy'
+import { useFormContext } from '../../form/formContext'
 
 export default function RadioItem({path, index, item}: ItemProps<Radiotherapy>) {
     const form = useFormContext()

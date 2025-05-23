@@ -1,9 +1,10 @@
 import { DateInput } from "@mantine/dates";
-import { Procedure, useFormContext } from "../../formContext";
 import { ItemProps } from "../../types/itemProps";
 import getListItemPath from "../../utils/getListItemPath";
 import ItemListItem from "../ItemListItem";
 import { Group, Textarea, TextInput } from "@mantine/core";
+import { useFormContext } from '../../form/formContext'
+import type { Procedure } from '../../form/procedure'
 
 export default function ProcedureItem({path, index, item}: ItemProps<Procedure>) {
     const form = useFormContext()

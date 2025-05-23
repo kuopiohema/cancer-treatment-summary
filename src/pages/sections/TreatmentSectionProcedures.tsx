@@ -1,9 +1,10 @@
 import { Text } from '@mantine/core';
 import ItemList from "../../components/ItemList";
 import ProcedureItem from '../../components/items/ProcedureItem';
-import { newProcedure, Treatment } from "../../formContext";
 import { ItemProps } from "../../types/itemProps";
 import getListItemPath from "../../utils/getListItemPath";
+import { newProcedure } from '../../form/procedure'
+import type { Treatment } from '../../form/treatment'
 
 export default function TreatmentSectionProcedures({ path, index, item }: ItemProps<Treatment>) {
     const itemPath = getListItemPath(path, index)

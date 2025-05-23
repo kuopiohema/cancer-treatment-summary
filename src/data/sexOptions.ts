@@ -4,4 +4,4 @@ export const sexOptions = {
     unknown: 'Tuntematon'
 } as const
 
-export type SexValues = keyof typeof sexOptions | ''
+export type SexValue = keyof typeof sexOptions | ''
