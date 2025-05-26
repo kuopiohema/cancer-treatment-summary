@@ -1,11 +1,11 @@
 import type {BloodGroupValue} from '../data/bloodGroupOptions.ts'
 import type { DonorValue } from '../data/donorOptions.ts'
 import type {HlaMatchValue} from '../data/hlaMatchOptions.ts'
-import type { SexValue } from '../data/sexOptions'
-import type { Drug } from './drug'
-import { newListItem, type ListItem } from './listItem'
+import type { SexValue } from '../data/sexOptions.ts'
+import type { Drug } from './drug.ts'
+import { newListItem, type ListItem } from './listItem.ts'
 
-export interface StemCellTherapy extends ListItem {
+export interface StemCellTransplant extends ListItem {
     date: string | null
     donor: DonorValue
     donorSex: SexValue
@@ -17,7 +17,7 @@ export interface StemCellTherapy extends ListItem {
     drugs: Drug[]
 }
 
-export const newStemCellTherapy = (): StemCellTherapy => ({
+export const newStemCellTransplant = (): StemCellTransplant => ({
     ...newListItem(),
     date: null,
     donor: '',

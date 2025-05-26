@@ -2,10 +2,10 @@ import { Draggable } from '@hello-pangea/dnd'
 import { ActionIcon, Center, NavLink, Tooltip } from '@mantine/core'
 import { IconGripVertical, IconTrash } from '@tabler/icons-react'
 import { use } from 'react'
-import { useFormContext } from '../form/formContext.ts'
-import { useRemoveConfirmModal } from '../hooks/useRemoveConfirmModal.tsx'
-import { NavContext } from '../navContext.tsx'
-import getPageKey from '../utils/getPageKey.ts'
+import { useFormContext } from '../../form/formContext.ts'
+import { useRemoveConfirmModal } from '../../hooks/useRemoveConfirmModal.tsx'
+import { NavContext } from '../../navContext.tsx'
+import getPageKey from '../../utils/getPageKey.ts'
 
 interface NavListItemProps {
     index: number

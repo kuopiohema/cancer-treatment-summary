@@ -1,22 +1,16 @@
 import { DateInput } from "@mantine/dates";
-import { ItemProps } from "../../types/itemProps";
-import getListItemPath from "../../utils/getListItemPath";
-import ItemListItem from "../ItemListItem";
-import { Group, Textarea, TextInput } from "@mantine/core";
-import { useFormContext } from '../../form/formContext'
-import type { Procedure } from '../../form/procedure'
+import { ItemProps } from "../../../types/itemProps";
+import getListItemPath from "../../../utils/getListItemPath";
+import { Group, Stack, Textarea, TextInput } from "@mantine/core";
+import { useFormContext } from '../../../form/formContext'
+import type { Procedure } from '../../../form/procedure'
 
-export default function ProcedureItem({path, index, item}: ItemProps<Procedure>) {
+export default function ProcedureItem({path, index}: ItemProps<Procedure>) {
     const form = useFormContext()
     const itemPath = getListItemPath(path, index)
 
     return (
-        <ItemListItem
-            path={path}
-            index={index}
-            draggableId={item.id}
-            itemName="toimenpide"
-        >
+        <Stack gap="sm" w="600px">
             <Group grow preventGrowOverflow={false}>
                 <DateInput
                     key={form.key(`${itemPath}.date`)}
@@ -45,6 +39,6 @@ export default function ProcedureItem({path, index, item}: ItemProps<Procedure>)
                 placeholder="Esim. 'Kasvaimen kapselin rikkoutuminen'"
                 minRows={2}
             />
-        </ItemListItem>
+        </Stack>
     )
 }

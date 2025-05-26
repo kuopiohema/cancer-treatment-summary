@@ -1,15 +1,14 @@
-import {Group, NumberInput, Select, Text, Textarea, TextInput} from '@mantine/core'
+import {Group, NumberInput, Select, Stack, Text, Textarea, TextInput} from '@mantine/core'
 import {DateInput} from '@mantine/dates'
 import {useState} from 'react'
-import ItemListItem from '../../components/ItemListItem'
-import {toComboboxData} from '../../data/dataUtils'
-import {radioModeOptions, type RadioModeValue} from '../../data/radioModeOptions'
-import type {ItemProps} from '../../types/itemProps'
-import getListItemPath from '../../utils/getListItemPath'
-import type { Radiotherapy } from '../../form/radiotherapy'
-import { useFormContext } from '../../form/formContext'
+import {toComboboxData} from '../../../data/dataUtils'
+import {radioModeOptions, type RadioModeValue} from '../../../data/radioModeOptions'
+import type {ItemProps} from '../../../types/itemProps'
+import getListItemPath from '../../../utils/getListItemPath'
+import type { Radiotherapy } from '../../../form/radiotherapy'
+import { useFormContext } from '../../../form/formContext'
 
-export default function RadioItem({path, index, item}: ItemProps<Radiotherapy>) {
+export default function RadiotherapyItem({path, index, item}: ItemProps<Radiotherapy>) {
     const form = useFormContext()
     const itemPath = getListItemPath(path, index)
 
@@ -19,12 +18,7 @@ export default function RadioItem({path, index, item}: ItemProps<Radiotherapy>) 
     form.watch(`${itemPath}.mode`, ({value}: { value: RadioModeValue }) => setRadioMode(value))
 
     return (
-        <ItemListItem
-            path={path}
-            index={index}
-            draggableId={item.id}
-            itemName="sädehoito"
-        >
+        <Stack gap="sm" w="600px">
             <Group>
                 <DateInput
                     key={form.key(`${itemPath}.startDate`)}
@@ -94,6 +88,6 @@ export default function RadioItem({path, index, item}: ItemProps<Radiotherapy>) 
                 label="Lisätiedot"
                 placeholder="Keskeytys, haittavaikutus jne."
             />
-        </ItemListItem>
+        </Stack>
     )
 }

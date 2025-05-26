@@ -1,11 +1,11 @@
 import {Group, NumberInput, Select, Textarea, TextInput} from '@mantine/core'
-import {toComboboxData} from '../../data/dataUtils.ts'
-import {drugDosingOptions} from '../../data/drugDosingOptions.ts'
-import type {ItemProps} from '../../types/itemProps.ts'
-import getListItemPath from '../../utils/getListItemPath.ts'
+import {toComboboxData} from '../../../data/dataUtils.ts'
+import {drugDosingOptions} from '../../../data/drugDosingOptions.ts'
+import type {ItemProps} from '../../../types/itemProps.ts'
+import getListItemPath from '../../../utils/getListItemPath.ts'
 import ItemListItem from '../ItemListItem.tsx'
-import type { Drug } from '../../form/drug.ts'
-import { useFormContext } from '../../form/formContext.ts'
+import type { Drug } from '../../../form/drug.ts'
+import { useFormContext } from '../../../form/formContext.ts'
 
 export default function DrugItem({path, index, item}: ItemProps<Drug>) {
     const form = useFormContext()

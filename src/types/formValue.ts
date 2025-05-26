@@ -1,0 +1,1 @@
+export interface FormValue<T> {value: T}

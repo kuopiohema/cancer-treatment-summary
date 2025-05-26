@@ -1,18 +1,22 @@
 import { DragDropContext, Droppable } from '@hello-pangea/dnd'
-import { Button, Fieldset, Stack } from '@mantine/core'
-import { PropsWithChildren } from 'react'
+import { Button, Fieldset, Stack, Text } from '@mantine/core'
+import type { ComponentType } from 'react'
 import { IconPlus } from '@tabler/icons-react'
-import { useFormContext } from '../form/formContext'
-import type { ListItem } from '../form/listItem'
+import { useFormContext } from '../../form/formContext'
+import type { ListItem } from '../../form/listItem'
+import type { ItemProps } from '../../types/itemProps'
 
-export interface ItemListProps extends PropsWithChildren {
+export interface ItemListProps<T extends ListItem> {
+    items: T[]
     path: string
-    itemFactory: () => ListItem
+    itemFactory: () => T
+    ItemComponent: ComponentType<ItemProps<T>>
     title: string
+    emptyText: string
     addButtonText: string
 }
 
-export default function ItemList({path, itemFactory, title, addButtonText, children}: ItemListProps) {
+export default function ItemList<T extends ListItem>({items, path, itemFactory, ItemComponent, title, emptyText, addButtonText}: ItemListProps<T>) {
     const form = useFormContext()
 
     return (
@@ -33,7 +37,15 @@ export default function ItemList({path, itemFactory, title, addButtonText, child
                             {...provided.droppableProps}
                             ref={provided.innerRef}
                         >
-                            {children}
+                            {items.length === 0 && <Text>{emptyText}</Text>}
+                            {items.map((item, index) => (
+                                <ItemComponent
+                                    key={item.id}
+                                    path={path}
+                                    index={index}
+                                    item={item}
+                                />
+                            ))}
                             {provided.placeholder}
                         </Stack>
                     )}

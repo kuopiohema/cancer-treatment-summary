@@ -1,21 +1,21 @@
-import {Group, NumberInput, Select, Text, TextInput} from '@mantine/core'
+import {Group, NumberInput, Select, Stack, Text, TextInput} from '@mantine/core'
 import {DateInput} from '@mantine/dates'
 import {useState} from 'react'
-import {bloodGroupOptions} from '../../data/bloodGroupOptions.ts'
-import {toComboboxData} from '../../data/dataUtils.ts'
-import {donorOptions, type DonorValue} from '../../data/donorOptions.ts'
-import {hlaMatchOptions} from '../../data/hlaMatchOptions.ts'
-import {sexOptions} from '../../data/sexOptions.ts'
-import {newDrug} from '../../form/drug.ts'
-import {useFormContext} from '../../form/formContext.ts'
-import type {StemCellTherapy} from '../../form/stemCellTherapy.ts'
-import type {ItemProps} from '../../types/itemProps.ts'
-import getListItemPath from '../../utils/getListItemPath.ts'
+import {bloodGroupOptions} from '../../../data/bloodGroupOptions.ts'
+import {toComboboxData} from '../../../data/dataUtils.ts'
+import {donorOptions, type DonorValue} from '../../../data/donorOptions.ts'
+import {hlaMatchOptions} from '../../../data/hlaMatchOptions.ts'
+import {sexOptions} from '../../../data/sexOptions.ts'
+import {newDrug} from '../../../form/drug.ts'
+import {useFormContext} from '../../../form/formContext.ts'
+import type {StemCellTransplant} from '../../../form/stemCellTransplant.ts'
+import type {ItemProps} from '../../../types/itemProps.ts'
+import getListItemPath from '../../../utils/getListItemPath.ts'
 import ItemList from '../ItemList.tsx'
-import ItemListItem from '../ItemListItem.tsx'
 import DrugItem from './DrugItem.tsx'
+import type { FormValue } from '../../../types/formValue.ts'
 
-export default function StemCellTherapyItem({path, index, item}: ItemProps<StemCellTherapy>) {
+export default function StemCellTransplantItem({path, index, item}: ItemProps<StemCellTransplant>) {
     const form = useFormContext()
     const itemPath = getListItemPath(path, index)
 
@@ -25,15 +25,10 @@ export default function StemCellTherapyItem({path, index, item}: ItemProps<StemC
     const bloodGroupOptionsData = toComboboxData(bloodGroupOptions)
 
     const [donor, setDonor] = useState(item.donor)
-    form.watch(`${itemPath}.donor`, ({value}: {value: DonorValue}) => setDonor(value))
+    form.watch(`${itemPath}.donor`, ({value}: FormValue<DonorValue>) => setDonor(value))
 
     return (
-        <ItemListItem
-            path={path}
-            index={index}
-            draggableId={item.id}
-            itemName="soluterapia"
-        >
+        <Stack gap="sm">
             <DateInput
                 key={form.key(`${itemPath}.date`)}
                 {...form.getInputProps(`${itemPath}.date`)}
@@ -102,21 +97,14 @@ export default function StemCellTherapyItem({path, index, item}: ItemProps<StemC
                 />
             </Group>
             <ItemList
+                items={item.drugs}
                 path={`${itemPath}.drugs`}
+                ItemComponent={DrugItem}
                 itemFactory={newDrug}
                 title="Esihoidon sytostaatit"
+                emptyText="Ei sytostaatteja"
                 addButtonText="Lisää sytostaatti"
-            >
-                {item.drugs.length === 0 && <Text>Ei sytostaatteja</Text>}
-                {item.drugs.map((drug, drugIndex) => (
-                    <DrugItem
-                        key={drug.id}
-                        path={`${itemPath}.drugs`}
-                        index={drugIndex}
-                        item={drug}
-                    />
-                ))}
-            </ItemList>
-        </ItemListItem>
+            />
+        </Stack>
     )
 }

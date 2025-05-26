@@ -1,10 +1,10 @@
 import NavListItem from '../NavListItem.tsx'
 import {useMemo, useState} from 'react'
-import formatDate from '../../utils/formatDate.ts'
-import type {ItemProps} from '../../types/itemProps.ts'
-import getListItemPath from '../../utils/getListItemPath.ts'
-import { useFormContext } from '../../form/formContext.ts'
-import type { Treatment } from '../../form/treatment.ts'
+import formatDate from '../../../utils/formatDate.ts'
+import type {ItemProps} from '../../../types/itemProps.ts'
+import getListItemPath from '../../../utils/getListItemPath.ts'
+import { useFormContext } from '../../../form/formContext.ts'
+import type { Treatment } from '../../../form/treatment.ts'
 
 export default function TreatmentNavListItem({path, index, item}: ItemProps<Treatment>) {
     const form = useFormContext()

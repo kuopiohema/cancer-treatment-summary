@@ -1,10 +1,11 @@
 import {useMemo, useState} from 'react'
-import type {ItemProps} from '../../types/itemProps.ts'
-import formatDate from '../../utils/formatDate.ts'
-import getListItemPath from '../../utils/getListItemPath.ts'
+import type {ItemProps} from '../../../types/itemProps.ts'
+import formatDate from '../../../utils/formatDate.ts'
+import getListItemPath from '../../../utils/getListItemPath.ts'
 import NavListItem from '../NavListItem.tsx'
-import type { Diagnosis } from '../../form/diagnosis.ts'
-import { useFormContext } from '../../form/formContext.ts'
+import type { Diagnosis } from '../../../form/diagnosis.ts'
+import { useFormContext } from '../../../form/formContext.ts'
+import type { FormValue } from '../../../types/formValue.ts'
 
 export default function DiagnosisNavListItem({path, index, item}: ItemProps<Diagnosis>) {
     const form = useFormContext()
@@ -14,20 +15,9 @@ export default function DiagnosisNavListItem({path, index, item}: ItemProps<Diag
     const [text, setText] = useState(item.text)
     const [date, setDate] = useState(item.date)
 
-    form.watch(`${itemPath}.icd10`, ({value}) => {
-        if (typeof value === 'string')
-            setICD10(value)
-    })
-
-    form.watch(`${itemPath}.text`, ({value}) => {
-        if (typeof value === 'string')
-            setText(value)
-    })
-
-    form.watch(`${itemPath}.date`, ({value}) => {
-        if (typeof value === 'string')
-            setDate(value)
-    })
+    form.watch(`${itemPath}.icd10`, ({value}: FormValue<string>) => setICD10(value))
+    form.watch(`${itemPath}.text`, ({value}: FormValue<string>) => setText(value))
+    form.watch(`${itemPath}.date`, ({value}: FormValue<string | null>) => setDate(value))
 
     const label = useMemo(() => {
         if (!icd10 && !text)

@@ -6,24 +6,39 @@ import {
     Container,
     Group,
     NavLink,
+    ScrollArea,
     Text,
     useComputedColorScheme,
     useMantineColorScheme
 } from '@mantine/core'
-import {useDisclosure} from '@mantine/hooks'
-import {IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, IconSun} from '@tabler/icons-react'
-import {useMemo, useState} from 'react'
-import DiagnosisNavListItem from './components/items/DiagnosisNavListItem.tsx'
-import TreatmentNavListItem from './components/items/TreatmentNavListItem.tsx'
-import NavList from './components/NavList.tsx'
-import {newDiagnosis} from './form/diagnosis.ts'
-import {FormProvider, useForm} from './form/formContext.ts'
-import {newTreatment} from './form/treatment.ts'
-import {NavContext} from './navContext.tsx'
-import DiagnosisItemPage from './pages/DiagnosisItemPage.tsx'
+import { useDisclosure } from '@mantine/hooks'
+import { IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, IconSun } from '@tabler/icons-react'
+import { useMemo, useState, type ComponentType } from 'react'
+import DiagnosisNavListItem from './components/navList/items/DiagnosisNavListItem.tsx'
+import TreatmentNavListItem from './components/navList/items/TreatmentNavListItem.tsx'
+import NavList from './components/navList/NavList.tsx'
+import { newDiagnosis } from './form/diagnosis.ts'
+import { FormProvider, useForm } from './form/formContext.ts'
+import type { ListItem } from './form/listItem.ts'
+import { newTreatment } from './form/treatment.ts'
+import { NavContext } from './navContext.tsx'
+import DiagnosisItem from './components/itemList/items/DiagnosisItem.tsx'
 import Start from './pages/Start'
-import TreatmentItemPage from './pages/TreatmentItemPage.tsx'
+import TreatmentItem from './components/itemList/items/TreatmentItem.tsx'
+import type { ItemProps } from './types/itemProps.ts'
 import getPageKey from './utils/getPageKey.ts'
+import { newChemotherapy } from './form/chemotherapy.ts'
+import ChemotherapyNavListItem from './components/navList/items/ChemotherapyNavListItem.tsx'
+import ChemoItem from './components/itemList/items/ChemoItem.tsx'
+import { newRadiotherapy } from './form/radiotherapy.ts'
+import RadiotherapyNavListItem from './components/navList/items/RadiotherapyNavListItem.tsx'
+import RadiotherapyItem from './components/itemList/items/RadiotherapyItem.tsx'
+import { newProcedure } from './form/procedure.ts'
+import ProcedureNavListItem from './components/navList/items/ProcedureNavListItem.tsx'
+import ProcedureItem from './components/itemList/items/ProcedureItem.tsx'
+import StemCellTransplantItem from './components/itemList/items/StemCellTransplantItem.tsx'
+import { newStemCellTransplant } from './form/stemCellTransplant.ts'
+import StemCellTransplantNavListItem from './components/navList/items/StemCellTransplantNavListItem.tsx'
 
 export default function App() {
     const {setColorScheme} = useMantineColorScheme()
@@ -39,8 +54,12 @@ export default function App() {
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: {
-            diagnoses: [newDiagnosis()],
-            treatments: [newTreatment()],
+            diagnoses: [],
+            treatments: [],
+            chemotherapies: [],
+            radiotherapies: [],
+            procedures: [],
+            stemCellTransplants: []
         }
     })
 
@@ -59,6 +78,12 @@ export default function App() {
     const handleLoad = () => {
         console.log('Load')
     }
+
+    const getDisplayedPage = <T extends ListItem>(array: T[], path: string, ItemComponent: ComponentType<ItemProps<T>>) => 
+        array.map((item, index) =>
+            currentPage === getPageKey(path, item.id) &&
+            <ItemComponent key={item.id} path={path} index={index} item={item} />
+        )
 
     return (
         <FormProvider form={form}>
@@ -112,64 +137,78 @@ export default function App() {
                         </Group>
                     </AppShell.Header>
                     <AppShell.Navbar>
-                        <NavLink
-                            href="#"
-                            label="Aloitus"
-                            active={currentPage === 'start'}
-                            onClick={() => setCurrentPage('start')}
-                        />
-                        <NavList
-                            path="diagnoses"
-                            itemFactory={newDiagnosis}
-                            title="Diagnoosit"
-                            addButtonText="Lisää diagnoosi"
-                        >
-                            {formValues.diagnoses.map((item, index) => (
-                                <DiagnosisNavListItem
-                                    key={item.id}
-                                    path="diagnoses"
-                                    item={item}
-                                    index={index}
-                                />
-                            ))}
-                        </NavList>
-                        <NavList
-                            path="treatments"
-                            itemFactory={newTreatment}
-                            title="Hoidot"
-                            addButtonText="Lisää hoito"
-                        >
-                            {formValues.treatments.map((item, index) => (
-                                <TreatmentNavListItem
-                                    key={item.id}
-                                    path="treatments"
-                                    item={item}
-                                    index={index}
-                                />
-                            ))}
-                        </NavList>
+                        <AppShell.Section component={ScrollArea}>
+                            <NavLink
+                                href="#"
+                                label="Aloitus"
+                                active={currentPage === 'start'}
+                                onClick={() => setCurrentPage('start')}
+                            />
+                            <NavList
+                                items={formValues.diagnoses}
+                                path="diagnoses"
+                                itemFactory={newDiagnosis}
+                                ItemComponent={DiagnosisNavListItem}
+                                title="Diagnoosit"
+                                emptyText="Ei diagnooseja"
+                                addButtonText="Lisää diagnoosi"
+                            />
+                            <NavList
+                                items={formValues.treatments}
+                                path="treatments"
+                                itemFactory={newTreatment}
+                                ItemComponent={TreatmentNavListItem}
+                                title="Hoidot"
+                                emptyText="Ei hoitoja"
+                                addButtonText="Lisää hoito"
+                            />
+                            <NavList
+                                items={formValues.chemotherapies}
+                                path="chemotherapies"
+                                itemFactory={newChemotherapy}
+                                ItemComponent={ChemotherapyNavListItem}
+                                title="Kemoterapiajaksot"
+                                emptyText="Ei kemoterapiajaksoja"
+                                addButtonText="Lisää kemoterapiajakso"
+                            />
+                            <NavList
+                                items={formValues.radiotherapies}
+                                path="radiotherapies"
+                                itemFactory={newRadiotherapy}
+                                ItemComponent={RadiotherapyNavListItem}
+                                title="Sädehoidot"
+                                emptyText="Ei sädehoitoja"
+                                addButtonText="Lisää sädehoito"
+                            />
+                            <NavList
+                                items={formValues.procedures}
+                                path="procedures"
+                                itemFactory={newProcedure}
+                                ItemComponent={ProcedureNavListItem}
+                                title="Leikkaukset ja toimenpiteet"
+                                emptyText="Ei toimenpiteitä"
+                                addButtonText="Lisää toimenpide"
+                            />
+                            <NavList
+                                items={formValues.stemCellTransplants}
+                                path="stemCellTransplants"
+                                itemFactory={newStemCellTransplant}
+                                ItemComponent={StemCellTransplantNavListItem}
+                                title="Kantasolusiirrot"
+                                emptyText="Ei kantasolusiirtoja"
+                                addButtonText="Lisää kantasolusiirto"
+                            />
+                        </AppShell.Section>
                     </AppShell.Navbar>
                     <AppShell.Main>
                         <Container ml={0} size="md">
                             {currentPage === 'start' && <Start />}
-                            {formValues.diagnoses.map((item, index) =>
-                                currentPage === getPageKey('diagnoses', item.id) &&
-                                <DiagnosisItemPage
-                                    key={item.id}
-                                    path="diagnoses"
-                                    index={index}
-                                    item={item}
-                                />
-                            )}
-                            {formValues.treatments.map((item, index) =>
-                                currentPage === getPageKey('treatments', item.id) &&
-                                <TreatmentItemPage
-                                    key={item.id}
-                                    path="treatments"
-                                    index={index}
-                                    item={item}
-                                />
-                            )}
+                            {getDisplayedPage(formValues.diagnoses, 'diagnoses', DiagnosisItem)}
+                            {getDisplayedPage(formValues.treatments, 'treatments', TreatmentItem)}
+                            {getDisplayedPage(formValues.chemotherapies, 'chemotherapies', ChemoItem)}
+                            {getDisplayedPage(formValues.radiotherapies, 'radiotherapies', RadiotherapyItem)}
+                            {getDisplayedPage(formValues.procedures, 'procedures', ProcedureItem)}
+                            {getDisplayedPage(formValues.stemCellTransplants, 'stemCellTransplants', StemCellTransplantItem)}
                         </Container>
                     </AppShell.Main>
                 </AppShell>

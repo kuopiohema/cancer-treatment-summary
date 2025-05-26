@@ -1,4 +1,4 @@
-import type {ListItem} from '../formContext.ts'
+import type {ListItem} from '../form/listItem'
 
 export interface ItemProps<T extends ListItem> {
     path: string
