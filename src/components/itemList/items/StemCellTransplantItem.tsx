@@ -1,31 +1,33 @@
-import {Group, NumberInput, Select, Stack, Text, TextInput} from '@mantine/core'
-import {DateInput} from '@mantine/dates'
-import {useState} from 'react'
-import {bloodGroupOptions} from '../../../data/bloodGroupOptions.ts'
-import {toComboboxData} from '../../../data/dataUtils.ts'
-import {donorOptions, type DonorValue} from '../../../data/donorOptions.ts'
-import {hlaMatchOptions} from '../../../data/hlaMatchOptions.ts'
-import {sexOptions} from '../../../data/sexOptions.ts'
-import {newDrug} from '../../../form/drug.ts'
-import {useFormContext} from '../../../form/formContext.ts'
-import type {StemCellTransplant} from '../../../form/stemCellTransplant.ts'
-import type {ItemProps} from '../../../types/itemProps.ts'
+import { Group, NumberInput, Select, Stack, Text, TextInput } from '@mantine/core'
+import { DateInput } from '@mantine/dates'
+import { useState } from 'react'
+import { bloodGroupOptions } from '../../../data/bloodGroupOptions.ts'
+import { toComboboxData } from '../../../data/dataUtils.ts'
+import { donorOptions } from '../../../data/donorOptions.ts'
+import { hlaMatchOptions } from '../../../data/hlaMatchOptions.ts'
+import { sctTypeOptions, type SctTypeValue } from '../../../data/sctTypeOptions.ts'
+import { sexOptions } from '../../../data/sexOptions.ts'
+import { newDrug } from '../../../form/drug.ts'
+import { useFormContext } from '../../../form/formContext.ts'
+import type { StemCellTransplant } from '../../../form/stemCellTransplant.ts'
+import type { FormValue } from '../../../types/formValue.ts'
+import type { ItemProps } from '../../../types/itemProps.ts'
 import getListItemPath from '../../../utils/getListItemPath.ts'
 import ItemList from '../ItemList.tsx'
 import DrugItem from './DrugItem.tsx'
-import type { FormValue } from '../../../types/formValue.ts'
 
 export default function StemCellTransplantItem({path, index, item}: ItemProps<StemCellTransplant>) {
     const form = useFormContext()
     const itemPath = getListItemPath(path, index)
 
+    const sctTypeOptionsData = toComboboxData(sctTypeOptions)
     const donorOptionsData = toComboboxData(donorOptions)
     const sexOptionsData = toComboboxData(sexOptions)
     const hlaMatchOptionsData = toComboboxData(hlaMatchOptions)
     const bloodGroupOptionsData = toComboboxData(bloodGroupOptions)
 
-    const [donor, setDonor] = useState(item.donor)
-    form.watch(`${itemPath}.donor`, ({value}: FormValue<DonorValue>) => setDonor(value))
+    const [type, setType] = useState(item.type)
+    form.watch(`${itemPath}.type`, ({value}: FormValue<SctTypeValue>) => setType(value))
 
     return (
         <Stack gap="sm">
@@ -36,6 +38,14 @@ export default function StemCellTransplantItem({path, index, item}: ItemProps<St
                 placeholder="Päivämäärä"
             />
             <Group grow preventGrowOverflow={false}>
+                <Select
+                    key={form.key(`${itemPath}.type`)}
+                    {...form.getInputProps(`${itemPath}.type`)}
+                    label="Siirron tyyppi"
+                    data={sctTypeOptionsData}
+                    w={150}
+                    flex="none"
+                />
                 <Select
                     key={form.key(`${itemPath}.donor`)}
                     {...form.getInputProps(`${itemPath}.donor`)}
@@ -49,7 +59,7 @@ export default function StemCellTransplantItem({path, index, item}: ItemProps<St
                     data={sexOptionsData}
                     w={150}
                     flex="none"
-                    disabled={donor === 'self'}
+                    disabled={type === 'auto'}
                 />
                 <Select
                     key={form.key(`${itemPath}.hlaMatch`)}
@@ -58,7 +68,7 @@ export default function StemCellTransplantItem({path, index, item}: ItemProps<St
                     data={hlaMatchOptionsData}
                     w={200}
                     flex="none"
-                    disabled={donor === 'self'}
+                    disabled={type === 'auto'}
                 />
                 <Select
                     key={form.key(`${itemPath}.bloodGroup`)}
@@ -67,7 +77,7 @@ export default function StemCellTransplantItem({path, index, item}: ItemProps<St
                     data={bloodGroupOptionsData}
                     w={150}
                     flex="none"
-                    disabled={donor === 'self'}
+                    disabled={type === 'auto'}
                 />
             </Group>
             <TextInput
@@ -84,7 +94,7 @@ export default function StemCellTransplantItem({path, index, item}: ItemProps<St
                     rightSection={<Text pr="sm">Gy</Text>}
                     w={200}
                     flex="none"
-                    disabled={donor === 'self'}
+                    disabled={type === 'auto'}
                 />
                 <NumberInput
                     key={form.key(`${itemPath}.tbiDoseLungs`)}
@@ -93,7 +103,7 @@ export default function StemCellTransplantItem({path, index, item}: ItemProps<St
                     rightSection={<Text pr="sm">Gy</Text>}
                     w={200}
                     flex="none"
-                    disabled={donor === 'self'}
+                    disabled={type === 'auto'}
                 />
             </Group>
             <ItemList

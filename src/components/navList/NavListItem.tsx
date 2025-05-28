@@ -1,7 +1,7 @@
 import { Draggable } from '@hello-pangea/dnd'
 import { ActionIcon, Center, NavLink, Tooltip } from '@mantine/core'
 import { IconGripVertical, IconTrash } from '@tabler/icons-react'
-import { use } from 'react'
+import { use, type ReactNode } from 'react'
 import { useFormContext } from '../../form/formContext.ts'
 import { useRemoveConfirmModal } from '../../hooks/useRemoveConfirmModal.tsx'
 import { NavContext } from '../../navContext.tsx'
@@ -11,8 +11,8 @@ interface NavListItemProps {
     index: number
     path: string
     id: string
-    label: string
-    sublabel?: string
+    label: ReactNode
+    sublabel?: ReactNode
     itemName: string
 }
 
