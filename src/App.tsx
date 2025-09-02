@@ -53,6 +53,7 @@ export default function App() {
 
     const form = useForm({
         mode: 'uncontrolled',
+        cascadeUpdates: true,
         initialValues: {
             diagnoses: [],
             treatments: [],

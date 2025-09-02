@@ -1,16 +1,25 @@
 import { Stack, Group } from '@mantine/core'
 import { DateInput } from '@mantine/dates'
 import type { Chemotherapy } from '../../../form/chemotherapy'
-import { newDrug } from '../../../form/drug'
+import { Drug, newDrug } from '../../../form/drug'
 import { useFormContext } from '../../../form/formContext'
 import type { ItemProps } from '../../../types/itemProps'
 import getListItemPath from '../../../utils/getListItemPath'
 import ItemList from '../ItemList'
 import DrugItem from './DrugItem'
+import getDoxoEquivalent from '../../../utils/getDoxoEquivalent'
+import { useState } from 'react'
+import { FormValue } from '../../../types/formValue'
 
 export default function ChemoItem({path, index, item}: ItemProps<Chemotherapy>) {
     const form = useFormContext()
     const itemPath = getListItemPath(path, index)
+
+    /*const [doxoEquivalent, setDoxoEquivalent] = useState(getDoxoEquivalent(item.drugs))
+    form.watch(`${itemPath}.drugs`, ({value}: FormValue<Drug[]>) => setDoxoEquivalent(getDoxoEquivalent(value)))*/
+    const [doxoEquivalent, setDoxoEquivalent] = useState(getDoxoEquivalent(item.drugs))
+    form.watch(`${itemPath}.drugs`, ({value}: {value: Drug[]}) => setDoxoEquivalent(getDoxoEquivalent(value)))
+    //form.watch(`${itemPath}.drugs`, ({value}: FormValue<Drug[]>) => setDoxoEquivalent(getDoxoEquivalent(value)))
 
     return (
         <Stack gap="sm">
@@ -28,6 +37,7 @@ export default function ChemoItem({path, index, item}: ItemProps<Chemotherapy>) 
                     placeholder="Lopetuspäivä"
                 />
             </Group>
+            DE: {doxoEquivalent}
             <ItemList
                 items={item.drugs}
                 path={`${itemPath}.drugs`}
