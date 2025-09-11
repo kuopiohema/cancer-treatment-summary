@@ -1,5 +1,5 @@
 import { doxoEquivalents } from "../data/doxoEquivalents";
-import { Drug } from "../form/drug";
+import { Drug } from "../types/form/drug";
 
 export default function getDoxoEquivalent(drugs: Drug[]): number {
     return drugs.reduce((value, drug) => {

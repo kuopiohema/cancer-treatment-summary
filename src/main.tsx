@@ -11,6 +11,7 @@ import 'dayjs/locale/fi'
 import '@mantine/core/styles.css'
 import '@mantine/dates/styles.css'
 import {theme} from './theme.ts'
+import StoreProvider from './context/storeProvider.tsx'
 
 dayjs.extend(customParseFormat)
 
@@ -19,7 +20,9 @@ createRoot(document.getElementById('root')!).render(
         <MantineProvider defaultColorScheme="auto" theme={theme}>
             <DatesProvider settings={{locale: 'fi'}}>
                 <ModalsProvider>
-                    <App />
+                    <StoreProvider>
+                        <App />
+                    </StoreProvider>
                 </ModalsProvider>
             </DatesProvider>
         </MantineProvider>
