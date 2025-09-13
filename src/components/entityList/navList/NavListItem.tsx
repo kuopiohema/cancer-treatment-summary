@@ -1,21 +1,19 @@
 import { ReactNode, use } from "react";
 import { EntityListItemProps } from "../entityListItemProps";
-import { NavContext } from "../../../context/navContext";
+import { NavContext, Page } from "../../../context/navContext";
 import { useRemoveConfirmModal } from "../../../hooks/useRemoveConfirmModal";
 import { Draggable } from "@hello-pangea/dnd";
 import { ActionIcon, Center, NavLink, Tooltip } from "@mantine/core";
 import { IconGripVertical, IconTrash } from "@tabler/icons-react";
-import getPageKey from "../../../utils/getPageKey";
 
 interface NavListItemProps extends EntityListItemProps {
     label: ReactNode
     sublabel?: ReactNode
-    itemName: string
+    itemName: Page
 }
 
-export default function NavListItem({index, id, label, sublabel, itemName, onRemove}: NavListItemProps) {
-    const nav = use(NavContext)
-    const key = getPageKey(itemName, id)    
+const NavListItem = ({index, id, label, sublabel, itemName, onRemove}: NavListItemProps) => {
+    const nav = use(NavContext) 
     const handleRemove = useRemoveConfirmModal(itemName, () => onRemove(id))
 
     return (
@@ -28,8 +26,8 @@ export default function NavListItem({index, id, label, sublabel, itemName, onRem
                     href="#"
                     label={label}
                     description={sublabel}
-                    active={nav?.currentPage === key}
-                    onClick={() => nav?.setCurrentPage(key)}
+                    active={nav?.currentPath.page === itemName && nav?.currentPath.entityId === id}
+                    onClick={() => nav?.setCurrentPath(itemName, id)}
                     rightSection={
                         <Tooltip
                             label={`Poista ${itemName}`}
@@ -55,3 +53,5 @@ export default function NavListItem({index, id, label, sublabel, itemName, onRem
         </Draggable>
     )
 }
+
+export default NavListItem

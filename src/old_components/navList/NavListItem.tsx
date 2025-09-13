@@ -33,8 +33,8 @@ export default function NavListItem({index, path, id, label, sublabel, itemName,
                     href="#"
                     label={label}
                     description={sublabel}
-                    active={nav?.currentPage === key}
-                    onClick={() => nav?.setCurrentPage(key)}
+                    active={nav?.currentPath === key}
+                    onClick={() => nav?.setCurrentPath(key)}
                     rightSection={
                         <Tooltip
                             label={`Poista ${itemName}`}

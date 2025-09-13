@@ -1,8 +1,11 @@
-import {createContext, Dispatch, SetStateAction} from 'react'
+import {createContext, ReactNode} from 'react'
+
+export type Page = 'start' | 'diagnoosi' | 'hoito'
 
 interface NavContextValue {
-    currentPage: string
-    setCurrentPage: Dispatch<SetStateAction<string>>
+    currentPath: {page: Page, entityId: string}
+    setCurrentPath: (page: Page, entityId?: string) => void
+    currentPage: ReactNode
 }
 
 export const NavContext = createContext<NavContextValue | null>(null)

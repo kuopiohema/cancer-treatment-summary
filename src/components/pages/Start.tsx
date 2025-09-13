@@ -1,7 +1,9 @@
 import {Title} from '@mantine/core'
 
-export default function Start() {
+const Start = () => {
     return (
         <Title order={1}>Syöpähoitojen yhteenveto</Title>
     )
 }
+
+export default Start

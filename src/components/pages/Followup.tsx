@@ -1,7 +1,9 @@
 import {Title} from '@mantine/core'
 
-export default function Followup() {
+const Followup = () => {
     return (
         <Title order={1}>Seurantaohjeet</Title>
     )
 }
+
+export default Followup

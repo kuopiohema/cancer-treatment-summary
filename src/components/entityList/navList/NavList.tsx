@@ -4,10 +4,10 @@ import { EntityListProps } from "../entityListProps";
 import { IconPlus } from "@tabler/icons-react";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 
-type NavListProps<E extends Entity> = Omit<EntityListProps<E>, 'onUpdate'>
-
-export default function NavList<E extends Entity>({items, ItemComponent, onAdd, onSwap, onRemove, title, emptyText, addButtonText}: NavListProps<E>) {
-    const handleSwap = (destinationIndex: number, sourceIndex: number) => {onSwap(destinationIndex, sourceIndex)}
+const NavList = <E extends Entity>({list, ItemComponent, title, emptyText, addButtonText}: EntityListProps<E>) => {
+    const handleAdd = () => list.actions.add()
+    const handleSwap = (destinationIndex: number, sourceIndex: number) => {list.actions.swap(destinationIndex, sourceIndex)}
+    const handleRemove = (id: string) => list.actions.remove(id)
 
     return (
         <>
@@ -21,7 +21,7 @@ export default function NavList<E extends Entity>({items, ItemComponent, onAdd, 
                 <Tooltip label={addButtonText}>
                     <ActionIcon
                         variant="subtle"
-                        onClick={onAdd}
+                        onClick={handleAdd}
                     >
                         <IconPlus />
                     </ActionIcon>
@@ -43,13 +43,13 @@ export default function NavList<E extends Entity>({items, ItemComponent, onAdd, 
                             ref={provided.innerRef}
                             gap={0}
                         >
-                            {items.length === 0 && <Text px="sm" pb="xs">{emptyText}</Text>}
-                            {items.map((item, index) => (
+                            {list.entities.length === 0 && <Text px="sm" pb="xs">{emptyText}</Text>}
+                            {list.entities.map((item, index) => (
                                 <ItemComponent
                                     key={item.id}
                                     item={item}
                                     index={index}
-                                    onRemove={onRemove}
+                                    onRemove={handleRemove}
                                 />
                             ))}
                             {provided.placeholder}
@@ -60,3 +60,5 @@ export default function NavList<E extends Entity>({items, ItemComponent, onAdd, 
         </>
     )
 }
+
+export default NavList

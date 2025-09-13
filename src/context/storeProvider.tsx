@@ -1,51 +1,43 @@
-import { PropsWithChildren, useMemo, useState } from "react";
-import { Entity } from "../types/form/entity";
-import { Store, StoreActions, StoreContext, StoreActionsContext } from "./storeContext";
+import { PropsWithChildren, useMemo } from "react";
+import { useEntityList } from "../hooks/useEntityList";
+import { Chemotherapy, newChemotherapy } from "../types/form/chemotherapy";
+import { Diagnosis, newDiagnosis } from "../types/form/diagnosis";
+import { newProcedure, Procedure } from "../types/form/procedure";
+import { newRadiotherapy, Radiotherapy } from "../types/form/radiotherapy";
+import { newStemCellTransplant, StemCellTransplant } from "../types/form/stemCellTransplant";
+import { newTreatment, Treatment } from "../types/form/treatment";
+import { Store, StoreContext } from "./storeContext";
+import { StoreActions, StoreActionsContext } from "./storeActionsContext";
 
-const StoreProvider = ({children}: PropsWithChildren) => {
-    const storeDefault: Store = {
-        diagnoses: [],
-        treatments: [],
-        chemotherapies: [],
-        radiotherapies: [],
-        procedures: [],
-        stemCellTransplants: []
-    }
+const StoreProvider = ({ children }: PropsWithChildren) => {
+    const diagnoses = useEntityList<Diagnosis>(newDiagnosis, 'diagnoosi')
+    const treatments = useEntityList<Treatment>(newTreatment)
+    const chemotherapies = useEntityList<Chemotherapy>(newChemotherapy)
+    const radiotherapies = useEntityList<Radiotherapy>(newRadiotherapy)
+    const procedures = useEntityList<Procedure>(newProcedure)
+    const stemCellTransplants = useEntityList<StemCellTransplant>(newStemCellTransplant)
 
-    const [store, setStore] = useState<Store>({...storeDefault})
+    const store: Store = useMemo(() => ({
+        diagnoses,
+        treatments,
+        chemotherapies,
+        radiotherapies,
+        procedures,
+        stemCellTransplants
+    }), [diagnoses, treatments, chemotherapies, radiotherapies, procedures, stemCellTransplants])
 
     const actions: StoreActions = useMemo(() => {
-        const add = <T extends Entity>(path: keyof Store, itemFactory: () => T) => {
-            const list = [...store[path], itemFactory()]
-            setStore({ ...store, [path]: list })
+        const clear = () => {
+            diagnoses.actions.set([])
+            treatments.actions.set([])
+            chemotherapies.actions.set([])
+            radiotherapies.actions.set([])
+            procedures.actions.set([])
+            stemCellTransplants.actions.set([])
         }
 
-        const update = <T extends Entity>(path: keyof Store, item: T) => {
-            const index = store[path].findIndex((searchItem) => searchItem.id === item.id)
-            if (index === -1)
-                return
-            const oldList = [...store[path]]
-            const newList = [...oldList.slice(0, index), item, ...oldList.slice(index + 1, oldList.length - 1)]
-            setStore({ ...store, [path]: newList })
-        }
-
-        const swap = (path: keyof Store, firstIndex: number, secondIndex: number) => {
-            const list = [...store[path]]
-            if (firstIndex < 0 || firstIndex > list.length - 1 || secondIndex < 0 || secondIndex > list.length - 1)
-                return
-            [list[firstIndex], list[secondIndex]] = [list[secondIndex], list[firstIndex]]
-            setStore({ ...store, [path]: list })
-        }
-
-        const remove = (path: keyof Store, id: string) => {
-            const index = store[path].findIndex((searchItem) => searchItem.id === id)
-            if (index === -1)
-                return
-            const list = [...store[path]].splice(index, 1)
-            setStore({ ...store, [path]: list })
-        }
-        return {add, update, swap, remove}
-    }, [store])
+        return { clear }
+    }, [chemotherapies.actions, diagnoses.actions, procedures.actions, radiotherapies.actions, stemCellTransplants.actions, treatments.actions])
 
     return (
         <StoreContext value={store}>

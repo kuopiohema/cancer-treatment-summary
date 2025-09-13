@@ -4,13 +4,13 @@ import formatDate from "../../../../utils/formatDate";
 import { EntityListItemWrapperProps } from "../../entityListItemWrapperProps";
 import NavListItem from "../NavListItem";
 
-export default function DiagnosisNavListItem({index, item, onRemove}: EntityListItemWrapperProps<Diagnosis>) {
+const DiagnosisNavListItem = ({index, item, onRemove}: EntityListItemWrapperProps<Diagnosis>) => {
     const label = useMemo(() => {
         let label = item.icd10
-        if (!!label)
+        if (label)
             label += ' '
         label += item.text
-        return !!label ? label : '(Uusi diagnoosi)'
+        return label ? label : '(Uusi diagnoosi)'
     }, [item.icd10, item.text])
     const sublabel = formatDate(item.date)
 
@@ -25,3 +25,5 @@ export default function DiagnosisNavListItem({index, item, onRemove}: EntityList
         />
     )
 }
+
+export default DiagnosisNavListItem
