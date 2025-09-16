@@ -13,12 +13,15 @@ import {
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, IconSun } from '@tabler/icons-react'
-import { use } from 'react'
+import { use, useMemo } from 'react'
 import NavList from './components/entityList/navList/NavList.tsx'
 import DiagnosisNavListItem from './components/entityList/navList/items/DiagnosisNavListItem.tsx'
 import { NavContext } from './context/navContext.tsx'
 import { StoreContext } from './context/storeContext.tsx'
 import { StoreActionsContext } from './context/storeActionsContext.tsx'
+import Start from './components/pages/Start.tsx'
+import ItemPage from './components/entityList/navList/itemPages/ItemPage.tsx'
+import DiagnosisPage from './components/entityList/navList/itemPages/DiagnosisPage.tsx'
 
 const App = () => {
     const { setColorScheme } = useMantineColorScheme()
@@ -44,6 +47,19 @@ const App = () => {
     const handleLoad = () => {
         console.log('Load')
     }
+    
+    const currentPage = useMemo(() => {
+        switch (nav.currentPath.path) {
+            case 'start':
+                return <Start />
+            case 'diagnoosi':
+                return <ItemPage
+                    id={nav.currentPath.entityId}
+                    entityList={store.diagnoses}
+                    InnerComponent={DiagnosisPage}
+                />
+        }
+    }, [nav.currentPath, store])
 
     return (
         <AppShell
@@ -99,7 +115,7 @@ const App = () => {
                     <NavLink
                         href="#"
                         label="Aloitus"
-                        active={nav.currentPath.page === 'start'}
+                        active={nav.currentPath.path === 'start'}
                         onClick={() => nav.setCurrentPath('start')}
                     />
                     <NavList
@@ -159,7 +175,7 @@ const App = () => {
             </AppShell.Navbar>
             <AppShell.Main>
                 <Container ml={0} size="md">
-                    {nav.currentPage}
+                    {currentPage}
                 </Container>
             </AppShell.Main>
         </AppShell>

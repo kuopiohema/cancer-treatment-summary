@@ -1,6 +1,6 @@
 import { use, useState } from "react";
 import { Entity } from "../types/form/entity";
-import { NavContext, Page } from "../context/navContext";
+import { NavContext, Path } from "../context/navContext";
 
 export type AddCallback = () => void
 export type UpdateCallback<E extends Entity> = (item: E) => void
@@ -19,7 +19,7 @@ export interface EntityList<E extends Entity> {
     }
 }
 
-export const useEntityList = <E extends Entity>(entityFactory: () => E, page?: Page): EntityList<E> => {
+export const useEntityList = <E extends Entity>(entityFactory: () => E, page?: Path): EntityList<E> => {
     const [entities, setEntities] = useState<E[]>([])
 
     const nav = use(NavContext)
@@ -56,7 +56,7 @@ export const useEntityList = <E extends Entity>(entityFactory: () => E, page?: P
         const newEntities = entities.filter(element => element.id !== id)
         setEntities(newEntities)
 
-        if (page && nav?.currentPath.page === page && nav?.currentPath.entityId === id) {
+        if (page && nav?.currentPath.path === page && nav?.currentPath.entityId === id) {
             if (newEntities.length > 0) {
                 const prevIndex = Math.min(index, newEntities.length - 1)
                 nav?.setCurrentPath(page, newEntities[prevIndex].id)
@@ -68,7 +68,7 @@ export const useEntityList = <E extends Entity>(entityFactory: () => E, page?: P
 
     const set = (entityList: E[]) => {
         setEntities(entityList)
-        if (page && nav?.currentPath.page === page) {
+        if (page && nav?.currentPath.path === page) {
             if (entityList.length > 0)
                 nav?.setCurrentPath(page, entityList[0].id)
             else

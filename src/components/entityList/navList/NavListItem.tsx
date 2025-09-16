@@ -1,6 +1,6 @@
 import { ReactNode, use } from "react";
 import { EntityListItemProps } from "../entityListItemProps";
-import { NavContext, Page } from "../../../context/navContext";
+import { NavContext, Path } from "../../../context/navContext";
 import { useRemoveConfirmModal } from "../../../hooks/useRemoveConfirmModal";
 import { Draggable } from "@hello-pangea/dnd";
 import { ActionIcon, Center, NavLink, Tooltip } from "@mantine/core";
@@ -9,7 +9,7 @@ import { IconGripVertical, IconTrash } from "@tabler/icons-react";
 interface NavListItemProps extends EntityListItemProps {
     label: ReactNode
     sublabel?: ReactNode
-    itemName: Page
+    itemName: Path
 }
 
 const NavListItem = ({index, id, label, sublabel, itemName, onRemove}: NavListItemProps) => {
@@ -26,7 +26,7 @@ const NavListItem = ({index, id, label, sublabel, itemName, onRemove}: NavListIt
                     href="#"
                     label={label}
                     description={sublabel}
-                    active={nav?.currentPath.page === itemName && nav?.currentPath.entityId === id}
+                    active={nav?.currentPath.path === itemName && nav?.currentPath.entityId === id}
                     onClick={() => nav?.setCurrentPath(itemName, id)}
                     rightSection={
                         <Tooltip
