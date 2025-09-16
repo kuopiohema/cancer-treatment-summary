@@ -38,7 +38,7 @@ const App = () => {
     }
 
     const handleSave = () => {
-        console.log(JSON.stringify(store))
+        console.log(storeActions.save())
     }
 
     const handleLoad = () => {

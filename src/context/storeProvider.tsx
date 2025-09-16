@@ -36,8 +36,21 @@ const StoreProvider = ({ children }: PropsWithChildren) => {
             stemCellTransplants.actions.set([])
         }
 
-        return { clear }
-    }, [chemotherapies.actions, diagnoses.actions, procedures.actions, radiotherapies.actions, stemCellTransplants.actions, treatments.actions])
+        const save = () => {
+            const data = {
+                diagnoses: diagnoses.entities,
+                treatments: treatments.entities,
+                chemotherapies: chemotherapies.entities,
+                radiotherapies: radiotherapies.entities,
+                procedures: procedures.entities,
+                stemCellTransplants: stemCellTransplants.entities
+            }
+
+            return JSON.stringify(data)
+        }
+
+        return { clear, save }
+    }, [chemotherapies, diagnoses, procedures, radiotherapies, stemCellTransplants, treatments])
 
     return (
         <StoreContext value={store}>
