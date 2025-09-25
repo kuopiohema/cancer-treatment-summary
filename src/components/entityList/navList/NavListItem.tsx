@@ -1,19 +1,20 @@
+import { Draggable } from "@hello-pangea/dnd";
+import { ActionIcon, Center, Group, NavLink, ThemeIcon, Tooltip } from "@mantine/core";
+import { IconGripVertical, IconInfoCircle, IconTrash } from "@tabler/icons-react";
 import { ReactNode, use } from "react";
-import { EntityListItemProps } from "../entityListItemProps";
 import { NavContext, Path } from "../../../context/navContext";
 import { useRemoveConfirmModal } from "../../../hooks/useRemoveConfirmModal";
-import { Draggable } from "@hello-pangea/dnd";
-import { ActionIcon, Center, NavLink, Tooltip } from "@mantine/core";
-import { IconGripVertical, IconTrash } from "@tabler/icons-react";
+import { EntityListItemProps } from "../entityListItemProps";
 
 interface NavListItemProps extends EntityListItemProps {
     label: ReactNode
     sublabel?: ReactNode
+    info?: ReactNode
     itemName: Path
 }
 
-const NavListItem = ({index, id, label, sublabel, itemName, onRemove}: NavListItemProps) => {
-    const nav = use(NavContext) 
+const NavListItem = ({ index, id, label, sublabel, info, itemName, onRemove }: NavListItemProps) => {
+    const nav = use(NavContext)
     const handleRemove = useRemoveConfirmModal(itemName, () => onRemove(id))
 
     return (
@@ -42,9 +43,21 @@ const NavListItem = ({index, id, label, sublabel, itemName, onRemove}: NavListIt
                         </Tooltip>
                     }
                     leftSection={
-                        <Center {...provided.dragHandleProps}>
-                            <IconGripVertical size={18} />
-                        </Center>
+                        <Group>
+                            <Center {...provided.dragHandleProps}>
+                                <IconGripVertical size={18} />
+                            </Center>
+                            {info && <Tooltip
+                                label={info}
+                            >
+                                <ThemeIcon
+                                    variant="subtle"
+                                    color="yellow"
+                                >
+                                    <IconInfoCircle />
+                                </ThemeIcon>
+                            </Tooltip>}
+                        </Group>
                     }
                     ref={provided.innerRef}
                     {...provided.draggableProps}

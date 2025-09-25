@@ -1,4 +1,4 @@
-import { Entity } from "../../../../types/form/entity";
+import { Entity } from "../../../types/form/entity";
 
 export interface ItemPageInnerProps<E extends Entity> {
     data: E

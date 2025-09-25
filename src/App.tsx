@@ -20,8 +20,10 @@ import { NavContext } from './context/navContext.tsx'
 import { StoreContext } from './context/storeContext.tsx'
 import { StoreActionsContext } from './context/storeActionsContext.tsx'
 import Start from './components/pages/Start.tsx'
-import ItemPage from './components/entityList/navList/itemPages/ItemPage.tsx'
+import ItemPage from './components/entityList/navList/ItemPage.tsx'
 import DiagnosisPage from './components/entityList/navList/itemPages/DiagnosisPage.tsx'
+import TreatmentPage from './components/entityList/navList/itemPages/TreatmentPage.tsx'
+import TreatmentNavListItem from './components/entityList/navList/items/TreatmentNavListItem.tsx'
 
 const App = () => {
     const { setColorScheme } = useMantineColorScheme()
@@ -57,6 +59,12 @@ const App = () => {
                     id={nav.currentPath.entityId}
                     entityList={store.diagnoses}
                     InnerComponent={DiagnosisPage}
+                />
+            case 'hoito':
+                return <ItemPage
+                    id={nav.currentPath.entityId}
+                    entityList={store.treatments}
+                    InnerComponent={TreatmentPage}
                 />
         }
     }, [nav.currentPath, store])
@@ -125,16 +133,14 @@ const App = () => {
                         emptyText="Ei diagnooseja"
                         addButtonText="Lisää diagnoosi"
                     />
+                    <NavList
+                        list={store.treatments}
+                        ItemComponent={TreatmentNavListItem}
+                        title="Hoidot"
+                        emptyText="Ei hoitoja"
+                        addButtonText="Lisää hoito"
+                    />
                     {/*
-                        <NavList
-                            items={formValues.treatments}
-                            path="treatments"
-                            itemFactory={newTreatment}
-                            ItemComponent={TreatmentNavListItem}
-                            title="Hoidot"
-                            emptyText="Ei hoitoja"
-                            addButtonText="Lisää hoito"
-                        />
                         <NavList
                             items={formValues.chemotherapies}
                             path="chemotherapies"

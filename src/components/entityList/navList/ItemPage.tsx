@@ -1,8 +1,8 @@
 import { Button, Divider, Group, Stack, Text } from "@mantine/core"
-import { Entity } from "../../../../types/form/entity"
+import { Entity } from "../../../types/form/entity"
 import { ComponentType, useEffect, useMemo, useState } from "react"
 import { ItemPageInnerProps } from "./itemPageInnerProps"
-import { EntityList } from "../../../../hooks/useEntityList"
+import { EntityList } from "../../../hooks/useEntityList"
 import { IconArrowBackUp, IconCheck } from "@tabler/icons-react"
 
 interface ItemPageProps<E extends Entity> {

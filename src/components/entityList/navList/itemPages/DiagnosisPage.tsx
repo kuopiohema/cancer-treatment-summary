@@ -1,7 +1,7 @@
 import { Group, Textarea, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { Diagnosis } from "../../../../types/form/diagnosis";
-import { ItemPageInnerProps } from "./itemPageInnerProps";
+import { ItemPageInnerProps } from "../itemPageInnerProps";
 
 const DiagnosisPage = ({ data, onUpdate }: ItemPageInnerProps<Diagnosis>) => {
     return (

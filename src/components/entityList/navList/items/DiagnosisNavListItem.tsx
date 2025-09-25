@@ -1,18 +1,25 @@
-import { useMemo } from "react";
 import { Diagnosis } from "../../../../types/form/diagnosis";
 import formatDate from "../../../../utils/formatDate";
+import { getTextList } from "../../../../utils/getTextList";
 import { EntityListItemWrapperProps } from "../../entityListItemWrapperProps";
 import NavListItem from "../NavListItem";
 
-const DiagnosisNavListItem = ({index, item, onRemove}: EntityListItemWrapperProps<Diagnosis>) => {
-    const label = useMemo(() => {
+const DiagnosisNavListItem = ({ index, item, onRemove }: EntityListItemWrapperProps<Diagnosis>) => {
+    const getLabel = () => {
         let label = item.icd10
         if (label)
             label += ' '
         label += item.text
         return label ? label : '(Uusi diagnoosi)'
-    }, [item.icd10, item.text])
+    }
+
+    const label = getLabel()
     const sublabel = formatDate(item.date)
+    const info = getTextList([
+        ['Tarkempi kuvaus', item.detail],
+        ['Stage', item.stage],
+        ['Levinneisyys', item.spread]
+    ])
 
     return (
         <NavListItem
@@ -20,6 +27,7 @@ const DiagnosisNavListItem = ({index, item, onRemove}: EntityListItemWrapperProp
             id={item.id}
             label={label}
             sublabel={sublabel}
+            info={info}
             itemName="diagnoosi"
             onRemove={onRemove}
         />
