@@ -1,36 +1,30 @@
-import { Button, Divider, Group, Stack, Text } from "@mantine/core"
-import { Entity } from "../../../types/form/entity"
-import { ComponentType, useEffect, useMemo, useState } from "react"
-import { ItemPageInnerProps } from "./itemPageInnerProps"
-import { EntityList } from "../../../hooks/useEntityList"
+import { Button, Divider, Group, Stack } from "@mantine/core"
 import { IconArrowBackUp, IconCheck } from "@tabler/icons-react"
+import equal from "fast-deep-equal"
+import { PrimitiveAtom, useAtom } from "jotai"
+import { ComponentType, useEffect, useState } from "react"
+import { Entity } from "../../types/form/entity"
+import { ItemPageInnerProps } from "./itemPageInnerProps"
 
 interface ItemPageProps<E extends Entity> {
-    id: string
-    fullWidth?: boolean
-    entityList: EntityList<E>
+    entityAtom: PrimitiveAtom<E>
     InnerComponent: ComponentType<ItemPageInnerProps<E>>
+    fullWidth?: boolean
 }
 
-const ItemPage = <E extends Entity>({id, fullWidth, entityList, InnerComponent}: ItemPageProps<E>) => {    
-    const initialData = useMemo(
-        () => entityList.entities.find(entity => entity.id === id),
-        [entityList, id]
-    )
+const ItemPage = <E extends Entity>({ entityAtom, InnerComponent, fullWidth }: ItemPageProps<E>) => {
+    const [entity, setEntity] = useAtom(entityAtom)
 
-    const [data, setData] = useState<E | undefined>()
-    useEffect(() => setData(initialData), [initialData])
+    const [data, setData] = useState<E>(entity)
+    useEffect(() => setData(entity), [entity])
 
-    if (!data)
-        return (<Text>Virhe: näytettävää kohdetta ei löydy!</Text>)
-
-    const handleConfirm = () => entityList.actions.update(data)
-    const handleAbort = () => setData(initialData)
+    const handleConfirm = () => setEntity(data)
+    const handleAbort = () => setData(entity)
     const handleUpdate = <K extends keyof E, V extends E[K]>(key: K, value: V) => {
-        setData({...data, [key]: value})
+        setData({ ...data, [key]: value })
     }
 
-    const isDirty = data !== initialData
+    const isDirty = !equal(entity, data)
 
     return (
         <Stack
@@ -38,7 +32,7 @@ const ItemPage = <E extends Entity>({id, fullWidth, entityList, InnerComponent}:
             w={fullWidth ? undefined : '600px'}
         >
             <InnerComponent
-                data={data}
+                item={data}
                 onUpdate={handleUpdate}
             />
             <Divider />

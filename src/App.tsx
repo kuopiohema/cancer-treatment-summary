@@ -13,19 +13,16 @@ import {
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, IconSun } from '@tabler/icons-react'
-import { use, useMemo } from 'react'
-import NavList from './components/entityList/navList/NavList.tsx'
-import DiagnosisNavListItem from './components/entityList/navList/items/DiagnosisNavListItem.tsx'
-import { NavContext } from './context/navContext.tsx'
-import { StoreContext } from './context/storeContext.tsx'
-import { StoreActionsContext } from './context/storeActionsContext.tsx'
+import { use, useMemo, useState } from 'react'
 import Start from './components/pages/Start.tsx'
-import ItemPage from './components/entityList/navList/ItemPage.tsx'
-import DiagnosisPage from './components/entityList/navList/itemPages/DiagnosisPage.tsx'
-import TreatmentPage from './components/entityList/navList/itemPages/TreatmentPage.tsx'
-import TreatmentNavListItem from './components/entityList/navList/items/TreatmentNavListItem.tsx'
+import { NavContext } from './context/navContext.ts'
+import { getSnapshot } from 'mobx-keystone'
+import DiagnosisNavListItem from './components/navList/items/DiagnosisNavListItem.tsx'
+import NavList from './components/navList/NavList.tsx'
+import { observer } from 'mobx-react'
+import { createRootStore } from './store/store.ts'
 
-const App = () => {
+const App = observer(() => {
     const { setColorScheme } = useMantineColorScheme()
     const computedColorScheme = useComputedColorScheme('light')
     const toggleColorScheme = () => {
@@ -34,40 +31,55 @@ const App = () => {
 
     const [navbarCollapsed, { toggle: toggleNavbarCollapsed }] = useDisclosure(true)
 
-    const store = use(StoreContext)!
-    const storeActions = use(StoreActionsContext)!
-    const nav = use(NavContext)!
+    const nav = use(NavContext)
+    if (!nav)
+        throw new Error('Nav context missing!')
+
+    const [store] = useState(() => createRootStore())
+
 
     const handleReset = () => {
-        storeActions.clear()
+        //storeActions.clear()
     }
 
     const handleSave = () => {
-        console.log(storeActions.save())
+        console.log(getSnapshot(store))
     }
 
     const handleLoad = () => {
         console.log('Load')
     }
-    
+
     const currentPage = useMemo(() => {
-        switch (nav.currentPath.path) {
+        switch (nav.path) {
             case 'start':
                 return <Start />
-            case 'diagnoosi':
+            /*case 'diagnoses':
+                return diagnosesList.map(atom => {
+                    const key = `${atom.toString()}`
+                    console.log(key)
+                    return key === navLocation.entityId &&
+                        <ItemPage
+                            key={`${atom.toString()}`}
+                            entityAtom={atom}
+                            InnerComponent={DiagnosisPage}
+                        />
+                })
+            /*case 'treatments':
                 return <ItemPage
-                    id={nav.currentPath.entityId}
-                    entityList={store.diagnoses}
-                    InnerComponent={DiagnosisPage}
-                />
-            case 'hoito':
-                return <ItemPage
-                    id={nav.currentPath.entityId}
-                    entityList={store.treatments}
+                    id={navLocation.entityId}
+                    entityStore={store.treatments}
                     InnerComponent={TreatmentPage}
                 />
+            case 'chemotherapies':
+                return <ItemPage
+                    id={navLocation.entityId}
+                    entityStore={store.chemotherapies}
+                    InnerComponent={ChemotherapyPage}
+                    fullWidth
+                />*/
         }
-    }, [nav.currentPath, store])
+    }, [nav.path])
 
     return (
         <AppShell
@@ -123,33 +135,31 @@ const App = () => {
                     <NavLink
                         href="#"
                         label="Aloitus"
-                        active={nav.currentPath.path === 'start'}
-                        onClick={() => nav.setCurrentPath('start')}
+                        active={nav.path === 'start'}
+                        onClick={() => nav.setLocation('start', '')}
                     />
                     <NavList
-                        list={store.diagnoses}
+                        entityList={store.diagnoses}
                         ItemComponent={DiagnosisNavListItem}
                         title="Diagnoosit"
                         emptyText="Ei diagnooseja"
                         addButtonText="Lisää diagnoosi"
                     />
-                    <NavList
-                        list={store.treatments}
+                    {/*<NavList
+                        entityStore={store.treatments}
                         ItemComponent={TreatmentNavListItem}
                         title="Hoidot"
                         emptyText="Ei hoitoja"
                         addButtonText="Lisää hoito"
                     />
+                    <NavList
+                        entityStore={store.chemotherapies}
+                        ItemComponent={ChemotherapyNavListItem}
+                        title="Kemoterapiajaksot"
+                        emptyText="Ei kemoterapiajaksoja"
+                        addButtonText="Lisää kemoterapiajakso"
+                    />
                     {/*
-                        <NavList
-                            items={formValues.chemotherapies}
-                            path="chemotherapies"
-                            itemFactory={newChemotherapy}
-                            ItemComponent={ChemotherapyNavListItem}
-                            title="Kemoterapiajaksot"
-                            emptyText="Ei kemoterapiajaksoja"
-                            addButtonText="Lisää kemoterapiajakso"
-                        />
                         <NavList
                             items={formValues.radiotherapies}
                             path="radiotherapies"
@@ -186,6 +196,6 @@ const App = () => {
             </AppShell.Main>
         </AppShell>
     )
-}
+})
 
 export default App

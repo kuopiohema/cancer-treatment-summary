@@ -1,11 +1,16 @@
 import { Fragment, ReactNode } from 'react'
 
-export const getTextList = (data: [string, string][]): ReactNode => {
+type TextListItem = string | {heading?: string, content: string}
+
+export const getTextList = (data: TextListItem[]): ReactNode => {
     const list = [] as string[]
     data.forEach(item => {
-        const [heading, content] = item
+        const {heading, content} = typeof item === 'string' ? {heading: '', content: item} : item
         if (content)
-            list.push(`${heading}: ${content}`)
+            if (heading)
+                list.push(`${heading}: ${content}`)
+            else
+                list.push(content)
     })
 
     if (list.length > 0) {
