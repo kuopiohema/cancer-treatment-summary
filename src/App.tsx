@@ -13,14 +13,17 @@ import {
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, IconSun } from '@tabler/icons-react'
-import { use, useMemo, useState } from 'react'
-import Start from './components/pages/Start.tsx'
-import { NavContext } from './context/navContext.ts'
 import { getSnapshot } from 'mobx-keystone'
+import { observer } from 'mobx-react'
+import { use, useMemo, useState } from 'react'
 import DiagnosisNavListItem from './components/navList/items/DiagnosisNavListItem.tsx'
 import NavList from './components/navList/NavList.tsx'
-import { observer } from 'mobx-react'
+import Start from './components/pages/Start.tsx'
+import { NavContext } from './context/navContext.ts'
+import { Diagnosis } from './store/diagnosis.ts'
 import { createRootStore } from './store/store.ts'
+import ItemPage from './components/navList/ItemPage.tsx'
+import DiagnosisPage from './components/navList/itemPages/DiagnosisPage.tsx'
 
 const App = observer(() => {
     const { setColorScheme } = useMantineColorScheme()
@@ -37,9 +40,8 @@ const App = observer(() => {
 
     const [store] = useState(() => createRootStore())
 
-
     const handleReset = () => {
-        //storeActions.clear()
+        store.clear()
     }
 
     const handleSave = () => {
@@ -54,6 +56,14 @@ const App = observer(() => {
         switch (nav.path) {
             case 'start':
                 return <Start />
+            case 'diagnoses':
+                return store.diagnoses.entities.map((entity) => (
+                    entity.id === nav.entityId && <ItemPage
+                        key={entity.id}
+                        entity={entity}
+                        InnerComponent={DiagnosisPage}
+                    />
+                ))
             /*case 'diagnoses':
                 return diagnosesList.map(atom => {
                     const key = `${atom.toString()}`
@@ -79,7 +89,7 @@ const App = observer(() => {
                     fullWidth
                 />*/
         }
-    }, [nav.path])
+    }, [nav, store.diagnoses])
 
     return (
         <AppShell
@@ -122,8 +132,9 @@ const App = observer(() => {
                         >
                             Tallenna
                         </Button>
-                        <Button variant="default" leftSection={<IconFileWord size={20} />}>Luo
-                            Word-tiedosto</Button>
+                        <Button variant="default" leftSection={<IconFileWord size={20} />}>
+                            Luo Word-tiedosto
+                        </Button>
                     </Group>
                     <ActionIcon variant="subtle" onClick={toggleColorScheme}>
                         {computedColorScheme === 'dark' ? <IconSun /> : <IconMoon />}
@@ -136,10 +147,11 @@ const App = observer(() => {
                         href="#"
                         label="Aloitus"
                         active={nav.path === 'start'}
-                        onClick={() => nav.setLocation('start', '')}
+                        onClick={() => nav.navigateTo('start', '')}
                     />
                     <NavList
                         entityList={store.diagnoses}
+                        entityFactory={() => new Diagnosis({})}
                         ItemComponent={DiagnosisNavListItem}
                         title="Diagnoosit"
                         emptyText="Ei diagnooseja"

@@ -1,47 +1,44 @@
 import { Button, Divider, Group, Stack } from "@mantine/core"
 import { IconArrowBackUp, IconCheck } from "@tabler/icons-react"
-import equal from "fast-deep-equal"
-import { PrimitiveAtom, useAtom } from "jotai"
-import { ComponentType, useEffect, useState } from "react"
-import { Entity } from "../../types/form/entity"
+import { draft } from "mobx-keystone"
+import { observer } from "mobx-react"
+import { ComponentType, use, useEffect, useMemo } from "react"
+import { Entity } from "../../store/entity"
 import { ItemPageInnerProps } from "./itemPageInnerProps"
+import { NavContext } from "../../context/navContext"
 
 interface ItemPageProps<E extends Entity> {
-    entityAtom: PrimitiveAtom<E>
+    entity: E
     InnerComponent: ComponentType<ItemPageInnerProps<E>>
     fullWidth?: boolean
 }
 
-const ItemPage = <E extends Entity>({ entityAtom, InnerComponent, fullWidth }: ItemPageProps<E>) => {
-    const [entity, setEntity] = useAtom(entityAtom)
+const ItemPage = observer(<E extends Entity>({ entity, InnerComponent, fullWidth }: ItemPageProps<E>) => {
+    const entityDraft = useMemo(() => draft(entity), [entity])
+    const nav = use(NavContext)
+    if (!nav)
+        throw new Error('Nav context missing!')
 
-    const [data, setData] = useState<E>(entity)
-    useEffect(() => setData(entity), [entity])
+    useEffect(() => nav.setIsDirty(entityDraft.isDirty), [nav, entityDraft.isDirty])
 
-    const handleConfirm = () => setEntity(data)
-    const handleAbort = () => setData(entity)
-    const handleUpdate = <K extends keyof E, V extends E[K]>(key: K, value: V) => {
-        setData({ ...data, [key]: value })
-    }
+    const handleConfirm = () => entityDraft.commit()
+    const handleAbort = () => entityDraft.reset()
 
-    const isDirty = !equal(entity, data)
+    const buttonsDisabled = !entityDraft.isDirty
 
     return (
         <Stack
             gap="sm"
             w={fullWidth ? undefined : '600px'}
         >
-            <InnerComponent
-                item={data}
-                onUpdate={handleUpdate}
-            />
+            <InnerComponent data={entityDraft.data} />
             <Divider />
             <Group>
                 <Button
                     onClick={handleAbort}
                     color="red"
                     leftSection={<IconArrowBackUp />}
-                    disabled={!isDirty}
+                    disabled={buttonsDisabled}
                 >
                     Kumoa muutokset
                 </Button>
@@ -49,13 +46,13 @@ const ItemPage = <E extends Entity>({ entityAtom, InnerComponent, fullWidth }: I
                     onClick={handleConfirm}
                     color="green"
                     leftSection={<IconCheck />}
-                    disabled={!isDirty}
+                    disabled={buttonsDisabled}
                 >
                     Hyväksy muutokset
                 </Button>
             </Group>
         </Stack>
     )
-}
+})
 
 export default ItemPage

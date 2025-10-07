@@ -7,7 +7,7 @@ import EntityList from "../../entityList/EntityList";
 import DrugListItem from "../../entityList/items/DrugListItem";
 import { useEntityStore } from "../../../hooks/useEntityStore";
 
-const ChemotherapyPage = ({ item, onUpdate }: ItemPageInnerProps<Chemotherapy>) => {
+const ChemotherapyPage = ({ data: item, onUpdate }: ItemPageInnerProps<Chemotherapy>) => {
     const drugsStore = useEntityStore<Drug>(newDrug, undefined, data => onUpdate('drugs', data), item.drugs)
 
     return (

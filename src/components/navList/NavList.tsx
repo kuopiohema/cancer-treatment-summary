@@ -4,21 +4,22 @@ import { IconPlus } from "@tabler/icons-react";
 import { observer } from "mobx-react";
 import { ComponentType } from "react";
 import { RemoveCallback } from "../../hooks/useEntityStore";
-import { Diagnosis, DiagnosisList } from "../../store/diagnosis";
-import { Entity } from "../../types/form/entity";
 import { NavListItemWrapperProps } from "./navListItemWrapperProps";
+import { EntityList } from "../../store/entityList";
+import { Entity } from "../../store/entity";
 
 interface NavListProps<E extends Entity> {
-    entityList: DiagnosisList
-    ItemComponent: ComponentType<NavListItemWrapperProps<Diagnosis>>
+    entityList: EntityList<E>
+    entityFactory: () => E
+    ItemComponent: ComponentType<NavListItemWrapperProps<E>>
     title: string
     emptyText: string
     addButtonText: string
 }
 
 interface NavListInnerProps<E extends Entity> {
-    entityList: DiagnosisList
-    ItemComponent: ComponentType<NavListItemWrapperProps<Diagnosis>>
+    entityList: EntityList<E>
+    ItemComponent: ComponentType<NavListItemWrapperProps<E>>
     emptyText: string
     onRemove: RemoveCallback
 }
@@ -36,8 +37,8 @@ const NavListInner = observer(<E extends Entity>({ entityList, ItemComponent, em
         ))
 ))
 
-const NavList = observer(<E extends Entity>({ entityList, ItemComponent, title, emptyText, addButtonText }: NavListProps<E>) => {
-    const handleAdd = () => entityList.add()
+const NavList = observer(<E extends Entity>({ entityList, entityFactory, ItemComponent, title, emptyText, addButtonText }: NavListProps<E>) => {
+    const handleAdd = () => entityList.add(entityFactory())
     const handleSwap = (destinationIndex: number, sourceIndex: number) => { entityList.swap(destinationIndex, sourceIndex) }
     const handleRemove = (id: string) => entityList.remove(id)
 

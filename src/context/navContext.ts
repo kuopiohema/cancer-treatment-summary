@@ -8,7 +8,8 @@ export interface NavLocation {
 }
 
 export interface NavActions {
-    setLocation: (path: Path, entityId: string) => void
+    navigateTo: (path: Path, entityId: string) => void
+    setIsDirty: (isDirty: boolean) => void
     reset: () => void
 }
 

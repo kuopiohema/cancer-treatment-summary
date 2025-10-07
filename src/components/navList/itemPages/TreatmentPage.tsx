@@ -5,7 +5,7 @@ import { DateInput } from "@mantine/dates";
 import { stopReasonOptions, StopReasonValue } from "../../../data/stopReasonOptions";
 import { toComboboxData } from "../../../data/dataUtils";
 
-const TreatmentPage = ({ item, onUpdate }: ItemPageInnerProps<Treatment>) => {
+const TreatmentPage = ({ data: item, onUpdate }: ItemPageInnerProps<Treatment>) => {
     const stopReasonOptionsData = toComboboxData(stopReasonOptions)
 
     return (

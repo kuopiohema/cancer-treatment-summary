@@ -1,10 +1,11 @@
-import { Diagnosis } from "../../../types/form/diagnosis";
+import { observer } from "mobx-react";
+import { Diagnosis } from "../../../store/diagnosis";
 import formatDate from "../../../utils/formatDate";
 import { getTextList } from "../../../utils/getTextList";
 import NavListItem from "../NavListItem";
 import { NavListItemWrapperProps } from "../navListItemWrapperProps";
 
-const DiagnosisNavListItem = ({ index, entity, onRemove }: NavListItemWrapperProps<Diagnosis>) => {
+const DiagnosisNavListItem = observer(({ index, entity, onRemove }: NavListItemWrapperProps<Diagnosis>) => {
     const getLabel = () => {
         let label = entity.icd10
         if (label)
@@ -32,6 +33,6 @@ const DiagnosisNavListItem = ({ index, entity, onRemove }: NavListItemWrapperPro
             onRemove={onRemove}
         />
     )
-}
+})
 
 export default DiagnosisNavListItem

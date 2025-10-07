@@ -1,6 +1,5 @@
-import { Entity } from "../../types/form/entity";
+import { Entity } from "../../store/entity"
 
 export interface ItemPageInnerProps<E extends Entity> {
-    item: E
-    onUpdate: <K extends keyof E, V extends E[K]>(key: K, value: V) => void
+    data: E
 }

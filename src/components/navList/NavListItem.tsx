@@ -1,10 +1,10 @@
 import { Draggable } from "@hello-pangea/dnd";
 import { ActionIcon, Center, NavLink, Tooltip } from "@mantine/core";
 import { IconGripVertical, IconTrash } from "@tabler/icons-react";
-import { ReactNode, use } from "react";
+import { MouseEventHandler, ReactNode, use } from "react";
 import { RemoveCallback } from "../../hooks/useEntityStore";
-import { useRemoveConfirmModal } from "../../hooks/useRemoveConfirmModal";
 import { NavContext, Path } from "../../context/navContext";
+import { removeConfirmModal } from "../../modals/removeConfirmModal";
 
 interface NavListItemProps {
     index: number
@@ -21,7 +21,10 @@ const NavListItem = ({ index, id, label, sublabel, itemName, path, onRemove }: N
     if (!nav)
         throw new Error('Nav context missing!')
 
-    const handleRemove = useRemoveConfirmModal(itemName, () => onRemove(id))
+    const handleRemove: MouseEventHandler<HTMLButtonElement> = (e) => {
+        removeConfirmModal(itemName, () => onRemove(id))
+        e.stopPropagation()
+    }
 
     return (
         <Draggable
@@ -34,7 +37,7 @@ const NavListItem = ({ index, id, label, sublabel, itemName, path, onRemove }: N
                     label={label}
                     description={sublabel}
                     active={nav.path === path && nav.entityId === id}
-                    onClick={() => nav.setLocation(path, id)}
+                    onClick={() => nav.navigateTo(path, id)}
                     rightSection={
                         <Tooltip
                             label={`Poista ${itemName}`}
