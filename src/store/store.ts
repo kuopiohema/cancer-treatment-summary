@@ -1,14 +1,16 @@
 import { model, Model, modelAction, prop, registerRootStore } from "mobx-keystone";
-import { EntityList } from "./entityList";
-import { Diagnosis } from "./diagnosis";
+import { Data } from "./data";
+import { Nav } from "./nav";
 
 @model('catrest/Store')
 export class Store extends Model({
-    diagnoses: prop<EntityList<Diagnosis>>(() => new EntityList({}))
+    data: prop<Data>(() => new Data({})),
+    nav: prop<Nav>(() => new Nav({}))
 }) {
     @modelAction
     clear() {
-        this.diagnoses.clear()
+        this.data.clear()
+        this.nav.selectPage('start')
     }
 }
 

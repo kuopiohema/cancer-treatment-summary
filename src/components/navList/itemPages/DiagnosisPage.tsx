@@ -4,20 +4,18 @@ import { ItemPageInnerProps } from "../itemPageInnerProps";
 import { Diagnosis } from "../../../store/diagnosis";
 import { observer } from "mobx-react";
 
-const DiagnosisPage = observer(({ data }: ItemPageInnerProps<Diagnosis>) => {
-    const handleDateChange = (value: string | null) => data.setDate(value)
-    
+const DiagnosisPage = observer(({ data }: ItemPageInnerProps<Diagnosis>) => {   
     return (
         <>
             <Group preventGrowOverflow={false} grow>
                 <DateInput
                     value={data.date}
-                    onChange={handleDateChange}
+                    onChange={value => data.setDate(value)}
                     label="Diagnoosipäivä"
                     placeholder="pp.kk.vvvv"
                 />
                 <TextInput
-                    value={data.icd10 || ''}
+                    value={data.icd10}
                     onChange={e => data.setIcd10(e.target.value)}
                     label="ICD-10"
                     placeholder="ICD-10"
@@ -25,7 +23,7 @@ const DiagnosisPage = observer(({ data }: ItemPageInnerProps<Diagnosis>) => {
                     flex="none"
                 />
                 <TextInput
-                    value={data.text || ''}
+                    value={data.text}
                     onChange={e => data.setText(e.target.value)}
                     label="Diagnoosi tekstinä"
                     placeholder="Esim. 'Neuroblastooma'"

@@ -16,7 +16,6 @@ import { IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, Ico
 import { getSnapshot } from 'mobx-keystone'
 import { observer } from 'mobx-react'
 import { use, useMemo, useState } from 'react'
-import DiagnosisNavListItem from './components/navList/items/DiagnosisNavListItem.tsx'
 import NavList from './components/navList/NavList.tsx'
 import Start from './components/pages/Start.tsx'
 import { NavContext } from './context/navContext.ts'
@@ -24,6 +23,8 @@ import { Diagnosis } from './store/diagnosis.ts'
 import { createRootStore } from './store/store.ts'
 import ItemPage from './components/navList/ItemPage.tsx'
 import DiagnosisPage from './components/navList/itemPages/DiagnosisPage.tsx'
+import { Treatment } from './store/treatment.ts'
+import TreatmentPage from './components/navList/itemPages/TreatmentPage.tsx'
 
 const App = observer(() => {
     const { setColorScheme } = useMantineColorScheme()
@@ -45,7 +46,7 @@ const App = observer(() => {
     }
 
     const handleSave = () => {
-        console.log(getSnapshot(store))
+        console.log(getSnapshot(store.data))
     }
 
     const handleLoad = () => {
@@ -53,43 +54,20 @@ const App = observer(() => {
     }
 
     const currentPage = useMemo(() => {
-        switch (nav.path) {
+        switch (store.nav.page) {
             case 'start':
                 return <Start />
-            case 'diagnoses':
-                return store.diagnoses.entities.map((entity) => (
-                    entity.id === nav.entityId && <ItemPage
-                        key={entity.id}
+            case 'entity': {
+                const entity = store.nav.selectedEntity?.maybeCurrent
+                if (entity instanceof Diagnosis)
+                    return <ItemPage
                         entity={entity}
                         InnerComponent={DiagnosisPage}
                     />
-                ))
-            /*case 'diagnoses':
-                return diagnosesList.map(atom => {
-                    const key = `${atom.toString()}`
-                    console.log(key)
-                    return key === navLocation.entityId &&
-                        <ItemPage
-                            key={`${atom.toString()}`}
-                            entityAtom={atom}
-                            InnerComponent={DiagnosisPage}
-                        />
-                })
-            /*case 'treatments':
-                return <ItemPage
-                    id={navLocation.entityId}
-                    entityStore={store.treatments}
-                    InnerComponent={TreatmentPage}
-                />
-            case 'chemotherapies':
-                return <ItemPage
-                    id={navLocation.entityId}
-                    entityStore={store.chemotherapies}
-                    InnerComponent={ChemotherapyPage}
-                    fullWidth
-                />*/
+                return <div>Virhe: kohdetta ei löydy!</div>
+            }
         }
-    }, [nav, store.diagnoses])
+    }, [store.nav.page, store.nav.selectedEntity])
 
     return (
         <AppShell
@@ -144,18 +122,23 @@ const App = observer(() => {
             <AppShell.Navbar>
                 <AppShell.Section component={ScrollArea}>
                     <NavLink
-                        href="#"
                         label="Aloitus"
-                        active={nav.path === 'start'}
-                        onClick={() => nav.navigateTo('start', '')}
+                        active={store.nav.page === 'start'}
+                        onClick={() => store.nav.selectPage('start')}
                     />
                     <NavList
-                        entityList={store.diagnoses}
+                        entityList={store.data.diagnoses}
                         entityFactory={() => new Diagnosis({})}
-                        ItemComponent={DiagnosisNavListItem}
                         title="Diagnoosit"
                         emptyText="Ei diagnooseja"
                         addButtonText="Lisää diagnoosi"
+                    />
+                    <NavList
+                        entityList={store.data.treatments}
+                        entityFactory={() => new Treatment({})}
+                        title="Hoidot"
+                        emptyText="Ei hoitoja"
+                        addButtonText="Lisää hoito"
                     />
                     {/*<NavList
                         entityStore={store.treatments}

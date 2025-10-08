@@ -1,5 +1,9 @@
+import { override } from "mobx";
 import { ExtendedModel, model, prop } from "mobx-keystone";
 import { Entity } from "./entity";
+import { getTextList } from "../utils/getTextList";
+import formatDate from "../utils/formatDate";
+import { Path } from "../context/navContext";
 
 @model('catrest/diagnosis')
 export class Diagnosis extends ExtendedModel(Entity, {
@@ -9,4 +13,26 @@ export class Diagnosis extends ExtendedModel(Entity, {
     detail: prop('').withSetter(),
     stage: prop('').withSetter(),
     spread: prop('').withSetter()
-}) {}
+}) {
+    itemName = 'diagnoosi'
+    path: Path = 'diagnoses'
+
+    @override
+    get label() {
+        let result = this.icd10
+        if (result)
+            result += ' '
+        result += this.text
+        return result || '(Uusi diagnoosi)'
+    }
+
+    @override
+    get sublabel() {
+        return getTextList([
+            formatDate(this.date),
+            this.detail,
+            this.stage,
+            this.spread
+        ])
+    }
+}

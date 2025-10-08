@@ -2,16 +2,14 @@ import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { ActionIcon, Divider, Group, Stack, Text, Tooltip } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { observer } from "mobx-react";
-import { ComponentType } from "react";
 import { RemoveCallback } from "../../hooks/useEntityStore";
-import { NavListItemWrapperProps } from "./navListItemWrapperProps";
-import { EntityList } from "../../store/entityList";
 import { Entity } from "../../store/entity";
+import { EntityList } from "../../store/entityList";
+import NavListItem from "./NavListItem";
 
 interface NavListProps<E extends Entity> {
     entityList: EntityList<E>
     entityFactory: () => E
-    ItemComponent: ComponentType<NavListItemWrapperProps<E>>
     title: string
     emptyText: string
     addButtonText: string
@@ -19,25 +17,29 @@ interface NavListProps<E extends Entity> {
 
 interface NavListInnerProps<E extends Entity> {
     entityList: EntityList<E>
-    ItemComponent: ComponentType<NavListItemWrapperProps<E>>
     emptyText: string
     onRemove: RemoveCallback
 }
 
-const NavListInner = observer(<E extends Entity>({ entityList, ItemComponent, emptyText, onRemove }: NavListInnerProps<E>) => (
+const NavListInner = observer(<E extends Entity>({ entityList, emptyText, onRemove }: NavListInnerProps<E>) => (
     entityList.entities.length === 0 ?
         <Text px="sm" pb="xs">{emptyText}</Text> :
         entityList.entities.map((entity, index) => (
-            <ItemComponent
+            <NavListItem
                 key={entity.id}
-                entity={entity}
                 index={index}
+                id={entity.id}
+                itemName={entity.itemName}
+                label={entity.label}
+                sublabel={entity.sublabel}
+                isSelected={entity.isSelected}
+                onSelect={() => entity.select()}
                 onRemove={onRemove}
             />
         ))
 ))
 
-const NavList = observer(<E extends Entity>({ entityList, entityFactory, ItemComponent, title, emptyText, addButtonText }: NavListProps<E>) => {
+const NavList = observer(<E extends Entity>({ entityList, entityFactory, title, emptyText, addButtonText }: NavListProps<E>) => {
     const handleAdd = () => entityList.add(entityFactory())
     const handleSwap = (destinationIndex: number, sourceIndex: number) => { entityList.swap(destinationIndex, sourceIndex) }
     const handleRemove = (id: string) => entityList.remove(id)
@@ -78,7 +80,6 @@ const NavList = observer(<E extends Entity>({ entityList, entityFactory, ItemCom
                         >
                             <NavListInner
                                 entityList={entityList}
-                                ItemComponent={ItemComponent}
                                 emptyText={emptyText}
                                 onRemove={handleRemove}
                             />
