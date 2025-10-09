@@ -1,11 +1,11 @@
 import { Button, Divider, Group, Stack } from "@mantine/core"
 import { IconArrowBackUp, IconCheck } from "@tabler/icons-react"
-import { draft } from "mobx-keystone"
+import { draft, getRootStore } from "mobx-keystone"
 import { observer } from "mobx-react"
-import { ComponentType, use, useEffect, useMemo } from "react"
+import { ComponentType, useEffect, useMemo } from "react"
 import { Entity } from "../../store/entity"
 import { ItemPageInnerProps } from "./itemPageInnerProps"
-import { NavContext } from "../../context/navContext"
+import { Store } from "../../store/store"
 
 interface ItemPageProps<E extends Entity> {
     entity: E
@@ -15,11 +15,8 @@ interface ItemPageProps<E extends Entity> {
 
 const ItemPage = observer(<E extends Entity>({ entity, InnerComponent, fullWidth }: ItemPageProps<E>) => {
     const entityDraft = useMemo(() => draft(entity), [entity])
-    const nav = use(NavContext)
-    if (!nav)
-        throw new Error('Nav context missing!')
 
-    useEffect(() => nav.setIsDirty(entityDraft.isDirty), [nav, entityDraft.isDirty])
+    useEffect(() => getRootStore<Store>(entity)?.nav.setPageIsDirty(entityDraft.isDirty), [entity, entityDraft.isDirty])
 
     const handleConfirm = () => entityDraft.commit()
     const handleAbort = () => entityDraft.reset()

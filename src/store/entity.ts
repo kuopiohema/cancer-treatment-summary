@@ -1,9 +1,9 @@
 import { randomId } from "@mantine/hooks";
 import { computed } from "mobx";
-import { getRootStore, Model, model, modelAction, tProp, types } from "mobx-keystone";
+import { detach, Model, model, modelAction, rootRef, tProp, types } from "mobx-keystone";
 import { ReactNode } from "react";
 import { Path } from "../context/navContext";
-import { Store } from "./store";
+import { navCtx } from "./store";
 
 @model('catrest/entity')
 export class Entity extends Model({
@@ -33,11 +33,19 @@ export class Entity extends Model({
 
     @modelAction
     select() {
-        getRootStore<Store>(this)?.nav.selectEntity(this)
+        navCtx.get(this)?.current?.selectEntity(this)
     }
 
     @computed
     get isSelected() {
-        return getRootStore<Store>(this)?.nav.selectedEntity?.current?.id === this.id
+        return navCtx.get(this)?.current?.selectedEntity?.current?.id === this.id
     }
 }
+
+export const entityRef = rootRef<Entity>("catrest/EntityRef", {
+    onResolvedValueChange(ref, newEntity, oldEntity) {
+        if (oldEntity && !newEntity) {
+            detach(ref)
+        }
+    }
+})

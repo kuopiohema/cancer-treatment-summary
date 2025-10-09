@@ -15,16 +15,14 @@ import { useDisclosure } from '@mantine/hooks'
 import { IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, IconSun } from '@tabler/icons-react'
 import { getSnapshot } from 'mobx-keystone'
 import { observer } from 'mobx-react'
-import { use, useMemo, useState } from 'react'
-import NavList from './components/navList/NavList.tsx'
-import Start from './components/pages/Start.tsx'
-import { NavContext } from './context/navContext.ts'
-import { Diagnosis } from './store/diagnosis.ts'
-import { createRootStore } from './store/store.ts'
+import { useMemo, useState } from 'react'
 import ItemPage from './components/navList/ItemPage.tsx'
 import DiagnosisPage from './components/navList/itemPages/DiagnosisPage.tsx'
+import NavList from './components/navList/NavList.tsx'
+import Start from './components/pages/Start.tsx'
+import { Diagnosis } from './store/diagnosis.ts'
+import { createRootStore } from './store/store.ts'
 import { Treatment } from './store/treatment.ts'
-import TreatmentPage from './components/navList/itemPages/TreatmentPage.tsx'
 
 const App = observer(() => {
     const { setColorScheme } = useMantineColorScheme()
@@ -34,10 +32,6 @@ const App = observer(() => {
     }
 
     const [navbarCollapsed, { toggle: toggleNavbarCollapsed }] = useDisclosure(true)
-
-    const nav = use(NavContext)
-    if (!nav)
-        throw new Error('Nav context missing!')
 
     const [store] = useState(() => createRootStore())
 

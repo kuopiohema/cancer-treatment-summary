@@ -7,7 +7,6 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
-import NavProvider from './context/navProvider.tsx'
 
 import '@mantine/core/styles.css'
 import '@mantine/dates/styles.css'
@@ -20,9 +19,7 @@ createRoot(document.getElementById('root')!).render(
         <MantineProvider defaultColorScheme="auto" theme={theme}>
             <DatesProvider settings={{ locale: 'fi' }}>
                 <ModalsProvider>
-                    <NavProvider>
-                        <App />
-                    </NavProvider>
+                    <App />
                 </ModalsProvider>
             </DatesProvider>
         </MantineProvider>

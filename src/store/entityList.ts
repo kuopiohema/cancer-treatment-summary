@@ -11,14 +11,6 @@ export class EntityList<E extends Entity> extends Model(<E>() => ({
     }
 
     @modelAction
-    update(entity: E) {
-        const index = this.entities.findIndex(item => item.id === entity.id)
-        if (index === -1)
-            return
-        arrayActions.set(this.entities, index, entity)
-    }
-
-    @modelAction
     swap(index1: number, index2: number) {
         arrayActions.swap(this.entities, index1, index2)
     }

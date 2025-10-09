@@ -1,12 +1,12 @@
 import { model, Model, modelAction, prop } from "mobx-keystone";
-import { EntityList } from "./entityList";
 import { Diagnosis } from "./diagnosis";
+import { NavEntityList } from "./navEntityList";
 import { Treatment } from "./treatment";
 
 @model('catrest/Data')
 export class Data extends Model({
-    diagnoses: prop<EntityList<Diagnosis>>(() => new EntityList({})),
-    treatments: prop<EntityList<Treatment>>(() => new EntityList({}))
+    diagnoses: prop<NavEntityList<Diagnosis>>(() => new NavEntityList({})),
+    treatments: prop<NavEntityList<Treatment>>(() => new NavEntityList({}))
 }) {
     @modelAction
     clear() {
