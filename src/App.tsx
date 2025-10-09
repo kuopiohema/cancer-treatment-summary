@@ -16,11 +16,13 @@ import { IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, Ico
 import { getSnapshot } from 'mobx-keystone'
 import { observer } from 'mobx-react'
 import { useMemo, useState } from 'react'
-import EntityPage from './components/topLevelLists/EntityPage.tsx'
+import ChemotherapyComponent from './components/entityComponents/ChemotherapyComponent.tsx'
 import DiagnosisComponent from './components/entityComponents/DiagnosisComponent.tsx'
 import TreatmentComponent from './components/entityComponents/TreatmentComponent.tsx'
-import NavList from './components/topLevelLists/NavList.tsx'
 import Start from './components/pages/Start.tsx'
+import EntityPage from './components/entityLists/EntityPage.tsx'
+import NavList from './components/entityLists/NavList.tsx'
+import { Chemotherapy } from './store/chemotherapy.ts'
 import { Diagnosis } from './store/diagnosis.ts'
 import { createRootStore } from './store/store.ts'
 import { Treatment } from './store/treatment.ts'
@@ -63,6 +65,11 @@ const App = observer(() => {
                     return <EntityPage
                         entity={entity}
                         InnerComponent={TreatmentComponent}
+                    />
+                else if (entity instanceof Chemotherapy)
+                    return <EntityPage
+                        entity={entity}
+                        InnerComponent={ChemotherapyComponent}
                     />
                 return <div>Virhe: kohdetta ei löydy!</div>
             }
@@ -140,16 +147,9 @@ const App = observer(() => {
                         emptyText="Ei hoitoja"
                         addButtonText="Lisää hoito"
                     />
-                    {/*<NavList
-                        entityStore={store.treatments}
-                        ItemComponent={TreatmentNavListItem}
-                        title="Hoidot"
-                        emptyText="Ei hoitoja"
-                        addButtonText="Lisää hoito"
-                    />
                     <NavList
-                        entityStore={store.chemotherapies}
-                        ItemComponent={ChemotherapyNavListItem}
+                        entityList={store.data.chemotherapies}
+                        entityFactory={() => new Chemotherapy({})}
                         title="Kemoterapiajaksot"
                         emptyText="Ei kemoterapiajaksoja"
                         addButtonText="Lisää kemoterapiajakso"

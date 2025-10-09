@@ -1,4 +1,4 @@
-export const drugDosingOptions = {
+export const drugDosingTypeOptions = {
     mgm2: 'mg/m²',
     mgkg: 'mg/kg',
     mg: 'mg',
@@ -10,4 +10,4 @@ export const drugDosingOptions = {
     ug: 'µg'
 } as const
 
-export type DrugDosingValue = keyof typeof drugDosingOptions | ''
+export type DrugDosingTypeValue = keyof typeof drugDosingTypeOptions | ''

@@ -4,8 +4,8 @@ import { draft, getRootStore } from "mobx-keystone"
 import { observer } from "mobx-react"
 import { ComponentType, useEffect, useMemo } from "react"
 import { Entity } from "../../store/entity"
-import { EntityComponentProps } from "../entityComponents/entityComponentProps"
 import { Store } from "../../store/store"
+import { EntityComponentProps } from "../entityComponents/entityComponentProps"
 
 interface EntityPageProps<E extends Entity> {
     entity: E

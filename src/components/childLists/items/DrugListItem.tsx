@@ -1,11 +1,11 @@
 import { Group, TextInput } from "@mantine/core";
 import { toComboboxData } from "../../../data/dataUtils";
-import { drugDosingOptions } from "../../../data/drugDosingOptions";
+import { drugDosingTypeOptions } from "../../../data/drugDosingTypeOptions";
 import { Drug } from "../../../types/form/drug";
 import { EntityListItemInnerProps } from "../EntityListItem";
 
 const DrugListItem = ({item, onUpdate}: EntityListItemInnerProps<Drug>) => {
-    const drugDosingOptionsData = toComboboxData(drugDosingOptions)
+    const drugDosingOptionsData = toComboboxData(drugDosingTypeOptions)
 
     return (
         <>

@@ -2,23 +2,15 @@ import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { ActionIcon, Divider, Group, Stack, Text, Tooltip } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { observer } from "mobx-react";
-import { RemoveCallback } from "../../hooks/useEntityStore";
 import { Entity } from "../../store/entity";
 import { EntityList } from "../../store/entityList";
 import NavListItem from "./NavListItem";
-
-interface NavListProps<E extends Entity> {
-    entityList: EntityList<E>
-    entityFactory: () => E
-    title: string
-    emptyText: string
-    addButtonText: string
-}
+import { EntityListProps } from "./entityListProps";
 
 interface NavListInnerProps<E extends Entity> {
     entityList: EntityList<E>
     emptyText: string
-    onRemove: RemoveCallback
+    onRemove: (id: string) => void
 }
 
 const NavListInner = observer(<E extends Entity>({ entityList, emptyText, onRemove }: NavListInnerProps<E>) => (
@@ -39,7 +31,7 @@ const NavListInner = observer(<E extends Entity>({ entityList, emptyText, onRemo
         ))
 ))
 
-const NavList = observer(<E extends Entity>({ entityList, entityFactory, title, emptyText, addButtonText }: NavListProps<E>) => {
+const NavList = observer(<E extends Entity>({ entityList, entityFactory, title, emptyText, addButtonText }: EntityListProps<E>) => {
     const handleAdd = () => entityList.add(entityFactory())
     const handleSwap = (destinationIndex: number, sourceIndex: number) => { entityList.swap(destinationIndex, sourceIndex) }
     const handleRemove = (id: string) => entityList.remove(id)

@@ -2,7 +2,6 @@ import { Draggable } from "@hello-pangea/dnd";
 import { ActionIcon, Center, NavLink, Tooltip } from "@mantine/core";
 import { IconGripVertical, IconTrash } from "@tabler/icons-react";
 import { MouseEventHandler, ReactNode } from "react";
-import { RemoveCallback } from "../../hooks/useEntityStore";
 import { removeConfirmModal } from "../../modals/removeConfirmModal";
 
 interface NavListItemProps {
@@ -13,7 +12,7 @@ interface NavListItemProps {
     sublabel: ReactNode
     isSelected: boolean
     onSelect: () => void
-    onRemove: RemoveCallback
+    onRemove: (id: string) => void
 }
 
 const NavListItem = ({ index, id, itemName, label, sublabel, isSelected, onSelect, onRemove }: NavListItemProps) => {

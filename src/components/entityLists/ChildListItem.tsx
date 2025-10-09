@@ -1,46 +1,29 @@
 import { Draggable } from "@hello-pangea/dnd"
-import { ActionIcon, alpha, Card, Center, Divider, Group, Stack, Text } from "@mantine/core"
+import { ActionIcon, alpha, Card, Center, Divider, Group, Stack } from "@mantine/core"
 import { IconGripVertical, IconTrash } from "@tabler/icons-react"
-import { ComponentType, useEffect, useState } from "react"
-import { RemoveCallback, UpdateCallback } from "../../hooks/useEntityStore"
-import { useRemoveConfirmModal } from "../../hooks/useRemoveConfirmModal"
-import { Entity } from "../../types/form/entity"
+import { MouseEventHandler, PropsWithChildren } from "react"
+import { removeConfirmModal } from "../../modals/removeConfirmModal"
 
-export interface EntityListItemInnerProps<E extends Entity> {
-    item: E
-    onUpdate: <K extends keyof E, V extends E[K]>(key: K, value: V) => void
-}
-
-interface EntityListItemProps<E extends Entity> {
+interface ChildListItemProps extends PropsWithChildren {
     index: number
-    item: E
-    InnerComponent: ComponentType<EntityListItemInnerProps<E>>
-    onUpdate: UpdateCallback<E>
-    onRemove: RemoveCallback
+    id: string
     itemName: string
+    onRemove: (id: string) => void
 }
 
-const EntityListItem = <E extends Entity>({ index, item, InnerComponent, onUpdate, onRemove, itemName }: EntityListItemProps<E>) => {
-    const [data, setData] = useState<E>(item)
-    useEffect(() => setData(item), [item])
-
-    const handleRemove = useRemoveConfirmModal(itemName, () => onRemove(item.id))
-
-    if (!data)
-        return (<Text>Virhe: näytettävää kohdetta ei löydy!</Text>)
-
-    const handleConfirm = () => onUpdate(data)
-    const handleAbort = () => setData(item)
-    const handleUpdate = <K extends keyof E, V extends E[K]>(key: K, value: V) => {
-        setData({ ...data, [key]: value })
+const ChildListItem = ({ index, id, itemName, onRemove, children }: ChildListItemProps) => {
+    const handleRemove: MouseEventHandler<HTMLButtonElement> = (e) => {
+        removeConfirmModal(itemName, () => onRemove(id))
+        e.stopPropagation()
     }
-
-    const isDirty = data !== item
 
     const cardBackgroundColor = alpha('var(--mantine-color-gray-6)', 0.2)
 
     return (
-        <Draggable index={index} draggableId={item.id}>
+        <Draggable
+            index={index}
+            draggableId={id}
+        >
             {(provided) => (
                 <Card
                     shadow="sm"
@@ -69,10 +52,7 @@ const EntityListItem = <E extends Entity>({ index, item, InnerComponent, onUpdat
                             flex="auto"
                             py="xs"
                         >
-                            <InnerComponent
-                                item={data}
-                                onUpdate={handleUpdate}
-                            />
+                            {children}
                         </Stack>
                         <Group
                             align="stretch"
@@ -94,4 +74,4 @@ const EntityListItem = <E extends Entity>({ index, item, InnerComponent, onUpdat
     )
 }
 
-export default EntityListItem
+export default ChildListItem
