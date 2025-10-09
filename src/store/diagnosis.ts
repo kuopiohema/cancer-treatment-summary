@@ -1,9 +1,8 @@
 import { override } from "mobx";
 import { ExtendedModel, model, prop } from "mobx-keystone";
-import { Entity } from "./entity";
-import { getTextList } from "../utils/getTextList";
 import formatDate from "../utils/formatDate";
-import { Path } from "../context/navContext";
+import { getTextList } from "../utils/getTextList";
+import { Entity } from "./entity";
 
 @model('catrest/diagnosis')
 export class Diagnosis extends ExtendedModel(Entity, {
@@ -15,7 +14,6 @@ export class Diagnosis extends ExtendedModel(Entity, {
     spread: prop('').withSetter()
 }) {
     itemName = 'diagnoosi'
-    path: Path = 'diagnoses'
 
     @override
     get label() {

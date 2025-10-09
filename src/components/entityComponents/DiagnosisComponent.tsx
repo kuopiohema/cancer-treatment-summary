@@ -1,10 +1,10 @@
 import { Group, Textarea, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
-import { ItemPageInnerProps } from "../itemPageInnerProps";
-import { Diagnosis } from "../../../store/diagnosis";
+import { EntityComponentProps } from "./entityComponentProps";
+import { Diagnosis } from "../../store/diagnosis";
 import { observer } from "mobx-react";
 
-const DiagnosisPage = observer(({ data }: ItemPageInnerProps<Diagnosis>) => {   
+const DiagnosisComponent = observer(({ data }: EntityComponentProps<Diagnosis>) => {   
     return (
         <>
             <Group preventGrowOverflow={false} grow>
@@ -53,4 +53,4 @@ const DiagnosisPage = observer(({ data }: ItemPageInnerProps<Diagnosis>) => {
     )
 })
 
-export default DiagnosisPage
+export default DiagnosisComponent

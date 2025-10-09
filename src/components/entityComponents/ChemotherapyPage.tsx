@@ -1,13 +1,13 @@
 import { Group } from "@mantine/core";
-import { Chemotherapy } from "../../../types/form/chemotherapy";
-import { ItemPageInnerProps } from "../itemPageInnerProps";
+import { Chemotherapy } from "../../types/form/chemotherapy";
+import { EntityComponentProps } from "./entityComponentProps";
 import { DateInput } from "@mantine/dates";
-import { Drug, newDrug } from "../../../types/form/drug";
-import EntityList from "../../entityList/EntityList";
-import DrugListItem from "../../entityList/items/DrugListItem";
-import { useEntityStore } from "../../../hooks/useEntityStore";
+import { Drug, newDrug } from "../../types/form/drug";
+import EntityList from "../entityList/EntityList";
+import DrugListItem from "../entityList/items/DrugListItem";
+import { useEntityStore } from "../../hooks/useEntityStore";
 
-const ChemotherapyPage = ({ data: item, onUpdate }: ItemPageInnerProps<Chemotherapy>) => {
+const ChemotherapyPage = ({ data: item, onUpdate }: EntityComponentProps<Chemotherapy>) => {
     const drugsStore = useEntityStore<Drug>(newDrug, undefined, data => onUpdate('drugs', data), item.drugs)
 
     return (

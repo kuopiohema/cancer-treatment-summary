@@ -4,16 +4,16 @@ import { draft, getRootStore } from "mobx-keystone"
 import { observer } from "mobx-react"
 import { ComponentType, useEffect, useMemo } from "react"
 import { Entity } from "../../store/entity"
-import { ItemPageInnerProps } from "./itemPageInnerProps"
+import { EntityComponentProps } from "../entityComponents/entityComponentProps"
 import { Store } from "../../store/store"
 
-interface ItemPageProps<E extends Entity> {
+interface EntityPageProps<E extends Entity> {
     entity: E
-    InnerComponent: ComponentType<ItemPageInnerProps<E>>
+    InnerComponent: ComponentType<EntityComponentProps<E>>
     fullWidth?: boolean
 }
 
-const ItemPage = observer(<E extends Entity>({ entity, InnerComponent, fullWidth }: ItemPageProps<E>) => {
+const EntityPage = observer(<E extends Entity>({ entity, InnerComponent, fullWidth }: EntityPageProps<E>) => {
     const entityDraft = useMemo(() => draft(entity), [entity])
 
     useEffect(() => getRootStore<Store>(entity)?.nav.setPageIsDirty(entityDraft.isDirty), [entity, entityDraft.isDirty])
@@ -52,4 +52,4 @@ const ItemPage = observer(<E extends Entity>({ entity, InnerComponent, fullWidth
     )
 })
 
-export default ItemPage
+export default EntityPage

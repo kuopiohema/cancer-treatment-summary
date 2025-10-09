@@ -4,7 +4,6 @@ import { Entity } from "./entity";
 import { override } from "mobx";
 import { getTextList } from "../utils/getTextList";
 import formatDate from "../utils/formatDate";
-import { Path } from "../context/navContext";
 
 @model('catrest/treatment')
 export class Treatment extends ExtendedModel(Entity, {
@@ -16,7 +15,6 @@ export class Treatment extends ExtendedModel(Entity, {
     stopReasonOther: prop('').withSetter()
 }) {
     itemName = 'hoito'
-    path: Path = 'treatments'
     
     @override
     get label() {

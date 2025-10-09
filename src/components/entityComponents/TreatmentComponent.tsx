@@ -1,12 +1,12 @@
 import { Group, Select, TextInput } from "@mantine/core";
-import { ItemPageInnerProps } from "../itemPageInnerProps";
+import { EntityComponentProps } from "./entityComponentProps";
 import { DateInput } from "@mantine/dates";
-import { stopReasonOptions, StopReasonValue } from "../../../data/stopReasonOptions";
-import { toComboboxData } from "../../../data/dataUtils";
+import { stopReasonOptions, StopReasonValue } from "../../data/stopReasonOptions";
+import { toComboboxData } from "../../data/dataUtils";
 import { observer } from "mobx-react";
-import { Treatment } from "../../../store/treatment";
+import { Treatment } from "../../store/treatment";
 
-const TreatmentPage = observer(({ data }: ItemPageInnerProps<Treatment>) => {
+const TreatmentComponent = observer(({ data }: EntityComponentProps<Treatment>) => {
     const stopReasonOptionsData = toComboboxData(stopReasonOptions)
 
     return (
@@ -59,4 +59,4 @@ const TreatmentPage = observer(({ data }: ItemPageInnerProps<Treatment>) => {
     )
 })
 
-export default TreatmentPage
+export default TreatmentComponent

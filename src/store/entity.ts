@@ -2,7 +2,6 @@ import { randomId } from "@mantine/hooks";
 import { computed } from "mobx";
 import { detach, Model, model, modelAction, rootRef, tProp, types } from "mobx-keystone";
 import { ReactNode } from "react";
-import { Path } from "../context/navContext";
 import { navCtx } from "./store";
 
 @model('catrest/entity')
@@ -10,7 +9,6 @@ export class Entity extends Model({
     id: tProp(types.string, () => randomId(''))
 }) {
     itemName = 'kohde'
-    path: Path = 'start'
 
     getRefId() {
         return this.id

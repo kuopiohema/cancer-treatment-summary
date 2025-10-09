@@ -1,5 +1,5 @@
 import { Entity } from "../../store/entity"
 
-export interface ItemPageInnerProps<E extends Entity> {
+export interface EntityComponentProps<E extends Entity> {
     data: E
 }

@@ -16,9 +16,10 @@ import { IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, Ico
 import { getSnapshot } from 'mobx-keystone'
 import { observer } from 'mobx-react'
 import { useMemo, useState } from 'react'
-import ItemPage from './components/navList/ItemPage.tsx'
-import DiagnosisPage from './components/navList/itemPages/DiagnosisPage.tsx'
-import NavList from './components/navList/NavList.tsx'
+import EntityPage from './components/topLevelLists/EntityPage.tsx'
+import DiagnosisComponent from './components/entityComponents/DiagnosisComponent.tsx'
+import TreatmentComponent from './components/entityComponents/TreatmentComponent.tsx'
+import NavList from './components/topLevelLists/NavList.tsx'
 import Start from './components/pages/Start.tsx'
 import { Diagnosis } from './store/diagnosis.ts'
 import { createRootStore } from './store/store.ts'
@@ -52,11 +53,16 @@ const App = observer(() => {
             case 'start':
                 return <Start />
             case 'entity': {
-                const entity = store.nav.selectedEntity?.maybeCurrent
+                const entity = store.nav.selectedEntity?.current
                 if (entity instanceof Diagnosis)
-                    return <ItemPage
+                    return <EntityPage
                         entity={entity}
-                        InnerComponent={DiagnosisPage}
+                        InnerComponent={DiagnosisComponent}
+                    />
+                else if (entity instanceof Treatment)
+                    return <EntityPage
+                        entity={entity}
+                        InnerComponent={TreatmentComponent}
                     />
                 return <div>Virhe: kohdetta ei löydy!</div>
             }
