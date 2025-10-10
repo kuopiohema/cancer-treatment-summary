@@ -1,8 +1,8 @@
 import { model, Model, modelAction, prop } from "mobx-keystone";
-import { Diagnosis } from "./diagnosis";
 import { NavEntityList } from "./navEntityList";
-import { Treatment } from "./treatment";
-import { Chemotherapy } from "./chemotherapy";
+import { Diagnosis } from "./entity/diagnosis";
+import { Treatment } from "./entity/treatment";
+import { Chemotherapy } from "./entity/chemotherapy";
 
 @model('catrest/Data')
 export class Data extends Model({

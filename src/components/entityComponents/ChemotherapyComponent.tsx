@@ -1,11 +1,11 @@
-import { Group } from "@mantine/core"
-import { Chemotherapy } from "../../store/chemotherapy"
-import { EntityComponentProps } from "./entityComponentProps"
+import { Group, Text } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { observer } from "mobx-react"
+import { Chemotherapy } from "../../store/entity/chemotherapy"
+import { Drug } from "../../store/entity/drug"
 import ChildList from "../entityLists/ChildList"
-import { Drug } from "../../store/drug"
 import DrugComponent from "./DrugComponent"
+import { EntityComponentProps } from "./entityComponentProps"
 
 const ChemotherapyComponent = observer(({ data }: EntityComponentProps<Chemotherapy>) => {
     return (
@@ -32,6 +32,7 @@ const ChemotherapyComponent = observer(({ data }: EntityComponentProps<Chemother
                 addButtonText="Lisää lääke"
                 ListItemComponent={DrugComponent}
             />
+            <Text>Kumulatiivinen antrasykliiniannos: {data.doxoEquivalent} mg/m² (doksorubisiiniekvivalentti)</Text>
         </>
     )
 })

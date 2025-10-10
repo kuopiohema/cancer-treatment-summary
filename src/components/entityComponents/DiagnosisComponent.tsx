@@ -1,7 +1,7 @@
 import { Group, Textarea, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { EntityComponentProps } from "./entityComponentProps";
-import { Diagnosis } from "../../store/diagnosis";
+import { Diagnosis } from "../../store/entity/diagnosis";
 import { observer } from "mobx-react";
 
 const DiagnosisComponent = observer(({ data }: EntityComponentProps<Diagnosis>) => {   

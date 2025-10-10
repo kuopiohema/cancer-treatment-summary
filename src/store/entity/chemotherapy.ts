@@ -1,9 +1,10 @@
 import { ExtendedModel, model, prop } from "mobx-keystone";
 import { Entity } from "./entity";
-import formatDate from "../utils/formatDate";
-import { override } from "mobx";
-import { EntityList } from "./entityList";
+import formatDate from "../../utils/formatDate";
+import { computed, override } from "mobx";
+import { EntityList } from "../entityList";
 import { Drug } from "./drug";
+import { getTextList } from "../../utils/getTextList";
 
 @model('catrest/chemotherapy')
 export class Chemotherapy extends ExtendedModel(Entity, {
@@ -19,8 +20,15 @@ export class Chemotherapy extends ExtendedModel(Entity, {
     }
 
     @override
-    // eslint-disable-next-line @typescript-eslint/class-literal-property-style
     get sublabel() {
-        return ''
+        return getTextList([
+            `${this.drugs.entities.length} lääke${this.drugs.entities.length !== 1 ? 'ttä' : ''}`,
+            `Doksorubisiiniekvivalentti: ${this.doxoEquivalent} mg/m²`
+        ])
+    }
+
+    @computed
+    get doxoEquivalent() {
+        return this.drugs.entities.reduce((value, drug) => value + drug.doxoEquivalent, 0)
     }
 }

@@ -19,13 +19,13 @@ import { useMemo, useState } from 'react'
 import ChemotherapyComponent from './components/entityComponents/ChemotherapyComponent.tsx'
 import DiagnosisComponent from './components/entityComponents/DiagnosisComponent.tsx'
 import TreatmentComponent from './components/entityComponents/TreatmentComponent.tsx'
-import Start from './components/pages/Start.tsx'
 import EntityPage from './components/entityLists/EntityPage.tsx'
 import NavList from './components/entityLists/NavList.tsx'
-import { Chemotherapy } from './store/chemotherapy.ts'
-import { Diagnosis } from './store/diagnosis.ts'
+import Start from './components/pages/Start.tsx'
+import { Chemotherapy } from './store/entity/chemotherapy.ts'
+import { Diagnosis } from './store/entity/diagnosis.ts'
+import { Treatment } from './store/entity/treatment.ts'
 import { createRootStore } from './store/store.ts'
-import { Treatment } from './store/treatment.ts'
 
 const App = observer(() => {
     const { setColorScheme } = useMantineColorScheme()

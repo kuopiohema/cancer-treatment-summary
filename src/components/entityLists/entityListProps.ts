@@ -1,4 +1,4 @@
-import { Entity } from "../../store/entity"
+import { Entity } from "../../store/entity/entity"
 import { EntityList } from "../../store/entityList"
 
 export interface EntityListProps<E extends Entity> {

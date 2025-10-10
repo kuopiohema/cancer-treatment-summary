@@ -2,7 +2,7 @@ import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { ActionIcon, Divider, Group, Stack, Text, Tooltip } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { observer } from "mobx-react";
-import { Entity } from "../../store/entity";
+import { Entity } from "../../store/entity/entity";
 import { EntityList } from "../../store/entityList";
 import NavListItem from "./NavListItem";
 import { EntityListProps } from "./entityListProps";

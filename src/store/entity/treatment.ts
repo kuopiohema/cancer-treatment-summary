@@ -1,9 +1,9 @@
 import { ExtendedModel, model, prop } from "mobx-keystone";
-import { stopReasonOptions, StopReasonValue } from "../data/stopReasonOptions";
+import { stopReasonOptions, StopReasonValue } from "../../data/stopReasonOptions";
 import { Entity } from "./entity";
 import { override } from "mobx";
-import { getTextList } from "../utils/getTextList";
-import formatDate from "../utils/formatDate";
+import { getTextList } from "../../utils/getTextList";
+import formatDate from "../../utils/formatDate";
 
 @model('catrest/treatment')
 export class Treatment extends ExtendedModel(Entity, {

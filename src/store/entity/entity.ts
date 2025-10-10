@@ -2,7 +2,7 @@ import { randomId } from "@mantine/hooks";
 import { computed } from "mobx";
 import { detach, Model, model, modelAction, rootRef, tProp, types } from "mobx-keystone";
 import { ReactNode } from "react";
-import { navCtx } from "./store";
+import { navCtx } from "../store";
 
 @model('catrest/entity')
 export class Entity extends Model({

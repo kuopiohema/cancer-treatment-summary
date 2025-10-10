@@ -1,5 +1,5 @@
 import { arrayActions, Model, model, modelAction, prop } from "mobx-keystone";
-import { Entity } from "./entity";
+import { Entity } from "./entity/entity";
 
 @model('catrest/entityList')
 export class EntityList<E extends Entity> extends Model(<E>() => ({

@@ -4,7 +4,7 @@ import { DateInput } from "@mantine/dates";
 import { stopReasonOptions, StopReasonValue } from "../../data/stopReasonOptions";
 import { toComboboxData } from "../../data/dataUtils";
 import { observer } from "mobx-react";
-import { Treatment } from "../../store/treatment";
+import { Treatment } from "../../store/entity/treatment";
 
 const TreatmentComponent = observer(({ data }: EntityComponentProps<Treatment>) => {
     const stopReasonOptionsData = toComboboxData(stopReasonOptions)

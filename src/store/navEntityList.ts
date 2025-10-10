@@ -1,5 +1,5 @@
 import { ExtendedModel, model, modelAction } from "mobx-keystone";
-import { Entity } from "./entity";
+import { Entity } from "./entity/entity";
 import { EntityList } from "./entityList";
 import { navCtx } from "./store";
 

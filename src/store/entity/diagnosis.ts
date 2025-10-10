@@ -1,7 +1,7 @@
 import { override } from "mobx";
 import { ExtendedModel, model, prop } from "mobx-keystone";
-import formatDate from "../utils/formatDate";
-import { getTextList } from "../utils/getTextList";
+import formatDate from "../../utils/formatDate";
+import { getTextList } from "../../utils/getTextList";
 import { Entity } from "./entity";
 
 @model('catrest/diagnosis')

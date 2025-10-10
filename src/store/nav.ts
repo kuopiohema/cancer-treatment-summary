@@ -1,5 +1,5 @@
 import { detach, model, Model, modelAction, prop, Ref, rootRef } from "mobx-keystone";
-import { Entity, entityRef } from "./entity";
+import { Entity, entityRef } from "./entity/entity";
 import { rejectChangesConfirmModal } from "../modals/rejectChangesConfirmModal";
 
 export type Page = 'start' | 'entity' | 'adverseEffects' | 'followup' | 'signature'
