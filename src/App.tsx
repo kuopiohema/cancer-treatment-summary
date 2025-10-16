@@ -26,6 +26,10 @@ import { Chemotherapy } from './store/entity/chemotherapy.ts'
 import { Diagnosis } from './store/entity/diagnosis.ts'
 import { Treatment } from './store/entity/treatment.ts'
 import { createRootStore } from './store/store.ts'
+import { Radiotherapy } from './store/entity/radiotherapy.ts'
+import RadiotherapyComponent from './components/entityComponents/RadiotherapyComponent.tsx'
+import { Procedure } from './store/entity/procedure.ts'
+import ProcedureComponent from './components/entityComponents/ProcedureComponent.tsx'
 
 const App = observer(() => {
     const { setColorScheme } = useMantineColorScheme()
@@ -70,6 +74,16 @@ const App = observer(() => {
                     return <EntityPage
                         entity={entity}
                         InnerComponent={ChemotherapyComponent}
+                    />
+                else if (entity instanceof Radiotherapy)
+                    return <EntityPage
+                        entity={entity}
+                        InnerComponent={RadiotherapyComponent}
+                    />
+                else if (entity instanceof Procedure)
+                    return <EntityPage
+                        entity={entity}
+                        InnerComponent={ProcedureComponent}
                     />
                 return <div>Virhe: kohdetta ei löydy!</div>
             }
@@ -154,16 +168,22 @@ const App = observer(() => {
                         emptyText="Ei kemoterapiajaksoja"
                         addButtonText="Lisää kemoterapiajakso"
                     />
+                    <NavList
+                        entityList={store.data.radiotherapies}
+                        entityFactory={() => new Radiotherapy({})}
+                        title="Sädehoitojaksot"
+                        emptyText="Ei sädehoitojaksoja"
+                        addButtonText="Lisää sädehoitojakso"
+                    />
+                    <NavList
+                        entityList={store.data.procedures}
+                        entityFactory={() => new Procedure({})}
+                        title="Leikkaukset ja toimenpiteet"
+                        emptyText="Ei toimenpiteitä"
+                        addButtonText="Lisää toimenpide"
+                    />
                     {/*
-                        <NavList
-                            items={formValues.radiotherapies}
-                            path="radiotherapies"
-                            itemFactory={newRadiotherapy}
-                            ItemComponent={RadiotherapyNavListItem}
-                            title="Sädehoidot"
-                            emptyText="Ei sädehoitoja"
-                            addButtonText="Lisää sädehoito"
-                        />
+                     
                         <NavList
                             items={formValues.procedures}
                             path="procedures"

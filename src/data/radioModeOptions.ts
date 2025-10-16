@@ -1,10 +1,10 @@
 import { other } from './dataUtils'
 
 export const radioModeOptions = {
-    photon: 'Fotonisäde',
-    'photon-hyper': 'Fotonisäde (hyperfraktioitu)',
-    'photon-hypo': 'Fotonisäde (hypofraktioitu)',
-    proton: 'Protonisäde',
+    photon: 'Fotonisädehoito',
+    'photon-hyper': 'Fotonisädehoito (hyperfraktioitu)',
+    'photon-hypo': 'Fotonisädehoito (hypofraktioitu)',
+    proton: 'Protonisädehoito',
     gamma: 'Stereotaktinen ("gammaveitsi")',
     brachy: 'Sisäinen (brakyterapia)',
     ...other

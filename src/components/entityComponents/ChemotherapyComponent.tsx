@@ -1,4 +1,4 @@
-import { Group, Text } from "@mantine/core"
+import { Divider, Group, List, Text } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { observer } from "mobx-react"
 import { Chemotherapy } from "../../store/entity/chemotherapy"
@@ -6,6 +6,8 @@ import { Drug } from "../../store/entity/drug"
 import ChildList from "../entityLists/ChildList"
 import DrugComponent from "./DrugComponent"
 import { EntityComponentProps } from "./entityComponentProps"
+import { doxoEquivalents } from "../../data/doxoEquivalents"
+import { firstLetterUppercase } from "../../utils/firstLetterUppercase"
 
 const ChemotherapyComponent = observer(({ data }: EntityComponentProps<Chemotherapy>) => {
     return (
@@ -32,7 +34,14 @@ const ChemotherapyComponent = observer(({ data }: EntityComponentProps<Chemother
                 addButtonText="Lisää lääke"
                 ListItemComponent={DrugComponent}
             />
-            <Text>Kumulatiivinen antrasykliiniannos: {data.doxoEquivalent} mg/m² (doksorubisiiniekvivalentti)</Text>
+            <Divider orientation="horizontal" />
+            <Text>Kumulatiivinen antrasykliiniannos (doksorubisiiniekvivalentti) = {data.doxoEquivalent} mg/m²<br /></Text>
+            <Text size="xs">Käytetyt kertoimet:</Text>
+            <List size="xs">
+                {doxoEquivalents.map(item => (
+                    <List.Item key={item.drug}>{firstLetterUppercase(item.drug)}: {item.factor}</List.Item>
+                ))}
+            </List>
         </>
     )
 })

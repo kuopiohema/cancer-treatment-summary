@@ -5,7 +5,7 @@ export const removeConfirmModal = (itemName: string, onConfirm: () => void) => m
     title: `Poista ${itemName}`,
     children: (
         <Text size="sm">
-            Poistetaanko {itemName}? Palauttaminen ei ole mahdollista!
+            Poistetaanko {itemName}? Tietoja ei voi palauttaa!
         </Text>
     ),
     labels: {confirm: 'Poista', cancel: 'Peruuta'},

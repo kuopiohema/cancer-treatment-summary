@@ -1,0 +1,1 @@
+export const firstLetterUppercase = (value: string) => value.replace(/^./, char => char.toLocaleUpperCase())
