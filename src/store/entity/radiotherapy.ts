@@ -4,19 +4,21 @@ import { radioModeOptions, RadioModeValue } from "../../data/radioModeOptions";
 import { override } from "mobx";
 import { getTextList } from "../../utils/getTextList";
 import formatDate from "../../utils/formatDate";
-import { getOptionText } from "../../utils/getOptionText";
+import { getOptionText } from "../../data/dataUtils";
+import { DateInputValue } from "../../types/dateInputValue";
+import { NumberInputValue } from "../../types/numberInputValue";
 
 @model('catrest/radiotherapy')
 export class Radiotherapy extends ExtendedModel(Entity, {
-    startDate: prop<string | null>(null).withSetter(),
-    endDate: prop<string | null>(null).withSetter(),
-    target: prop<string>('').withSetter(),
+    startDate: prop<DateInputValue>(null).withSetter(),
+    endDate: prop<DateInputValue>(null).withSetter(),
+    target: prop('').withSetter(),
     mode: prop<RadioModeValue>('').withSetter(),
-    modeOther: prop<string>('').withSetter(),
-    singleDose: prop<string | number>(0).withSetter(),
-    totalDose: prop<string | number>(0).withSetter(),
-    fractions: prop<string | number>(0).withSetter(),
-    notes: prop<string>('').withSetter()
+    modeOther: prop('').withSetter(),
+    singleDose: prop<NumberInputValue>(0).withSetter(),
+    totalDose: prop<NumberInputValue>(0).withSetter(),
+    fractions: prop<NumberInputValue>(0).withSetter(),
+    notes: prop('').withSetter()
 }) {
     itemName = 'sädehoitojakso'
 

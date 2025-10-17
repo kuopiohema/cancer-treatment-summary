@@ -4,14 +4,15 @@ import { Entity } from "./entity";
 import { override } from "mobx";
 import { getTextList } from "../../utils/getTextList";
 import formatDate from "../../utils/formatDate";
-import { getOptionText } from "../../utils/getOptionText";
+import { getOptionText } from "../../data/dataUtils";
+import { DateInputValue } from "../../types/dateInputValue";
 
 @model('catrest/treatment')
 export class Treatment extends ExtendedModel(Entity, {
     protocol: prop('').withSetter(),
     group: prop('').withSetter(),
-    startDate: prop<string | null>(null).withSetter(),
-    endDate: prop<string | null>(null).withSetter(),
+    startDate: prop<DateInputValue>(null).withSetter(),
+    endDate: prop<DateInputValue>(null).withSetter(),
     stopReason: prop<StopReasonValue>('').withSetter(),
     stopReasonOther: prop('').withSetter()
 }) {

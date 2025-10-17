@@ -30,6 +30,8 @@ import { Radiotherapy } from './store/entity/radiotherapy.ts'
 import RadiotherapyComponent from './components/entityComponents/RadiotherapyComponent.tsx'
 import { Procedure } from './store/entity/procedure.ts'
 import ProcedureComponent from './components/entityComponents/ProcedureComponent.tsx'
+import { StemCellTransplant } from './store/entity/stemCellTransplant.ts'
+import StemCellTransplantComponent from './components/entityComponents/StemCellTransplantComponent.tsx'
 
 const App = observer(() => {
     const { setColorScheme } = useMantineColorScheme()
@@ -84,6 +86,11 @@ const App = observer(() => {
                     return <EntityPage
                         entity={entity}
                         InnerComponent={ProcedureComponent}
+                    />
+                else if (entity instanceof StemCellTransplant)
+                    return <EntityPage
+                        entity={entity}
+                        InnerComponent={StemCellTransplantComponent}
                     />
                 return <div>Virhe: kohdetta ei löydy!</div>
             }
@@ -182,26 +189,13 @@ const App = observer(() => {
                         emptyText="Ei toimenpiteitä"
                         addButtonText="Lisää toimenpide"
                     />
-                    {/*
-                     
-                        <NavList
-                            items={formValues.procedures}
-                            path="procedures"
-                            itemFactory={newProcedure}
-                            ItemComponent={ProcedureNavListItem}
-                            title="Leikkaukset ja toimenpiteet"
-                            emptyText="Ei toimenpiteitä"
-                            addButtonText="Lisää toimenpide"
-                        />
-                        <NavList
-                            items={formValues.stemCellTransplants}
-                            path="stemCellTransplants"
-                            itemFactory={newStemCellTransplant}
-                            ItemComponent={StemCellTransplantNavListItem}
-                            title="Kantasolusiirrot"
-                            emptyText="Ei kantasolusiirtoja"
-                            addButtonText="Lisää kantasolusiirto"
-                        />*/}
+                    <NavList
+                        entityList={store.data.stemCellTransplants}
+                        entityFactory={() => new StemCellTransplant({})}
+                        title="Kantasolusiirrot"
+                        emptyText="Ei kantasolusiirtoja"
+                        addButtonText="Lisää kantasolusiirto"
+                    />
                 </AppShell.Section>
             </AppShell.Navbar>
             <AppShell.Main>

@@ -3,13 +3,14 @@ import { Entity } from "./entity";
 import { DrugDosingTypeValue } from "../../data/drugDosingTypeOptions";
 import { computed } from "mobx";
 import { doxoEquivalents } from "../../data/doxoEquivalents";
+import { NumberInputValue } from "../../types/numberInputValue";
 
 @model('catrest/drug')
 export class Drug extends ExtendedModel(Entity, {
-    drug: prop<string>('').withSetter(),
-    dose: prop<string | number>(0).withSetter(),
-    dosingType: prop<DrugDosingTypeValue>('mgm2').withSetter(),
-    notes: prop<string>('').withSetter()
+    drug: prop('').withSetter(),
+    dose: prop<NumberInputValue>(0).withSetter(),
+    dosingType: prop<DrugDosingTypeValue>('').withSetter(),
+    notes: prop('').withSetter()
 }) {
     itemName = 'lääke'
 

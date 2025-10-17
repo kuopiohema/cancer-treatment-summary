@@ -1,4 +1,4 @@
-import { other } from './dataUtils'
+import { otherOption } from './dataUtils'
 
 export const radioModeOptions = {
     photon: 'Fotonisädehoito',
@@ -7,7 +7,7 @@ export const radioModeOptions = {
     proton: 'Protonisädehoito',
     gamma: 'Stereotaktinen ("gammaveitsi")',
     brachy: 'Sisäinen (brakyterapia)',
-    ...other
+    ...otherOption
 } as const
 
 export type RadioModeValue = keyof typeof radioModeOptions | ''

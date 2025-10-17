@@ -3,10 +3,11 @@ import { ExtendedModel, model, prop } from "mobx-keystone";
 import formatDate from "../../utils/formatDate";
 import { getTextList } from "../../utils/getTextList";
 import { Entity } from "./entity";
+import { DateInputValue } from "../../types/dateInputValue";
 
 @model('catrest/diagnosis')
 export class Diagnosis extends ExtendedModel(Entity, {
-    date: prop<string | null>(null).withSetter(),
+    date: prop<DateInputValue>(null).withSetter(),
     icd10: prop('').withSetter(),
     text: prop('').withSetter(),
     detail: prop('').withSetter(),

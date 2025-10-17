@@ -3,13 +3,14 @@ import { Entity } from "./entity";
 import { override } from "mobx";
 import { getTextList } from "../../utils/getTextList";
 import formatDate from "../../utils/formatDate";
+import { DateInputValue } from "../../types/dateInputValue";
 
 @model('catrest/procedure')
 export class Procedure extends ExtendedModel(Entity, {
-    date: prop<string | null>(null).withSetter(),
-    procedure: prop<string>('').withSetter(),
-    details: prop<string>('').withSetter(),
-    complications: prop<string>('').withSetter()
+    date: prop<DateInputValue>(null).withSetter(),
+    procedure: prop('').withSetter(),
+    details: prop('').withSetter(),
+    complications: prop('').withSetter()
 }) {
     itemName = 'toimenpide'
 

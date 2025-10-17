@@ -5,6 +5,7 @@ import { Treatment } from "./entity/treatment";
 import { Chemotherapy } from "./entity/chemotherapy";
 import { Radiotherapy } from "./entity/radiotherapy";
 import { Procedure } from "./entity/procedure";
+import { StemCellTransplant } from "./entity/stemCellTransplant";
 
 @model('catrest/Data')
 export class Data extends Model({
@@ -12,7 +13,8 @@ export class Data extends Model({
     treatments: prop<NavEntityList<Treatment>>(() => new NavEntityList({})),
     chemotherapies: prop<NavEntityList<Chemotherapy>>(() => new NavEntityList({})),
     radiotherapies: prop<NavEntityList<Radiotherapy>>(() => new NavEntityList({})),
-    procedures: prop<NavEntityList<Procedure>>(() => new NavEntityList({}))
+    procedures: prop<NavEntityList<Procedure>>(() => new NavEntityList({})),
+    stemCellTransplants: prop<NavEntityList<StemCellTransplant>>(() => new NavEntityList({}))
 }) {
     @modelAction
     clear() {
@@ -21,5 +23,6 @@ export class Data extends Model({
         this.chemotherapies.clear()
         this.radiotherapies.clear()
         this.procedures.clear()
+        this.stemCellTransplants.clear()
     }
 }

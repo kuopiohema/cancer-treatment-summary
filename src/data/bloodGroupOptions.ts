@@ -1,3 +1,5 @@
+import { unknownOption } from "./dataUtils"
+
 export const bloodGroupOptions = {
     oneg: 'O RhD-',
     opos: 'O RhD+',
@@ -6,7 +8,8 @@ export const bloodGroupOptions = {
     bneg: 'B RhD-',
     bpos: 'B RhD+',
     abneg: 'AB RhD-',
-    abpos: 'AB RhD+'
+    abpos: 'AB RhD+',
+    ...unknownOption
 } as const
 
 export type BloodGroupValue = keyof typeof bloodGroupOptions | ''

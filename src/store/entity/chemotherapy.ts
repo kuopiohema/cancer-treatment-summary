@@ -5,11 +5,12 @@ import { computed, override } from "mobx";
 import { EntityList } from "../entityList";
 import { Drug } from "./drug";
 import { getTextList } from "../../utils/getTextList";
+import { DateInputValue } from "../../types/dateInputValue";
 
 @model('catrest/chemotherapy')
 export class Chemotherapy extends ExtendedModel(Entity, {
-    startDate: prop<string | null>(null).withSetter(),
-    endDate: prop<string | null>(null).withSetter(),
+    startDate: prop<DateInputValue>(null).withSetter(),
+    endDate: prop<DateInputValue>(null).withSetter(),
     drugs: prop<EntityList<Drug>>(() => new EntityList({}))
 }) {
     itemName = 'kemoterapiajakso'
