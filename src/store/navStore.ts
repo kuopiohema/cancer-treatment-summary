@@ -1,19 +1,15 @@
-import { detach, model, Model, modelAction, prop, Ref, rootRef } from "mobx-keystone";
-import { Entity, entityRef } from "./entity/entity";
+import { model, Model, modelAction, prop, Ref } from "mobx-keystone";
 import { rejectChangesConfirmModal } from "../modals/rejectChangesConfirmModal";
+import { Entity, entityRef } from "./entity/entity";
 
 export type Page = 'start' | 'entity' | 'adverseEffects' | 'followup' | 'signature'
 
-@model('catrest/Nav')
-export class Nav extends Model({
+@model('catrest/navStore')
+export class NavStore extends Model({
     page: prop<Page>('start'),
     selectedEntity: prop<Ref<Entity> | undefined>(undefined),
     pageIsDirty: prop<boolean>(false).withSetter()
 }) {
-    getRefId() {
-        return 'nav'
-    }
-
     @modelAction
     navigate(page: Page, entity?: Entity) {
         this.page = page
@@ -46,11 +42,3 @@ export class Nav extends Model({
         this.pageIsDirty = false
     }
 }
-
-export const navRef = rootRef<Nav>("catrest/NavRef", {
-    onResolvedValueChange(ref, newEntity, oldEntity) {
-        if (oldEntity && !newEntity) {
-            detach(ref)
-        }
-    }
-})

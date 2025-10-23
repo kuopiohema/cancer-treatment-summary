@@ -7,8 +7,8 @@ import { Radiotherapy } from "./entity/radiotherapy";
 import { Procedure } from "./entity/procedure";
 import { StemCellTransplant } from "./entity/stemCellTransplant";
 
-@model('catrest/Data')
-export class Data extends Model({
+@model('catrest/formStore')
+export class FormStore extends Model({
     diagnoses: prop<NavEntityList<Diagnosis>>(() => new NavEntityList({})),
     treatments: prop<NavEntityList<Treatment>>(() => new NavEntityList({})),
     chemotherapies: prop<NavEntityList<Chemotherapy>>(() => new NavEntityList({})),
@@ -17,7 +17,7 @@ export class Data extends Model({
     stemCellTransplants: prop<NavEntityList<StemCellTransplant>>(() => new NavEntityList({}))
 }) {
     @modelAction
-    clear() {
+    clear() {""
         this.diagnoses.clear()
         this.treatments.clear()
         this.chemotherapies.clear()

@@ -4,7 +4,7 @@ import { draft, getRootStore } from "mobx-keystone"
 import { observer } from "mobx-react"
 import { ComponentType, useEffect, useMemo } from "react"
 import { Entity } from "../../store/entity/entity"
-import { Store } from "../../store/store"
+import { RootStore } from "../../store/store"
 import { EntityComponentProps } from "../entityComponents/entityComponentProps"
 
 interface EntityPageProps<E extends Entity> {
@@ -15,7 +15,7 @@ interface EntityPageProps<E extends Entity> {
 const EntityPage = observer(<E extends Entity>({ entity, InnerComponent }: EntityPageProps<E>) => {
     const entityDraft = useMemo(() => draft(entity), [entity])
 
-    useEffect(() => getRootStore<Store>(entity)?.nav.setPageIsDirty(entityDraft.isDirty), [entity, entityDraft.isDirty])
+    useEffect(() => getRootStore<RootStore>(entity)?.nav.setPageIsDirty(entityDraft.isDirty), [entity, entityDraft.isDirty])
 
     const handleConfirm = () => entityDraft.commit()
     const handleAbort = () => entityDraft.reset()

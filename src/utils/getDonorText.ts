@@ -1,7 +1,6 @@
-import { donorOptions, DonorValue } from "../data/donorOptions";
-import { SexValue } from "../data/sexOptions";
+import { SelectOptionList } from "./selectOptionListUtils"
 
-export const getDonorText = (donor: DonorValue | '', donorSex: SexValue): string => {
+export const getDonorText = (donor: string, donorSex: string, donorOptions: SelectOptionList): string => {
     if (!donor)
         return ''
 
@@ -24,7 +23,7 @@ export const getDonorText = (donor: DonorValue | '', donorSex: SexValue): string
                 return `Sisarus (${unknownSex})`
         }
     } else {
-        const text = donorOptions[donor]
+        const text = donor in donorOptions ? donorOptions[donor] : 'Tuntematon luovuttaja'
         switch (donorSex) {
             case 'male': return `${text} (mies)`
             case 'female': return `${text} (nainen)`

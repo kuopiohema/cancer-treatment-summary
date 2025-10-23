@@ -1,13 +1,15 @@
 import { Group, Select, TextInput } from "@mantine/core";
 import { EntityComponentProps } from "./entityComponentProps";
 import { DateInput } from "@mantine/dates";
-import { stopReasonOptions, StopReasonValue } from "../../data/stopReasonOptions";
-import { toComboboxData } from "../../data/dataUtils";
 import { observer } from "mobx-react";
 import { Treatment } from "../../store/entity/treatment";
+import { toComboboxData } from "../../utils/selectOptionListUtils";
+import { use } from "react";
+import { StoreContext } from "../../store/StoreContext";
 
 const TreatmentComponent = observer(({ data }: EntityComponentProps<Treatment>) => {
-    const stopReasonOptionsData = toComboboxData(stopReasonOptions)
+    const store = use(StoreContext)
+    const treatmentStopReasonOptionsData = toComboboxData(store.data.treatmentStopReasonOptions, true, true)
 
     return (
         <>
@@ -41,8 +43,8 @@ const TreatmentComponent = observer(({ data }: EntityComponentProps<Treatment>) 
             <Group grow preventGrowOverflow={false}>
                 <Select
                     value={data.stopReason}
-                    onChange={value => value && data.setStopReason(value as StopReasonValue)}
-                    data={stopReasonOptionsData}
+                    onChange={value => data.setStopReason(value ?? '')}
+                    data={treatmentStopReasonOptionsData}
                     label="Hoidon loppumisen syy"
                     w={200}
                     flex="none"

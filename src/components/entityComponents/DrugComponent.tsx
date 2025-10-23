@@ -2,11 +2,13 @@ import { observer } from "mobx-react"
 import { Drug } from "../../store/entity/drug"
 import { EntityComponentProps } from "./entityComponentProps"
 import { Group, NumberInput, Select, Text, Textarea, TextInput } from "@mantine/core"
-import { drugDosingTypeOptions, DrugDosingTypeValue } from "../../data/drugDosingTypeOptions"
-import { toComboboxData } from "../../data/dataUtils"
+import { toComboboxData } from "../../utils/selectOptionListUtils"
+import { use } from "react"
+import { StoreContext } from "../../store/StoreContext"
 
 const DrugComponent = observer(({ data }: EntityComponentProps<Drug>) => {
-    const drugDosingOptionsData = toComboboxData(drugDosingTypeOptions)
+    const store = use(StoreContext)
+    const drugDosingOptionsData = toComboboxData(store.data.doseFormulaOptions)
 
     return (
         <>
@@ -31,8 +33,8 @@ const DrugComponent = observer(({ data }: EntityComponentProps<Drug>) => {
                     flex="none"
                 />
                 <Select
-                    value={data.dosingType}
-                    onChange={value => data.setDosingType(value as DrugDosingTypeValue)}
+                    value={data.doseFormula}
+                    onChange={value => data.setDoseFormula(value ?? '')}
                     label="Annoskaava"
                     data={drugDosingOptionsData}
                     w={100}

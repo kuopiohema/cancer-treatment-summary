@@ -1,13 +1,15 @@
 import { Group, NumberInput, Select, Text, Textarea, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { observer } from "mobx-react";
-import { toComboboxData } from "../../data/dataUtils";
-import { radioModeOptions, RadioModeValue } from "../../data/radioModeOptions";
 import { Radiotherapy } from "../../store/entity/radiotherapy";
 import { EntityComponentProps } from "./entityComponentProps";
+import { use } from "react";
+import { StoreContext } from "../../store/StoreContext";
+import { toComboboxData } from "../../utils/selectOptionListUtils";
 
 const RadiotherapyComponent = observer(({ data }: EntityComponentProps<Radiotherapy>) => {
-    const radioModeOptionsData = toComboboxData(radioModeOptions)
+    const store = use(StoreContext)
+    const radioModeOptionsData = toComboboxData(store.data.radiotherapyModeOptions, true, true)
 
     return (
         <>
@@ -34,7 +36,7 @@ const RadiotherapyComponent = observer(({ data }: EntityComponentProps<Radiother
             <Group grow preventGrowOverflow={false}>
                 <Select
                     value={data.mode}
-                    onChange={value => value && data.setMode(value as RadioModeValue)}
+                    onChange={value => data.setMode(value ?? '')}
                     label="Hoitomuoto"
                     data={radioModeOptionsData}
                     w={250}

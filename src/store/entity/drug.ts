@@ -1,28 +1,29 @@
-import { ExtendedModel, model, prop } from "mobx-keystone";
-import { Entity } from "./entity";
-import { DrugDosingTypeValue } from "../../data/drugDosingTypeOptions";
 import { computed } from "mobx";
-import { doxoEquivalents } from "../../data/doxoEquivalents";
+import { ExtendedModel, model, prop } from "mobx-keystone";
 import { NumberInputValue } from "../../types/numberInputValue";
+import { dataCtx } from "../store";
+import { Entity } from "./entity";
 
 @model('catrest/drug')
 export class Drug extends ExtendedModel(Entity, {
     drug: prop('').withSetter(),
     dose: prop<NumberInputValue>(0).withSetter(),
-    dosingType: prop<DrugDosingTypeValue>('').withSetter(),
+    doseFormula: prop('').withSetter(),
     notes: prop('').withSetter()
 }) {
     itemName = 'lääke'
 
     @computed
-    get doxoEquivalent() {          
+    get doxoEquivalent() {
+        const doxoEquivalents = dataCtx.get(this).doxoEquivalents
         const factor = doxoEquivalents.find((value) => value.drug === this.drug.toLocaleLowerCase())?.factor
-        if (typeof this.dose === 'number' && factor)
-            switch (this.dosingType) {
+        if (typeof this.dose === 'number' && factor) {
+            switch (this.doseFormula) {
                 case 'mgm2': return this.dose * factor
                 case 'mgkg': return this.dose * 30 * factor
                 default: return 0
             }
+        }
         else
             return 0
     }

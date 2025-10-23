@@ -1,24 +1,23 @@
 import { observer } from "mobx-react";
 import { StemCellTransplant } from "../../store/entity/stemCellTransplant";
 import { EntityComponentProps } from "./entityComponentProps";
-import { toComboboxData } from "../../data/dataUtils";
-import { sctOriginOptions, SctOriginValue } from "../../data/sctOriginOptions";
-import { donorOptions, DonorValue } from "../../data/donorOptions";
-import { sexOptions, SexValue } from "../../data/sexOptions";
-import { hlaMatchOptions, HlaMatchValue } from "../../data/hlaMatchOptions";
-import { bloodGroupOptions, BloodGroupValue } from "../../data/bloodGroupOptions";
 import { DateInput } from "@mantine/dates";
 import { Fieldset, Group, NumberInput, Select, Switch, Text, TextInput } from "@mantine/core";
 import ChildList from "../entityLists/ChildList";
 import { Drug } from "../../store/entity/drug";
 import DrugComponent from "./DrugComponent";
+import { toComboboxData } from "../../utils/selectOptionListUtils";
+import { use } from "react";
+import { StoreContext } from "../../store/StoreContext";
 
 const StemCellTransplantComponent = observer(({ data }: EntityComponentProps<StemCellTransplant>) => {
-    const sctOriginOptionsData = toComboboxData(sctOriginOptions)
-    const donorOptionsData = toComboboxData(donorOptions)
-    const sexOptionsData = toComboboxData(sexOptions)
-    const hlaMatchOptionsData = toComboboxData(hlaMatchOptions)
-    const bloodGroupOptionsData = toComboboxData(bloodGroupOptions)
+    const store = use(StoreContext)
+
+    const stemCellTypeOptionsData = toComboboxData(store.data.stemCellTypeOptions)
+    const stemCellDonorOptionsData = toComboboxData(store.data.stemCellDonorOptions, true)
+    const sexOptionsData = toComboboxData(store.data.sexOptions, true)
+    const hlaMatchOptionsData = toComboboxData(store.data.hlaMatchOptions, true)
+    const bloodGroupOptionsData = toComboboxData(store.data.bloodGroupOptions, true)
 
     const donorDataDisabled = data.type === '' || data.type === 'auto'
 
@@ -27,9 +26,9 @@ const StemCellTransplantComponent = observer(({ data }: EntityComponentProps<Ste
             <Group grow preventGrowOverflow={false}>
                 <Select
                     value={data.type}
-                    onChange={value => value && data.setType(value as SctOriginValue)}
+                    onChange={value => data.setType(value ?? '')}
                     label="Siirteen alkuperä"
-                    data={sctOriginOptionsData}
+                    data={stemCellTypeOptionsData}
                     flex="none"
                 />
                 <DateInput
@@ -51,25 +50,25 @@ const StemCellTransplantComponent = observer(({ data }: EntityComponentProps<Ste
             >
                 <Select
                     value={data.donor}
-                    onChange={value => value && data.setDonor(value as DonorValue)}
+                    onChange={value => data.setDonor(value ?? '')}
                     label="Luovuttaja"
-                    data={donorOptionsData}
+                    data={stemCellDonorOptionsData}
                 />
                 <Select
                     value={data.donorSex}
-                    onChange={value => value && data.setDonorSex(value as SexValue)}
+                    onChange={value => data.setDonorSex(value ?? '')}
                     label="Sukupuoli"
                     data={sexOptionsData}
                 />
                 <Select
                     value={data.hlaMatch}
-                    onChange={value => value && data.setHlaMatch(value as HlaMatchValue)}
+                    onChange={value => data.setHlaMatch(value ?? '')}
                     label="HLA-sopivuus"
                     data={hlaMatchOptionsData}
                 />
                 <Select
                     value={data.donorBloodGroup}
-                    onChange={value => value && data.setDonorBloodGroup(value as BloodGroupValue)}
+                    onChange={value => data.setDonorBloodGroup(value ?? '')}
                     label="Veriryhmä"
                     data={bloodGroupOptionsData}
                 />

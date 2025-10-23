@@ -15,23 +15,23 @@ import { useDisclosure } from '@mantine/hooks'
 import { IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, IconSun } from '@tabler/icons-react'
 import { getSnapshot } from 'mobx-keystone'
 import { observer } from 'mobx-react'
-import { useMemo, useState } from 'react'
+import { use, useMemo } from 'react'
 import ChemotherapyComponent from './components/entityComponents/ChemotherapyComponent.tsx'
 import DiagnosisComponent from './components/entityComponents/DiagnosisComponent.tsx'
+import ProcedureComponent from './components/entityComponents/ProcedureComponent.tsx'
+import RadiotherapyComponent from './components/entityComponents/RadiotherapyComponent.tsx'
+import StemCellTransplantComponent from './components/entityComponents/StemCellTransplantComponent.tsx'
 import TreatmentComponent from './components/entityComponents/TreatmentComponent.tsx'
 import EntityPage from './components/entityLists/EntityPage.tsx'
 import NavList from './components/entityLists/NavList.tsx'
 import Start from './components/pages/Start.tsx'
 import { Chemotherapy } from './store/entity/chemotherapy.ts'
 import { Diagnosis } from './store/entity/diagnosis.ts'
-import { Treatment } from './store/entity/treatment.ts'
-import { createRootStore } from './store/store.ts'
-import { Radiotherapy } from './store/entity/radiotherapy.ts'
-import RadiotherapyComponent from './components/entityComponents/RadiotherapyComponent.tsx'
 import { Procedure } from './store/entity/procedure.ts'
-import ProcedureComponent from './components/entityComponents/ProcedureComponent.tsx'
+import { Radiotherapy } from './store/entity/radiotherapy.ts'
 import { StemCellTransplant } from './store/entity/stemCellTransplant.ts'
-import StemCellTransplantComponent from './components/entityComponents/StemCellTransplantComponent.tsx'
+import { Treatment } from './store/entity/treatment.ts'
+import { StoreContext } from './store/StoreContext.ts'
 
 const App = observer(() => {
     const { setColorScheme } = useMantineColorScheme()
@@ -42,14 +42,14 @@ const App = observer(() => {
 
     const [navbarCollapsed, { toggle: toggleNavbarCollapsed }] = useDisclosure(true)
 
-    const [store] = useState(() => createRootStore())
+    const store = use(StoreContext)
 
     const handleReset = () => {
         store.clear()
     }
 
     const handleSave = () => {
-        console.log(getSnapshot(store.data))
+        console.log(getSnapshot(store.form))
     }
 
     const handleLoad = () => {
@@ -155,42 +155,42 @@ const App = observer(() => {
                         onClick={() => store.nav.selectPage('start')}
                     />
                     <NavList
-                        entityList={store.data.diagnoses}
+                        entityList={store.form.diagnoses}
                         entityFactory={() => new Diagnosis({})}
                         title="Diagnoosit"
                         emptyText="Ei diagnooseja"
                         addButtonText="Lisää diagnoosi"
                     />
                     <NavList
-                        entityList={store.data.treatments}
+                        entityList={store.form.treatments}
                         entityFactory={() => new Treatment({})}
                         title="Hoidot"
                         emptyText="Ei hoitoja"
                         addButtonText="Lisää hoito"
                     />
                     <NavList
-                        entityList={store.data.chemotherapies}
+                        entityList={store.form.chemotherapies}
                         entityFactory={() => new Chemotherapy({})}
                         title="Kemoterapiajaksot"
                         emptyText="Ei kemoterapiajaksoja"
                         addButtonText="Lisää kemoterapiajakso"
                     />
                     <NavList
-                        entityList={store.data.radiotherapies}
+                        entityList={store.form.radiotherapies}
                         entityFactory={() => new Radiotherapy({})}
                         title="Sädehoitojaksot"
                         emptyText="Ei sädehoitojaksoja"
                         addButtonText="Lisää sädehoitojakso"
                     />
                     <NavList
-                        entityList={store.data.procedures}
+                        entityList={store.form.procedures}
                         entityFactory={() => new Procedure({})}
                         title="Leikkaukset ja toimenpiteet"
                         emptyText="Ei toimenpiteitä"
                         addButtonText="Lisää toimenpide"
                     />
                     <NavList
-                        entityList={store.data.stemCellTransplants}
+                        entityList={store.form.stemCellTransplants}
                         entityFactory={() => new StemCellTransplant({})}
                         title="Kantasolusiirrot"
                         emptyText="Ei kantasolusiirtoja"

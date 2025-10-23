@@ -1,30 +1,31 @@
-import { createContext, model, Model, modelAction, prop, registerRootStore, Ref } from "mobx-keystone";
-import { Data } from "./data";
-import { Nav, navRef } from "./nav";
+import { createContext, model, Model, modelAction, prop, registerRootStore } from "mobx-keystone";
+import { FormStore } from "./formStore";
+import { NavStore } from "./navStore";
+import { DataStore } from "./dataStore";
 
-export const navCtx = createContext<Ref<Nav>>()
+const formStore = new FormStore({})
+const navStore = new NavStore({})
+const dataStore = new DataStore({})
 
-@model('catrest/Store')
-export class Store extends Model({
-    data: prop<Data>(() => new Data({})),
-    nav: prop<Nav>(() => new Nav({})),
-    navRef: prop<Ref<Nav> | undefined>(undefined)
+export const navCtx = createContext<NavStore>(navStore)
+export const dataCtx = createContext<DataStore>(dataStore)
+
+@model('catrest/store')
+export class RootStore extends Model({
+    form: prop<FormStore>(),
+    nav: prop<NavStore>(),
+    data: prop<DataStore>()
 }) {
     @modelAction
     clear() {
-        this.data.clear()
+        this.form.clear()
         this.nav.reset()
     }
-
-    onInit() {
-        this.navRef = navRef(this.nav)
-        navCtx.setComputed(this, () => this.navRef)
-    }
 }
 
-export function createRootStore(): Store {
-    const rootStore = new Store({})
-    registerRootStore(rootStore)
-
-    return rootStore
-}
+export const rootStore = new RootStore({
+    form: formStore,
+    nav: navStore,
+    data: dataStore
+})
+registerRootStore(rootStore)

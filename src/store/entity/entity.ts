@@ -1,12 +1,12 @@
 import { randomId } from "@mantine/hooks";
 import { computed } from "mobx";
-import { detach, Model, model, modelAction, rootRef, tProp, types } from "mobx-keystone";
+import { detach, Model, model, modelAction, prop, rootRef } from "mobx-keystone";
 import { ReactNode } from "react";
 import { navCtx } from "../store";
 
 @model('catrest/entity')
 export class Entity extends Model({
-    id: tProp(types.string, () => randomId(''))
+    id: prop(() => randomId(''))
 }) {
     itemName = 'kohde'
 
@@ -31,12 +31,12 @@ export class Entity extends Model({
 
     @modelAction
     select() {
-        navCtx.get(this)?.current?.selectEntity(this)
+        navCtx.get(this)?.selectEntity(this)
     }
 
     @computed
     get isSelected() {
-        return navCtx.get(this)?.current?.selectedEntity?.current?.id === this.id
+        return navCtx.get(this)?.selectedEntity?.current?.id === this.id
     }
 }
 

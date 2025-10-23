@@ -1,4 +1,4 @@
-import {createTheme, NumberInput, Textarea} from '@mantine/core'
+import {createTheme, NumberInput, Select, Textarea} from '@mantine/core'
 import {DateInput, type DateInputProps} from '@mantine/dates'
 import dayjs, {type Dayjs} from 'dayjs'
 
@@ -33,6 +33,12 @@ export const theme = createTheme({
                 dateParser: defaultDateParser,
                 w: 120,
                 flex: 'none',
+            }
+        }),
+        Select: Select.extend({
+            defaultProps: {
+                allowDeselect: false,
+                clearable: true
             }
         })
     }

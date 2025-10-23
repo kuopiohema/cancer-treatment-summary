@@ -6,10 +6,13 @@ import { Drug } from "../../store/entity/drug"
 import ChildList from "../entityLists/ChildList"
 import DrugComponent from "./DrugComponent"
 import { EntityComponentProps } from "./entityComponentProps"
-import { doxoEquivalents } from "../../data/doxoEquivalents"
 import { firstLetterUppercase } from "../../utils/firstLetterUppercase"
+import { use, useState } from "react"
+import { StoreContext } from "../../store/StoreContext"
 
 const ChemotherapyComponent = observer(({ data }: EntityComponentProps<Chemotherapy>) => {
+    const store = use(StoreContext)
+    const [doxoEquivalents] = useState(store.data.doxoEquivalents)
     return (
         <>
             <Group>

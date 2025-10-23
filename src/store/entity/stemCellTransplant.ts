@@ -1,49 +1,49 @@
 import { override } from "mobx";
 import { ExtendedModel, model, prop } from "mobx-keystone";
-import { bloodGroupOptions, BloodGroupValue } from "../../data/bloodGroupOptions";
-import { getOptionText } from "../../data/dataUtils";
-import { DonorValue } from "../../data/donorOptions";
-import { hlaMatchOptions, HlaMatchValue } from "../../data/hlaMatchOptions";
-import { sctOriginOptions, SctOriginValue } from "../../data/sctOriginOptions";
-import { SexValue } from "../../data/sexOptions";
 import formatDate from "../../utils/formatDate";
 import { getDonorText } from "../../utils/getDonorText";
 import { getTextList } from "../../utils/getTextList";
 import { EntityList } from "../entityList";
 import { Drug } from "./drug";
 import { Entity } from "./entity";
+import { NumberInputValue } from "../../types/numberInputValue";
+import { DateInputValue } from "../../types/dateInputValue";
+import { dataCtx } from "../store";
+import { getOptionText } from "../../utils/selectOptionListUtils";
 
 @model('catrest/stemCellTransplant')
 export class StemCellTransplant extends ExtendedModel(Entity, {
-    date: prop<string | null>(null).withSetter(),
-    type: prop<SctOriginValue>('').withSetter(),
-    donor: prop<DonorValue>('').withSetter(),
-    donorSex: prop<SexValue>('').withSetter(),
-    hlaMatch: prop<HlaMatchValue>('').withSetter(),
-    donorBloodGroup: prop<BloodGroupValue>('').withSetter(),
+    date: prop<DateInputValue>(null).withSetter(),
+    type: prop('').withSetter(),
+    donor: prop('').withSetter(),
+    donorSex: prop('').withSetter(),
+    hlaMatch: prop('').withSetter(),
+    donorBloodGroup: prop('').withSetter(),
     conditioning: prop('').withSetter(),
     drugs: prop<EntityList<Drug>>(() => new EntityList({})),
     tbi: prop(false).withSetter(),
-    tbiDoseBody: prop<string | number>(0).withSetter(),
-    tbiDoseLungs: prop<string | number>(0).withSetter()
+    tbiDoseBody: prop<NumberInputValue>(0).withSetter(),
+    tbiDoseLungs: prop<NumberInputValue>(0).withSetter()
 }) {
     itemName = 'kantasolusiirto'
 
     @override
     get label() {
-        return this.type ? `${sctOriginOptions[this.type]} siirto` : '(Uusi kantasolusiirto)'
+        const data = dataCtx.get(this)
+        return this.type ? `${data.stemCellTypeOptions[this.type]} siirto` : '(Uusi kantasolusiirto)'
     }
 
     @override
     get sublabel() {
+        const data = dataCtx.get(this)
         return getTextList([
             formatDate(this.date),
             {
                 heading: 'Luovuttaja',
-                content: getDonorText(this.donor, this.donorSex)
+                content: getDonorText(this.donor, this.donorSex, data.stemCellDonorOptions)
             },
-            { heading: 'HLA-sopivuus', content: getOptionText(this.hlaMatch, hlaMatchOptions) },
-            { heading: 'Luovuttajan veriryhmä', content: getOptionText(this.donorBloodGroup, bloodGroupOptions) },
+            { heading: 'HLA-sopivuus', content: getOptionText(this.hlaMatch, data.hlaMatchOptions) },
+            { heading: 'Luovuttajan veriryhmä', content: getOptionText(this.donorBloodGroup, data.bloodGroupOptions) },
             { heading: 'Esihoito', content: this.conditioning },
             { heading: 'TBI-annos', content: this.tbi ? `${this.tbiDoseBody} Gy (vartalo) / ${this.tbiDoseLungs} Gy (keuhkot)` : '' }
         ])

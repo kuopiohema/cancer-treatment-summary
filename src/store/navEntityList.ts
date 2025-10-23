@@ -8,22 +8,22 @@ export class NavEntityList<E extends Entity> extends ExtendedModel(EntityList, {
     @modelAction
     add(entity: E) {
         super.add(entity)
-        const nav = navCtx.get(this)?.current
-        if (!nav?.pageIsDirty)
-            nav?.selectEntity(entity)
+        const nav = navCtx.get(this)
+        if (!nav.pageIsDirty)
+            nav.selectEntity(entity)
     }
 
     @modelAction
     remove(id: string) {
-        const nav = navCtx.get(this)?.current
-        const isCurrentEntity = nav?.selectedEntity?.current?.id === id
+        const nav = navCtx.get(this)
+        const isCurrentEntity = nav.selectedEntity?.current?.id === id
         super.remove(id)
         if (isCurrentEntity) {
-            nav?.setPageIsDirty(false)
+            nav.setPageIsDirty(false)
             if (this.entities.length > 0)
-                nav?.selectEntity(this.entities[this.entities.length - 1])
+                nav.selectEntity(this.entities[this.entities.length - 1])
             else
-                nav?.selectPage('start')
+                nav.selectPage('start')
         }
     }
 }
