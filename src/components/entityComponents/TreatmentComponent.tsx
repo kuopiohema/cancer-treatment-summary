@@ -3,13 +3,13 @@ import { EntityComponentProps } from "./entityComponentProps";
 import { DateInput } from "@mantine/dates";
 import { observer } from "mobx-react";
 import { Treatment } from "../../store/entity/treatment";
-import { toComboboxData } from "../../utils/selectOptionListUtils";
+import { getComboboxData } from '../../utils/getComboboxData';
 import { use } from "react";
 import { StoreContext } from "../../store/StoreContext";
 
 const TreatmentComponent = observer(({ data }: EntityComponentProps<Treatment>) => {
     const store = use(StoreContext)
-    const treatmentStopReasonOptionsData = toComboboxData(store.data.treatmentStopReasonOptions, true, true)
+    const treatmentStopReasonOptionsData = getComboboxData(store.data.treatmentStopReasonOptions, true, true)
 
     return (
         <>
@@ -43,7 +43,7 @@ const TreatmentComponent = observer(({ data }: EntityComponentProps<Treatment>) 
             <Group grow preventGrowOverflow={false}>
                 <Select
                     value={data.stopReason}
-                    onChange={value => data.setStopReason(value ?? '')}
+                    onChange={value => data.setStopReason(value)}
                     data={treatmentStopReasonOptionsData}
                     label="Hoidon loppumisen syy"
                     w={200}

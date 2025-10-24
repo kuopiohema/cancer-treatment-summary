@@ -3,12 +3,13 @@ import { ExtendedModel, model, prop } from "mobx-keystone";
 import { NumberInputValue } from "../../types/numberInputValue";
 import { dataCtx } from "../store";
 import { Entity } from "./entity";
+import { SelectValue } from "../../types/selectValue";
 
 @model('catrest/drug')
 export class Drug extends ExtendedModel(Entity, {
     drug: prop('').withSetter(),
     dose: prop<NumberInputValue>(0).withSetter(),
-    doseFormula: prop('').withSetter(),
+    doseFormula: prop<SelectValue>(null).withSetter(),
     notes: prop('').withSetter()
 }) {
     itemName = 'lääke'

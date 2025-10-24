@@ -1,6 +1,6 @@
 import { _async, _await, Model, model, modelFlow, prop } from "mobx-keystone";
 import { fetchJson } from "../utils/fetchJson";
-import { SelectOptionList } from "../utils/selectOptionListUtils";
+import { SelectOptionList } from '../types/selectOptionList';
 
 interface DoxoEquivalent {
     drug: string,

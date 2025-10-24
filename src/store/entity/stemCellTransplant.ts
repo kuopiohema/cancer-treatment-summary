@@ -9,16 +9,17 @@ import { Entity } from "./entity";
 import { NumberInputValue } from "../../types/numberInputValue";
 import { DateInputValue } from "../../types/dateInputValue";
 import { dataCtx } from "../store";
-import { getOptionText } from "../../utils/selectOptionListUtils";
+import { getOptionText } from "../../utils/getOptionText";
+import { SelectValue } from "../../types/selectValue";
 
 @model('catrest/stemCellTransplant')
 export class StemCellTransplant extends ExtendedModel(Entity, {
     date: prop<DateInputValue>(null).withSetter(),
-    type: prop('').withSetter(),
-    donor: prop('').withSetter(),
-    donorSex: prop('').withSetter(),
-    hlaMatch: prop('').withSetter(),
-    donorBloodGroup: prop('').withSetter(),
+    type: prop<SelectValue>(null).withSetter(),
+    donor: prop<SelectValue>(null).withSetter(),
+    donorSex: prop<SelectValue>(null).withSetter(),
+    hlaMatch: prop<SelectValue>(null).withSetter(),
+    donorBloodGroup: prop<SelectValue>(null).withSetter(),
     conditioning: prop('').withSetter(),
     drugs: prop<EntityList<Drug>>(() => new EntityList({})),
     tbi: prop(false).withSetter(),

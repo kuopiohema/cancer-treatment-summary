@@ -6,27 +6,27 @@ import { Fieldset, Group, NumberInput, Select, Switch, Text, TextInput } from "@
 import ChildList from "../entityLists/ChildList";
 import { Drug } from "../../store/entity/drug";
 import DrugComponent from "./DrugComponent";
-import { toComboboxData } from "../../utils/selectOptionListUtils";
+import { getComboboxData } from '../../utils/getComboboxData';
 import { use } from "react";
 import { StoreContext } from "../../store/StoreContext";
+import { SelectValue } from "../../types/selectValue";
+import { modals } from "@mantine/modals";
 
 const StemCellTransplantComponent = observer(({ data }: EntityComponentProps<StemCellTransplant>) => {
     const store = use(StoreContext)
 
-    const stemCellTypeOptionsData = toComboboxData(store.data.stemCellTypeOptions)
-    const stemCellDonorOptionsData = toComboboxData(store.data.stemCellDonorOptions, true)
-    const sexOptionsData = toComboboxData(store.data.sexOptions, true)
-    const hlaMatchOptionsData = toComboboxData(store.data.hlaMatchOptions, true)
-    const bloodGroupOptionsData = toComboboxData(store.data.bloodGroupOptions, true)
-
-    const donorDataDisabled = data.type === '' || data.type === 'auto'
+    const stemCellTypeOptionsData = getComboboxData(store.data.stemCellTypeOptions)
+    const stemCellDonorOptionsData = getComboboxData(store.data.stemCellDonorOptions, true)
+    const sexOptionsData = getComboboxData(store.data.sexOptions, true)
+    const hlaMatchOptionsData = getComboboxData(store.data.hlaMatchOptions, true)
+    const bloodGroupOptionsData = getComboboxData(store.data.bloodGroupOptions, true)
 
     return (
         <>
             <Group grow preventGrowOverflow={false}>
                 <Select
                     value={data.type}
-                    onChange={value => data.setType(value ?? '')}
+                    onChange={value => data.setType(value)}
                     label="Siirteen alkuperä"
                     data={stemCellTypeOptionsData}
                     flex="none"
@@ -46,29 +46,28 @@ const StemCellTransplantComponent = observer(({ data }: EntityComponentProps<Ste
             </Group>
             <Fieldset
                 legend="Luovuttajan tiedot"
-                disabled={donorDataDisabled}
             >
                 <Select
                     value={data.donor}
-                    onChange={value => data.setDonor(value ?? '')}
+                    onChange={value => data.setDonor(value)}
                     label="Luovuttaja"
                     data={stemCellDonorOptionsData}
                 />
                 <Select
                     value={data.donorSex}
-                    onChange={value => data.setDonorSex(value ?? '')}
+                    onChange={value => data.setDonorSex(value)}
                     label="Sukupuoli"
                     data={sexOptionsData}
                 />
                 <Select
                     value={data.hlaMatch}
-                    onChange={value => data.setHlaMatch(value ?? '')}
+                    onChange={value => data.setHlaMatch(value)}
                     label="HLA-sopivuus"
                     data={hlaMatchOptionsData}
                 />
                 <Select
                     value={data.donorBloodGroup}
-                    onChange={value => data.setDonorBloodGroup(value ?? '')}
+                    onChange={value => data.setDonorBloodGroup(value)}
                     label="Veriryhmä"
                     data={bloodGroupOptionsData}
                 />

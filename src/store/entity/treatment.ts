@@ -5,7 +5,8 @@ import { getTextList } from "../../utils/getTextList";
 import formatDate from "../../utils/formatDate";
 import { DateInputValue } from "../../types/dateInputValue";
 import { dataCtx } from "../store";
-import { getOptionText } from "../../utils/selectOptionListUtils";
+import { getOptionText } from "../../utils/getOptionText";
+import { SelectValue } from "../../types/selectValue";
 
 @model('catrest/treatment')
 export class Treatment extends ExtendedModel(Entity, {
@@ -13,7 +14,7 @@ export class Treatment extends ExtendedModel(Entity, {
     group: prop('').withSetter(),
     startDate: prop<DateInputValue>(null).withSetter(),
     endDate: prop<DateInputValue>(null).withSetter(),
-    stopReason: prop('').withSetter(),
+    stopReason: prop<SelectValue>(null).withSetter(),
     stopReasonOther: prop('').withSetter()
 }) {
     itemName = 'hoito'

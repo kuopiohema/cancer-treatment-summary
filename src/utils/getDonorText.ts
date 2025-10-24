@@ -1,35 +1,34 @@
-import { SelectOptionList } from "./selectOptionListUtils"
+import { SelectValue } from "../types/selectValue"
+import { SelectOptionList } from '../types/selectOptionList'
 
-export const getDonorText = (donor: string, donorSex: string, donorOptions: SelectOptionList): string => {
+const maleValue = 'male'
+const femaleValue = 'female'
+const unknownSexText = 'sukupuoli tuntematon'
+
+export const getDonorText = (donor: SelectValue, donorSex: SelectValue, donorOptions: SelectOptionList): string => {
     if (!donor)
         return ''
 
-    const unknownSex = 'sukupuoli tuntematon'
-
     if (donor === 'parent') {
-        switch (donorSex) {
-            case 'male': return 'Isä'
-            case 'female': return 'Äiti'
-            case 'unknown':
-            default:
-                return `Vanhempi (${unknownSex})`
-        }
-    } else if (donor === 'sibling') {
-        switch (donorSex) {
-            case 'male': return 'Veli'
-            case 'female': return 'Sisko'
-            case 'unknown':
-            default:    
-                return `Sisarus (${unknownSex})`
-        }
-    } else {
-        const text = donor in donorOptions ? donorOptions[donor] : 'Tuntematon luovuttaja'
-        switch (donorSex) {
-            case 'male': return `${text} (mies)`
-            case 'female': return `${text} (nainen)`
-            case 'unknown':
-            default:
-                return `${text} (${unknownSex})`
-        }
+        if (donorSex === maleValue)
+            return 'Isä'
+        if (donorSex === femaleValue)
+            return 'Äiti'
+        return `Vanhempi (${unknownSexText})`
     }
+    
+    if (donor === 'sibling') {
+        if (donorSex === maleValue)
+            return 'Veli'
+        if (donorSex === femaleValue)
+            return 'Sisko'
+        return `Sisarus (${unknownSexText})`
+    }
+
+    const text = donor in donorOptions ? donorOptions[donor] : 'Tuntematon luovuttaja'
+    if (donorSex === maleValue)
+        return `${text} (mies)`
+    if (donorSex === femaleValue)
+        return `${text} (nainen)`
+    return `${text} (${unknownSexText})`
 }

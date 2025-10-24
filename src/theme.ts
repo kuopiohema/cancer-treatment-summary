@@ -37,8 +37,8 @@ export const theme = createTheme({
         }),
         Select: Select.extend({
             defaultProps: {
-                allowDeselect: false,
-                clearable: true
+                clearable: true,
+                searchable: true
             }
         })
     }
