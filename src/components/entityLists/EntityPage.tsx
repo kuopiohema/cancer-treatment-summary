@@ -1,4 +1,4 @@
-import { Affix, Button, Divider, Group, Stack } from "@mantine/core"
+import { Affix, Button, Group, Stack } from "@mantine/core"
 import { IconArrowBackUp, IconCheck } from "@tabler/icons-react"
 import { draft, getRootStore } from "mobx-keystone"
 import { observer } from "mobx-react"
@@ -24,7 +24,9 @@ const EntityPage = observer(<E extends Entity>({ entity, InnerComponent }: Entit
 
     return (
         <>
-            <InnerComponent data={entityDraft.data} />
+            <Stack gap="sm">
+                <InnerComponent data={entityDraft.data} />
+            </Stack>
             <Affix position={{bottom: 10, right: 20}}>
                 <Group>
                     <Button
