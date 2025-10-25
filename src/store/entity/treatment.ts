@@ -2,7 +2,7 @@ import { ExtendedModel, model, prop } from "mobx-keystone";
 import { Entity } from "./entity";
 import { override } from "mobx";
 import { buildTextList } from "../../utils/buildTextList";
-import formatDate from "../../utils/formatDate";
+import { formatDateRange } from "../../utils/formatDate";
 import { DateInputValue } from "../../types/dateInputValue";
 
 @model('catrest/treatment')
@@ -23,7 +23,7 @@ export class Treatment extends ExtendedModel(Entity, {
     @override
     get sublabel() {
         return buildTextList([
-            `${formatDate(this.startDate)} - ${formatDate(this.endDate)}`,
+            formatDateRange(this.startDate, this.endDate),
             this.group,
             {
                 heading: 'Hoidon loppumisen syy',

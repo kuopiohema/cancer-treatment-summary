@@ -2,7 +2,7 @@ import { ExtendedModel, model, prop } from "mobx-keystone";
 import { Entity } from "./entity";
 import { override } from "mobx";
 import { buildTextList } from "../../utils/buildTextList";
-import formatDate from "../../utils/formatDate";
+import { formatDate } from "../../utils/formatDate";
 import { DateInputValue } from "../../types/dateInputValue";
 
 @model('catrest/procedure')

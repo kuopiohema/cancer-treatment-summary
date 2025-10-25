@@ -1,6 +1,6 @@
 import { override } from "mobx";
 import { ExtendedModel, model, prop } from "mobx-keystone";
-import formatDate from "../../utils/formatDate";
+import { formatDate } from "../../utils/formatDate";
 import { buildTextList } from "../../utils/buildTextList";
 import { Entity } from "./entity";
 import { DateInputValue } from "../../types/dateInputValue";

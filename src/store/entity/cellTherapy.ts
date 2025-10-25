@@ -1,6 +1,6 @@
 import { override } from "mobx";
 import { ExtendedModel, model, prop } from "mobx-keystone";
-import formatDate from "../../utils/formatDate";
+import { formatDate, formatDateRange } from "../../utils/formatDate";
 import { getDonorText } from "../../utils/getDonorText";
 import { buildTextList } from "../../utils/buildTextList";
 import { EntityList } from "../entityList";
@@ -24,7 +24,11 @@ export class CellTherapy extends ExtendedModel(Entity, {
     drugs: prop<EntityList<Drug>>(() => new EntityList({})),
     tbi: prop(false).withSetter(),
     tbiDoseBody: prop<NumberInputValue>(0).withSetter(),
-    tbiDoseLungs: prop<NumberInputValue>(0).withSetter()
+    tbiDoseLungs: prop<NumberInputValue>(0).withSetter(),
+    dli: prop(false).withSetter(),
+    dliStartDate: prop<DateInputValue>(null).withSetter(),
+    dliEndDate: prop<DateInputValue>(null).withSetter(),
+    dliDoses: prop<NumberInputValue>(0).withSetter(),
 }) {
     itemName = 'soluhoito'
 
@@ -49,6 +53,7 @@ export class CellTherapy extends ExtendedModel(Entity, {
             { heading: 'Luovuttajan veriryhmä', content: this.donorBloodGroup },
             { heading: 'Esihoito', content: this.conditioning },
             { heading: 'TBI-annos', content: this.tbi ? `${this.tbiDoseBody} Gy (vartalo) / ${this.tbiDoseLungs} Gy (keuhkot)` : '' },
+            { heading: 'DLI-hoito', content: this.dli ? `${formatDateRange(this.dliStartDate, this.dliEndDate)}, ${this.dliDoses} annosta` : '' }
         ])
     }
 }

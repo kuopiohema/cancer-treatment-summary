@@ -2,9 +2,9 @@ import { ExtendedModel, model, prop } from "mobx-keystone";
 import { Entity } from "./entity";
 import { override } from "mobx";
 import { buildTextList } from "../../utils/buildTextList";
-import formatDate from "../../utils/formatDate";
 import { DateInputValue } from "../../types/dateInputValue";
 import { NumberInputValue } from "../../types/numberInputValue";
+import { formatDateRange } from "../../utils/formatDate";
 
 @model('catrest/radiotherapy')
 export class Radiotherapy extends ExtendedModel(Entity, {
@@ -28,7 +28,7 @@ export class Radiotherapy extends ExtendedModel(Entity, {
     get sublabel() {
         return buildTextList([
             this.mode,
-            `${formatDate(this.startDate)} - ${formatDate(this.endDate)}`,
+            formatDateRange(this.startDate, this.endDate),
             `${this.totalDose} Gy (${this.fractions} x ${this.singleDose} Gy)`,
             this.notes
         ])

@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import { CellTherapy } from "../../store/entity/cellTherapy";
 import { EntityComponentProps } from "./entityComponentProps";
 import { DateInput } from "@mantine/dates";
-import { Autocomplete, Fieldset, NumberInput, Select, Switch, Text, TextInput } from "@mantine/core";
+import { Autocomplete, Fieldset, Group, NumberInput, Select, Switch, Text, TextInput } from "@mantine/core";
 import ChildList from "../entityLists/ChildList";
 import { Drug } from "../../store/entity/drug";
 import DrugComponent from "./DrugComponent";
@@ -73,7 +73,6 @@ const CellTherapyComponent = observer(({ data }: EntityComponentProps<CellTherap
                     data={store.data.bloodGroupOptions}
                 />
             </Fieldset>
-
             <ChildList
                 entityList={data.drugs}
                 entityFactory={() => new Drug({})}
@@ -106,6 +105,36 @@ const CellTherapyComponent = observer(({ data }: EntityComponentProps<CellTherap
                     flex="none"
                     disabled={!data.tbi}
                 />
+            </Fieldset>
+            <Fieldset legend="Luovuttajan lymfosyytti-infuusiohoito (DLI)">
+                <Switch
+                    checked={data.dli}
+                    onChange={e => data.setDli(e.target.checked)}
+                    label="Annettu"
+                />
+                <Group>
+                    <DateInput
+                        value={data.dliStartDate}
+                        onChange={value => data.setDliStartDate(value)}
+                        label="Aloituspäivä"
+                        disabled={!data.dli}
+                    />
+                    <DateInput
+                        value={data.dliEndDate}
+                        onChange={value => data.setDliEndDate(value)}
+                        label="Lopetuspäivä"
+                        disabled={!data.dli}
+                    />
+                    <NumberInput
+                        value={data.dliDoses}
+                        onChange={value => data.setDliDoses(value)}
+                        label="Annokset"
+                        allowDecimal={false}
+                        w={100}
+                        flex="none"
+                        disabled={!data.dli}
+                    />
+                </Group>
             </Fieldset>
         </>
     )

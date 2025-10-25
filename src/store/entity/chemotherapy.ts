@@ -1,6 +1,6 @@
 import { ExtendedModel, model, prop } from "mobx-keystone";
 import { Entity } from "./entity";
-import formatDate from "../../utils/formatDate";
+import { formatDateRange } from "../../utils/formatDate";
 import { computed, override } from "mobx";
 import { EntityList } from "../entityList";
 import { Drug } from "./drug";
@@ -17,7 +17,7 @@ export class Chemotherapy extends ExtendedModel(Entity, {
 
     @override
     get label() {
-        return `${formatDate(this.startDate)} - ${formatDate(this.endDate)}`
+        return formatDateRange(this.startDate, this.endDate)
     }
 
     @override

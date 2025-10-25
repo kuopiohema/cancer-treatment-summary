@@ -31,9 +31,10 @@ export const theme = createTheme({
             defaultProps: {
                 valueFormat: 'DD.MM.YYYY',
                 dateParser: defaultDateParser,
-                w: 120,
+                w: 140,
                 flex: 'none',
-                placeholder: 'pp.kk.vvvv'
+                placeholder: 'pp.kk.vvvv',
+                clearable: true
             }
         }),
         Select: Select.extend({
