@@ -15,21 +15,14 @@ import { useDisclosure } from '@mantine/hooks'
 import { IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, IconSun } from '@tabler/icons-react'
 import { getSnapshot } from 'mobx-keystone'
 import { observer } from 'mobx-react'
-import { use, useMemo } from 'react'
-import ChemotherapyComponent from './components/entityComponents/ChemotherapyComponent.tsx'
-import DiagnosisComponent from './components/entityComponents/DiagnosisComponent.tsx'
-import ProcedureComponent from './components/entityComponents/ProcedureComponent.tsx'
-import RadiotherapyComponent from './components/entityComponents/RadiotherapyComponent.tsx'
-import CellTherapyComponent from './components/entityComponents/CellTherapyComponent.tsx'
-import TreatmentComponent from './components/entityComponents/TreatmentComponent.tsx'
-import EntityPage from './components/entityLists/EntityPage.tsx'
+import { use } from 'react'
 import NavList from './components/entityLists/NavList.tsx'
-import Start from './components/pages/Start.tsx'
+import PageDisplay from './components/PageDisplay.tsx'
+import { CellTherapy } from './store/entity/cellTherapy.ts'
 import { Chemotherapy } from './store/entity/chemotherapy.ts'
 import { Diagnosis } from './store/entity/diagnosis.ts'
 import { Procedure } from './store/entity/procedure.ts'
 import { Radiotherapy } from './store/entity/radiotherapy.ts'
-import { CellTherapy } from './store/entity/cellTherapy.ts'
 import { Treatment } from './store/entity/treatment.ts'
 import { StoreContext } from './store/StoreContext.ts'
 
@@ -55,47 +48,6 @@ const App = observer(() => {
     const handleLoad = () => {
         console.log('Load')
     }
-
-    const currentPage = useMemo(() => {
-        switch (store.nav.page) {
-            case 'start':
-                return <Start />
-            case 'entity': {
-                const entity = store.nav.selectedEntity?.current
-                if (entity instanceof Diagnosis)
-                    return <EntityPage
-                        entity={entity}
-                        InnerComponent={DiagnosisComponent}
-                    />
-                else if (entity instanceof Treatment)
-                    return <EntityPage
-                        entity={entity}
-                        InnerComponent={TreatmentComponent}
-                    />
-                else if (entity instanceof Chemotherapy)
-                    return <EntityPage
-                        entity={entity}
-                        InnerComponent={ChemotherapyComponent}
-                    />
-                else if (entity instanceof Radiotherapy)
-                    return <EntityPage
-                        entity={entity}
-                        InnerComponent={RadiotherapyComponent}
-                    />
-                else if (entity instanceof Procedure)
-                    return <EntityPage
-                        entity={entity}
-                        InnerComponent={ProcedureComponent}
-                    />
-                else if (entity instanceof CellTherapy)
-                    return <EntityPage
-                        entity={entity}
-                        InnerComponent={CellTherapyComponent}
-                    />
-                return <div>Virhe: kohdetta ei löydy!</div>
-            }
-        }
-    }, [store.nav.page, store.nav.selectedEntity])
 
     return (
         <AppShell
@@ -197,11 +149,31 @@ const App = observer(() => {
                         emptyText="Ei soluhoitoja"
                         addButtonText="Lisää soluhoito"
                     />
+                    <NavLink
+                        label="Vierasesineet"
+                        active={store.nav.page === 'foreignBodies'}
+                        onClick={() => store.nav.selectPage('foreignBodies')}
+                    />
+                    <NavLink
+                        label="Pitkäaikaishaitat"
+                        active={store.nav.page === 'adverseEffects'}
+                        onClick={() => store.nav.selectPage('adverseEffects')}
+                    />
+                    <NavLink
+                        label="Jälkiseuranta"
+                        active={store.nav.page === 'followup'}
+                        onClick={() => store.nav.selectPage('followup')}
+                    />
+                    <NavLink
+                        label="Lomakkeen täyttäjä"
+                        active={store.nav.page === 'signature'}
+                        onClick={() => store.nav.selectPage('signature')}
+                    />
                 </AppShell.Section>
             </AppShell.Navbar>
             <AppShell.Main>
                 <Container ml={0} size="md">
-                    {currentPage}
+                    <PageDisplay />
                 </Container>
             </AppShell.Main>
             <AppShell.Footer></AppShell.Footer>

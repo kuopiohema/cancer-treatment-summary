@@ -2,7 +2,7 @@ import { model, Model, modelAction, prop, Ref } from "mobx-keystone";
 import { rejectChangesConfirmModal } from "../modals/rejectChangesConfirmModal";
 import { Entity, entityRef } from "./entity/entity";
 
-export type Page = 'start' | 'entity' | 'adverseEffects' | 'followup' | 'signature'
+export type Page = 'start' | 'entity' | 'foreignBodies' | 'adverseEffects' | 'followup' | 'signature'
 
 @model('catrest/navStore')
 export class NavStore extends Model({
