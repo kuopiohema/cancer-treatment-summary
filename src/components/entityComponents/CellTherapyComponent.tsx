@@ -1,8 +1,8 @@
 import { observer } from "mobx-react";
-import { StemCellTransplant } from "../../store/entity/stemCellTransplant";
+import { CellTherapy } from "../../store/entity/cellTherapy";
 import { EntityComponentProps } from "./entityComponentProps";
 import { DateInput } from "@mantine/dates";
-import { Fieldset, Group, NumberInput, Select, Switch, Text, TextInput } from "@mantine/core";
+import { Autocomplete, Fieldset, NumberInput, Select, Switch, Text, TextInput } from "@mantine/core";
 import ChildList from "../entityLists/ChildList";
 import { Drug } from "../../store/entity/drug";
 import DrugComponent from "./DrugComponent";
@@ -10,24 +10,35 @@ import { use } from "react";
 import { StoreContext } from "../../store/StoreContext";
 import { sexOptions } from "../../options/sex";
 
-const StemCellTransplantComponent = observer(({ data }: EntityComponentProps<StemCellTransplant>) => {
+const CellTherapyComponent = observer(({ data }: EntityComponentProps<CellTherapy>) => {
     const store = use(StoreContext)
 
     return (
         <>
-            <Group grow preventGrowOverflow={false}>
+            <Fieldset legend="Hoidon perustiedot">
                 <Select
+                    value={data.origin}
+                    onChange={value => data.setOrigin(value)}
+                    label="Solujen alkuperä"
+                    data={store.data.cellOriginOptions}
+                    flex="none"
+                />
+                <Autocomplete
                     value={data.type}
                     onChange={value => data.setType(value)}
-                    label="Siirteen alkuperä"
-                    data={store.data.stemCellTypeOptions}
-                    flex="none"
+                    label="Solujen tyyppi"
+                    data={store.data.cellTypeOptions}
+                />
+                <Autocomplete
+                    value={data.carTarget}
+                    onChange={value => data.setCarTarget(value)}
+                    label="CAR-solujen kohde"
+                    data={store.data.carTargetOptions}
                 />
                 <DateInput
                     value={data.date}
                     onChange={value => data.setDate(value)}
                     label="Siirtopäivä"
-                    placeholder="pp.kk.vvvv"
                 />
                 <TextInput
                     value={data.conditioning}
@@ -35,15 +46,13 @@ const StemCellTransplantComponent = observer(({ data }: EntityComponentProps<Ste
                     label="Esihoito"
                     placeholder="Esim. 'Busulfaani-syklofosfamidi-melfalaani'"
                 />
-            </Group>
-            <Fieldset
-                legend="Luovuttajan tiedot"
-            >
+            </Fieldset>
+            <Fieldset legend="Luovuttajan tiedot (allogeeninen kantasolusiirto)">
                 <Select
                     value={data.donor}
                     onChange={value => data.setDonor(value)}
                     label="Luovuttaja"
-                    data={store.data.stemCellDonorOptions}
+                    data={store.data.cellDonorOptions}
                 />
                 <Select
                     value={data.donorSex}
@@ -102,4 +111,4 @@ const StemCellTransplantComponent = observer(({ data }: EntityComponentProps<Ste
     )
 })
 
-export default StemCellTransplantComponent
+export default CellTherapyComponent

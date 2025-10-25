@@ -12,11 +12,13 @@ export class DataStore extends Model({
     doxoEquivalents: prop<DoxoEquivalent[]>(() => []),
 
     bloodGroupOptions: prop<string[]>(() => []),
+    carTargetOptions: prop<string[]>(() => []),
+    cellDonorOptions: prop<string[]>(() => []),
+    cellOriginOptions: prop<string[]>(() => []),
+    cellTypeOptions: prop<string[]>(() => []),
     doseFormulaOptions: prop<string[]>(() => []),
     hlaMatchOptions: prop<string[]>(() => []),
     radiotherapyModeOptions: prop<string[]>(() => []),
-    stemCellDonorOptions: prop<string[]>(() => []),
-    stemCellTypeOptions: prop<string[]>(() => []),
     treatmentStopReasonOptions: prop<string[]>(() => []),
 }) {
     @modelFlow
@@ -24,11 +26,13 @@ export class DataStore extends Model({
         this.doxoEquivalents = yield* _await(fetchJson<DoxoEquivalent[]>('doxoEquivalents'))
         
         this.bloodGroupOptions = withUnknown(yield* _await(fetchJson<string[]>('selectOptions/bloodGroup')))
+        this.carTargetOptions = yield* _await(fetchJson<string[]>('selectOptions/carTarget'))
+        this.cellDonorOptions = yield* _await(fetchJson<string[]>('selectOptions/cellDonor'))
+        this.cellOriginOptions = yield* _await(fetchJson<string[]>('selectOptions/cellOrigin'))
+        this.cellTypeOptions = yield* _await(fetchJson<string[]>('selectOptions/cellType'))
         this.doseFormulaOptions = yield* _await(fetchJson<string[]>('selectOptions/doseFormula'))
         this.hlaMatchOptions = withUnknown(yield* _await(fetchJson<string[]>('selectOptions/hlaMatch')))
         this.radiotherapyModeOptions = withUnknown(yield* _await(fetchJson<string[]>('selectOptions/radiotherapyMode')))
-        this.stemCellDonorOptions = yield* _await(fetchJson<string[]>('selectOptions/stemCellDonor'))
-        this.stemCellTypeOptions = yield* _await(fetchJson<string[]>('selectOptions/stemCellType'))
         this.treatmentStopReasonOptions = withUnknown(yield* _await(fetchJson<string[]>('selectOptions/treatmentStopReason')))
     })
 }

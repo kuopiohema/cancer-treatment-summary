@@ -12,7 +12,6 @@ const DiagnosisComponent = observer(({ data }: EntityComponentProps<Diagnosis>) 
                     value={data.date}
                     onChange={value => data.setDate(value)}
                     label="Diagnoosipäivä"
-                    placeholder="pp.kk.vvvv"
                 />
                 <TextInput
                     value={data.icd10}

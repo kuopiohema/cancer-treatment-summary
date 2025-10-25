@@ -20,7 +20,7 @@ import ChemotherapyComponent from './components/entityComponents/ChemotherapyCom
 import DiagnosisComponent from './components/entityComponents/DiagnosisComponent.tsx'
 import ProcedureComponent from './components/entityComponents/ProcedureComponent.tsx'
 import RadiotherapyComponent from './components/entityComponents/RadiotherapyComponent.tsx'
-import StemCellTransplantComponent from './components/entityComponents/StemCellTransplantComponent.tsx'
+import CellTherapyComponent from './components/entityComponents/CellTherapyComponent.tsx'
 import TreatmentComponent from './components/entityComponents/TreatmentComponent.tsx'
 import EntityPage from './components/entityLists/EntityPage.tsx'
 import NavList from './components/entityLists/NavList.tsx'
@@ -29,7 +29,7 @@ import { Chemotherapy } from './store/entity/chemotherapy.ts'
 import { Diagnosis } from './store/entity/diagnosis.ts'
 import { Procedure } from './store/entity/procedure.ts'
 import { Radiotherapy } from './store/entity/radiotherapy.ts'
-import { StemCellTransplant } from './store/entity/stemCellTransplant.ts'
+import { CellTherapy } from './store/entity/cellTherapy.ts'
 import { Treatment } from './store/entity/treatment.ts'
 import { StoreContext } from './store/StoreContext.ts'
 
@@ -87,10 +87,10 @@ const App = observer(() => {
                         entity={entity}
                         InnerComponent={ProcedureComponent}
                     />
-                else if (entity instanceof StemCellTransplant)
+                else if (entity instanceof CellTherapy)
                     return <EntityPage
                         entity={entity}
-                        InnerComponent={StemCellTransplantComponent}
+                        InnerComponent={CellTherapyComponent}
                     />
                 return <div>Virhe: kohdetta ei löydy!</div>
             }
@@ -171,9 +171,9 @@ const App = observer(() => {
                     <NavList
                         entityList={store.form.chemotherapies}
                         entityFactory={() => new Chemotherapy({})}
-                        title="Kemoterapiajaksot"
-                        emptyText="Ei kemoterapiajaksoja"
-                        addButtonText="Lisää kemoterapiajakso"
+                        title="Lääkehoitojaksot"
+                        emptyText="Ei lääkehoitojaksoja"
+                        addButtonText="Lisää lääkehoitojakso"
                     />
                     <NavList
                         entityList={store.form.radiotherapies}
@@ -190,11 +190,11 @@ const App = observer(() => {
                         addButtonText="Lisää toimenpide"
                     />
                     <NavList
-                        entityList={store.form.stemCellTransplants}
-                        entityFactory={() => new StemCellTransplant({})}
-                        title="Kantasolusiirrot"
-                        emptyText="Ei kantasolusiirtoja"
-                        addButtonText="Lisää kantasolusiirto"
+                        entityList={store.form.cellTherapies}
+                        entityFactory={() => new CellTherapy({})}
+                        title="Kantasolusiirrot ja muut soluhoidot"
+                        emptyText="Ei soluhoitoja"
+                        addButtonText="Lisää soluhoito"
                     />
                 </AppShell.Section>
             </AppShell.Navbar>

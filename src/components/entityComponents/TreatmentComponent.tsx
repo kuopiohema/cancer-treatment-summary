@@ -23,13 +23,11 @@ const TreatmentComponent = observer(({ data }: EntityComponentProps<Treatment>) 
                     value={data.startDate}
                     onChange={value => data.setStartDate(value)}
                     label="Aloituspäivä"
-                    placeholder="pp.kk.vvvv"
                 />
                 <DateInput
                     value={data.endDate}
                     onChange={value => data.setEndDate(value)}
                     label="Lopetuspäivä"
-                    placeholder="pp.kk.vvvv"
                 />
             </Group>
             <TextInput
@@ -43,7 +41,6 @@ const TreatmentComponent = observer(({ data }: EntityComponentProps<Treatment>) 
                 onChange={value => data.setStopReason(value)}
                 data={store.data.treatmentStopReasonOptions}
                 label="Hoidon loppumisen syy"
-                placeholder="Valitse tai syötä"
             />
         </>
     )

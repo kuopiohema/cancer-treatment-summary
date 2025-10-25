@@ -20,13 +20,11 @@ const ChemotherapyComponent = observer(({ data }: EntityComponentProps<Chemother
                     value={data.startDate}
                     onChange={value => data.setStartDate(value)}
                     label="Aloituspäivä"
-                    placeholder="pp.kk.vvvv"
                 />
                 <DateInput
                     value={data.endDate}
                     onChange={value => data.setEndDate(value)}
                     label="Lopetuspäivä"
-                    placeholder="pp.kk.vvvv"
                 />
             </Group>
             <ChildList

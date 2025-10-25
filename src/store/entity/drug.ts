@@ -9,7 +9,7 @@ import { SelectValue } from "../../types/selectValue";
 export class Drug extends ExtendedModel(Entity, {
     drug: prop('').withSetter(),
     dose: prop<NumberInputValue>(0).withSetter(),
-    doseFormula: prop<SelectValue>(null).withSetter(),
+    doseFormula: prop<SelectValue>('mg/m²').withSetter(),
     notes: prop('').withSetter()
 }) {
     itemName = 'lääke'

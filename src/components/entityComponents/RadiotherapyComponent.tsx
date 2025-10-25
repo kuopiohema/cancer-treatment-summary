@@ -1,10 +1,10 @@
-import { Group, NumberInput, Select, Text, Textarea, TextInput } from "@mantine/core";
+import { Autocomplete, Group, NumberInput, Text, Textarea, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { observer } from "mobx-react";
-import { Radiotherapy } from "../../store/entity/radiotherapy";
-import { EntityComponentProps } from "./entityComponentProps";
 import { use } from "react";
+import { Radiotherapy } from "../../store/entity/radiotherapy";
 import { StoreContext } from "../../store/StoreContext";
+import { EntityComponentProps } from "./entityComponentProps";
 
 const RadiotherapyComponent = observer(({ data }: EntityComponentProps<Radiotherapy>) => {
     const store = use(StoreContext)
@@ -16,13 +16,11 @@ const RadiotherapyComponent = observer(({ data }: EntityComponentProps<Radiother
                     value={data.startDate}
                     onChange={value => data.setStartDate(value)}
                     label="Aloituspäivä"
-                    placeholder="pp.kk.vvvv"
                 />
                 <DateInput
                     value={data.endDate}
                     onChange={value => data.setEndDate(value)}
                     label="Lopetuspäivä"
-                    placeholder="pp.kk.vvvv"
                 />
             </Group>
             <TextInput
@@ -31,7 +29,7 @@ const RadiotherapyComponent = observer(({ data }: EntityComponentProps<Radiother
                 label="Kohteet"
                 placeholder="Esim. 'Oikea lisämunuainen, maksa'"
             />
-            <Select
+            <Autocomplete
                 value={data.mode}
                 onChange={value => data.setMode(value)}
                 label="Hoitomuoto"

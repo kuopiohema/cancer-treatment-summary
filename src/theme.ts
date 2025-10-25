@@ -33,17 +33,20 @@ export const theme = createTheme({
                 dateParser: defaultDateParser,
                 w: 120,
                 flex: 'none',
+                placeholder: 'pp.kk.vvvv'
             }
         }),
         Select: Select.extend({
             defaultProps: {
                 clearable: true,
-                searchable: true
+                searchable: true,
+                placeholder: 'Valitse luettelosta...'
             }
         }),
         Autocomplete: Autocomplete.extend({
             defaultProps: {
-                clearable: true
+                clearable: true,
+                placeholder: 'Valitse luettelosta tai syötä vapaasti...'
             }
         })
     }

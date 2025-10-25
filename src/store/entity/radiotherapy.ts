@@ -5,14 +5,13 @@ import { buildTextList } from "../../utils/buildTextList";
 import formatDate from "../../utils/formatDate";
 import { DateInputValue } from "../../types/dateInputValue";
 import { NumberInputValue } from "../../types/numberInputValue";
-import { SelectValue } from "../../types/selectValue";
 
 @model('catrest/radiotherapy')
 export class Radiotherapy extends ExtendedModel(Entity, {
     startDate: prop<DateInputValue>(null).withSetter(),
     endDate: prop<DateInputValue>(null).withSetter(),
     target: prop('').withSetter(),
-    mode: prop<SelectValue>(null).withSetter(),
+    mode: prop('').withSetter(),
     singleDose: prop<NumberInputValue>(0).withSetter(),
     totalDose: prop<NumberInputValue>(0).withSetter(),
     fractions: prop<NumberInputValue>(0).withSetter(),

@@ -12,7 +12,6 @@ const ProcedureComponent = observer(({ data }: EntityComponentProps<Procedure>) 
                     value={data.date}
                     onChange={value => data.setDate(value)}
                     label="Päivämäärä"
-                    placeholder="pp.kk.vvvv"
                 />
                 <TextInput
                     value={data.procedure}

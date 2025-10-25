@@ -37,6 +37,8 @@ const DrugComponent = observer(({ data }: EntityComponentProps<Drug>) => {
                     data={store.data.doseFormulaOptions}
                     w={100}
                     flex="none"
+                    clearable={false}
+                    allowDeselect={false}
                 />
                 <Textarea
                     value={data.notes}
