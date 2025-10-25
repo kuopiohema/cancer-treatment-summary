@@ -108,6 +108,7 @@ const App = observer(() => {
                     mobile: navbarCollapsed
                 }
             }}
+            footer={{ height: 60 }}
             padding="md"
         >
             <AppShell.Header color="black">
@@ -203,6 +204,7 @@ const App = observer(() => {
                     {currentPage}
                 </Container>
             </AppShell.Main>
+            <AppShell.Footer></AppShell.Footer>
         </AppShell>
     )
 })

@@ -1,4 +1,4 @@
-import { Button, Divider, Group, Stack } from "@mantine/core"
+import { Affix, Button, Divider, Group, Stack } from "@mantine/core"
 import { IconArrowBackUp, IconCheck } from "@tabler/icons-react"
 import { draft, getRootStore } from "mobx-keystone"
 import { observer } from "mobx-react"
@@ -23,28 +23,29 @@ const EntityPage = observer(<E extends Entity>({ entity, InnerComponent }: Entit
     const buttonsDisabled = !entityDraft.isDirty
 
     return (
-        <Stack gap="sm">
+        <>
             <InnerComponent data={entityDraft.data} />
-            <Divider />
-            <Group>
-                <Button
-                    onClick={handleAbort}
-                    color="red"
-                    leftSection={<IconArrowBackUp />}
-                    disabled={buttonsDisabled}
-                >
-                    Kumoa muutokset
-                </Button>
-                <Button
-                    onClick={handleConfirm}
-                    color="green"
-                    leftSection={<IconCheck />}
-                    disabled={buttonsDisabled}
-                >
-                    Hyväksy muutokset
-                </Button>
-            </Group>
-        </Stack>
+            <Affix position={{bottom: 10, right: 20}}>
+                <Group>
+                    <Button
+                        onClick={handleAbort}
+                        color="red"
+                        leftSection={<IconArrowBackUp />}
+                        disabled={buttonsDisabled}
+                    >
+                        Kumoa muutokset
+                    </Button>
+                    <Button
+                        onClick={handleConfirm}
+                        color="green"
+                        leftSection={<IconCheck />}
+                        disabled={buttonsDisabled}
+                    >
+                        Hyväksy muutokset
+                    </Button>
+                </Group>
+            </Affix>
+        </>
     )
 })
 
