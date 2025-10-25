@@ -1,5 +1,3 @@
-import { Entity } from "../../store/entity/entity"
-
-export interface EntityComponentProps<E extends Entity> {
+export interface EntityComponentProps<E> {
     data: E
 }

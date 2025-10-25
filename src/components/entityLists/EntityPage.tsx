@@ -1,21 +1,23 @@
 import { Affix, Button, Group, Stack } from "@mantine/core"
 import { IconArrowBackUp, IconCheck } from "@tabler/icons-react"
-import { draft, getRootStore } from "mobx-keystone"
+import { draft, isTreeNode } from "mobx-keystone"
 import { observer } from "mobx-react"
-import { ComponentType, useEffect, useMemo } from "react"
-import { Entity } from "../../store/entity/entity"
-import { RootStore } from "../../store/store"
+import { ComponentType, use, useEffect, useMemo } from "react"
+import { StoreContext } from "../../store/StoreContext"
 import { EntityComponentProps } from "../entityComponents/entityComponentProps"
 
-interface EntityPageProps<E extends Entity> {
+interface EntityPageProps<E> {
     entity: E
     InnerComponent: ComponentType<EntityComponentProps<E>>
 }
 
-const EntityPage = observer(<E extends Entity>({ entity, InnerComponent }: EntityPageProps<E>) => {
+const EntityPage = observer(<E extends object>({ entity, InnerComponent }: EntityPageProps<E>) => {  
+    const store = use(StoreContext)
+    if (!isTreeNode(entity))
+        throw new Error('Invalid entity object')
+    
     const entityDraft = useMemo(() => draft(entity), [entity])
-
-    useEffect(() => getRootStore<RootStore>(entity)?.nav.setPageIsDirty(entityDraft.isDirty), [entity, entityDraft.isDirty])
+    useEffect(() => store.nav.setPageIsDirty(entityDraft.isDirty), [store.nav, entityDraft.isDirty])
 
     const handleConfirm = () => entityDraft.commit()
     const handleAbort = () => entityDraft.reset()
