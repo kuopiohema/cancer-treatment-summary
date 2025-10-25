@@ -1,15 +1,13 @@
-import { Group, Select, TextInput } from "@mantine/core";
-import { EntityComponentProps } from "./entityComponentProps";
+import { Autocomplete, Group, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { observer } from "mobx-react";
-import { Treatment } from "../../store/entity/treatment";
-import { getComboboxData } from '../../utils/getComboboxData';
 import { use } from "react";
+import { Treatment } from "../../store/entity/treatment";
 import { StoreContext } from "../../store/StoreContext";
+import { EntityComponentProps } from "./entityComponentProps";
 
 const TreatmentComponent = observer(({ data }: EntityComponentProps<Treatment>) => {
     const store = use(StoreContext)
-    const treatmentStopReasonOptionsData = getComboboxData(store.data.treatmentStopReasonOptions, true, true)
 
     return (
         <>
@@ -25,13 +23,13 @@ const TreatmentComponent = observer(({ data }: EntityComponentProps<Treatment>) 
                     value={data.startDate}
                     onChange={value => data.setStartDate(value)}
                     label="Aloituspäivä"
-                    placeholder="Aloituspäivä"
+                    placeholder="pp.kk.vvvv"
                 />
                 <DateInput
                     value={data.endDate}
                     onChange={value => data.setEndDate(value)}
                     label="Lopetuspäivä"
-                    placeholder="Lopetuspäivä"
+                    placeholder="pp.kk.vvvv"
                 />
             </Group>
             <TextInput
@@ -40,23 +38,13 @@ const TreatmentComponent = observer(({ data }: EntityComponentProps<Treatment>) 
                 label="Hoitoryhmä"
                 placeholder="Esim. 'Intermediate Risk - High'"
             />
-            <Group grow preventGrowOverflow={false}>
-                <Select
-                    value={data.stopReason}
-                    onChange={value => data.setStopReason(value)}
-                    data={treatmentStopReasonOptionsData}
-                    label="Hoidon loppumisen syy"
-                    w={200}
-                    flex="none"
-                />
-                <TextInput
-                    value={data.stopReasonOther}
-                    onChange={e => data.setStopReasonOther(e.target.value)}
-                    label=" "
-                    placeholder="Muu, mikä?"
-                    disabled={data.stopReason !== 'other'}
-                />
-            </Group>
+            <Autocomplete
+                value={data.stopReason}
+                onChange={value => data.setStopReason(value)}
+                data={store.data.treatmentStopReasonOptions}
+                label="Hoidon loppumisen syy"
+                placeholder="Valitse tai syötä"
+            />
         </>
     )
 })

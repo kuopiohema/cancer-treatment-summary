@@ -5,11 +5,9 @@ import { Radiotherapy } from "../../store/entity/radiotherapy";
 import { EntityComponentProps } from "./entityComponentProps";
 import { use } from "react";
 import { StoreContext } from "../../store/StoreContext";
-import { getComboboxData } from '../../utils/getComboboxData';
 
 const RadiotherapyComponent = observer(({ data }: EntityComponentProps<Radiotherapy>) => {
     const store = use(StoreContext)
-    const radioModeOptionsData = getComboboxData(store.data.radiotherapyModeOptions, true, true)
 
     return (
         <>
@@ -18,13 +16,13 @@ const RadiotherapyComponent = observer(({ data }: EntityComponentProps<Radiother
                     value={data.startDate}
                     onChange={value => data.setStartDate(value)}
                     label="Aloituspäivä"
-                    placeholder="Aloituspäivä"
+                    placeholder="pp.kk.vvvv"
                 />
                 <DateInput
                     value={data.endDate}
                     onChange={value => data.setEndDate(value)}
                     label="Lopetuspäivä"
-                    placeholder="Lopetuspäivä"
+                    placeholder="pp.kk.vvvv"
                 />
             </Group>
             <TextInput
@@ -33,23 +31,12 @@ const RadiotherapyComponent = observer(({ data }: EntityComponentProps<Radiother
                 label="Kohteet"
                 placeholder="Esim. 'Oikea lisämunuainen, maksa'"
             />
-            <Group grow preventGrowOverflow={false}>
-                <Select
-                    value={data.mode}
-                    onChange={value => data.setMode(value)}
-                    label="Hoitomuoto"
-                    data={radioModeOptionsData}
-                    w={250}
-                    flex="none"
-                />
-                <TextInput
-                    value={data.modeOther}
-                    onChange={e => data.setModeOther(e.target.value)}
-                    label=" "
-                    placeholder="Muu, mikä?"
-                    disabled={data.mode !== 'other'}
-                />
-            </Group>
+            <Select
+                value={data.mode}
+                onChange={value => data.setMode(value)}
+                label="Hoitomuoto"
+                data={store.data.radiotherapyModeOptions}
+            />
             <Group>
                 <NumberInput
                     value={data.fractions}

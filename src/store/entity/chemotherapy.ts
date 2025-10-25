@@ -4,7 +4,7 @@ import formatDate from "../../utils/formatDate";
 import { computed, override } from "mobx";
 import { EntityList } from "../entityList";
 import { Drug } from "./drug";
-import { getTextList } from "../../utils/getTextList";
+import { buildTextList } from "../../utils/buildTextList";
 import { DateInputValue } from "../../types/dateInputValue";
 
 @model('catrest/chemotherapy')
@@ -22,7 +22,7 @@ export class Chemotherapy extends ExtendedModel(Entity, {
 
     @override
     get sublabel() {
-        return getTextList([
+        return buildTextList([
             `${this.drugs.entities.length} lääke${this.drugs.entities.length !== 1 ? 'ttä' : ''}`,
             `Doksorubisiiniekvivalentti: ${this.doxoEquivalent} mg/m²`
         ])

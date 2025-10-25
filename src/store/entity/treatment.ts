@@ -1,12 +1,9 @@
 import { ExtendedModel, model, prop } from "mobx-keystone";
 import { Entity } from "./entity";
 import { override } from "mobx";
-import { getTextList } from "../../utils/getTextList";
+import { buildTextList } from "../../utils/buildTextList";
 import formatDate from "../../utils/formatDate";
 import { DateInputValue } from "../../types/dateInputValue";
-import { dataCtx } from "../store";
-import { getOptionText } from "../../utils/getOptionText";
-import { SelectValue } from "../../types/selectValue";
 
 @model('catrest/treatment')
 export class Treatment extends ExtendedModel(Entity, {
@@ -14,8 +11,7 @@ export class Treatment extends ExtendedModel(Entity, {
     group: prop('').withSetter(),
     startDate: prop<DateInputValue>(null).withSetter(),
     endDate: prop<DateInputValue>(null).withSetter(),
-    stopReason: prop<SelectValue>(null).withSetter(),
-    stopReasonOther: prop('').withSetter()
+    stopReason: prop('').withSetter(),
 }) {
     itemName = 'hoito'
     
@@ -26,13 +22,12 @@ export class Treatment extends ExtendedModel(Entity, {
 
     @override
     get sublabel() {
-        const data = dataCtx.get(this)
-        return getTextList([
+        return buildTextList([
             `${formatDate(this.startDate)} - ${formatDate(this.endDate)}`,
             this.group,
             {
                 heading: 'Hoidon loppumisen syy',
-                content: getOptionText(this.stopReason, data.treatmentStopReasonOptions, this.stopReasonOther)
+                content: this.stopReason
             }
         ])
     }

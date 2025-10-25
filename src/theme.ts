@@ -1,4 +1,4 @@
-import {createTheme, NumberInput, Select, Textarea} from '@mantine/core'
+import {Autocomplete, createTheme, NumberInput, Select, Textarea} from '@mantine/core'
 import {DateInput, type DateInputProps} from '@mantine/dates'
 import dayjs, {type Dayjs} from 'dayjs'
 
@@ -39,6 +39,11 @@ export const theme = createTheme({
             defaultProps: {
                 clearable: true,
                 searchable: true
+            }
+        }),
+        Autocomplete: Autocomplete.extend({
+            defaultProps: {
+                clearable: true
             }
         })
     }

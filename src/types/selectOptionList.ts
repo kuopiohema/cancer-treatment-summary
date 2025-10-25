@@ -1,1 +1,0 @@
-export type SelectOptionList = Record<string, string>

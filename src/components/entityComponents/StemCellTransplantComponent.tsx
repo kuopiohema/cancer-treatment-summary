@@ -6,20 +6,12 @@ import { Fieldset, Group, NumberInput, Select, Switch, Text, TextInput } from "@
 import ChildList from "../entityLists/ChildList";
 import { Drug } from "../../store/entity/drug";
 import DrugComponent from "./DrugComponent";
-import { getComboboxData } from '../../utils/getComboboxData';
 import { use } from "react";
 import { StoreContext } from "../../store/StoreContext";
-import { SelectValue } from "../../types/selectValue";
-import { modals } from "@mantine/modals";
+import { sexOptions } from "../../options/sex";
 
 const StemCellTransplantComponent = observer(({ data }: EntityComponentProps<StemCellTransplant>) => {
     const store = use(StoreContext)
-
-    const stemCellTypeOptionsData = getComboboxData(store.data.stemCellTypeOptions)
-    const stemCellDonorOptionsData = getComboboxData(store.data.stemCellDonorOptions, true)
-    const sexOptionsData = getComboboxData(store.data.sexOptions, true)
-    const hlaMatchOptionsData = getComboboxData(store.data.hlaMatchOptions, true)
-    const bloodGroupOptionsData = getComboboxData(store.data.bloodGroupOptions, true)
 
     return (
         <>
@@ -28,14 +20,14 @@ const StemCellTransplantComponent = observer(({ data }: EntityComponentProps<Ste
                     value={data.type}
                     onChange={value => data.setType(value)}
                     label="Siirteen alkuperä"
-                    data={stemCellTypeOptionsData}
+                    data={store.data.stemCellTypeOptions}
                     flex="none"
                 />
                 <DateInput
                     value={data.date}
                     onChange={value => data.setDate(value)}
                     label="Siirtopäivä"
-                    placeholder="Siirtopäivä"
+                    placeholder="pp.kk.vvvv"
                 />
                 <TextInput
                     value={data.conditioning}
@@ -51,25 +43,25 @@ const StemCellTransplantComponent = observer(({ data }: EntityComponentProps<Ste
                     value={data.donor}
                     onChange={value => data.setDonor(value)}
                     label="Luovuttaja"
-                    data={stemCellDonorOptionsData}
+                    data={store.data.stemCellDonorOptions}
                 />
                 <Select
                     value={data.donorSex}
                     onChange={value => data.setDonorSex(value)}
                     label="Sukupuoli"
-                    data={sexOptionsData}
+                    data={sexOptions}
                 />
                 <Select
                     value={data.hlaMatch}
                     onChange={value => data.setHlaMatch(value)}
                     label="HLA-sopivuus"
-                    data={hlaMatchOptionsData}
+                    data={store.data.hlaMatchOptions}
                 />
                 <Select
                     value={data.donorBloodGroup}
                     onChange={value => data.setDonorBloodGroup(value)}
                     label="Veriryhmä"
-                    data={bloodGroupOptionsData}
+                    data={store.data.bloodGroupOptions}
                 />
             </Fieldset>
 

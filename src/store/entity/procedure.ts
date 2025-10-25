@@ -1,7 +1,7 @@
 import { ExtendedModel, model, prop } from "mobx-keystone";
 import { Entity } from "./entity";
 import { override } from "mobx";
-import { getTextList } from "../../utils/getTextList";
+import { buildTextList } from "../../utils/buildTextList";
 import formatDate from "../../utils/formatDate";
 import { DateInputValue } from "../../types/dateInputValue";
 
@@ -21,7 +21,7 @@ export class Procedure extends ExtendedModel(Entity, {
 
     @override
     get sublabel() {
-        return getTextList([
+        return buildTextList([
             formatDate(this.date),
             this.details,
             { heading: 'Komplikaatiot', content: this.complications }

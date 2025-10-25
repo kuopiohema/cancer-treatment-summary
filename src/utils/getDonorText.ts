@@ -1,34 +1,33 @@
+import { sex } from "../options/sex"
 import { SelectValue } from "../types/selectValue"
-import { SelectOptionList } from '../types/selectOptionList'
+import { unknownValue } from "./withUnknown"
 
-const maleValue = 'male'
-const femaleValue = 'female'
 const unknownSexText = 'sukupuoli tuntematon'
 
-export const getDonorText = (donor: SelectValue, donorSex: SelectValue, donorOptions: SelectOptionList): string => {
-    if (!donor)
+export const getDonorText = (donorValue: SelectValue, donorSexValue: SelectValue): string => {
+    if (!donorValue)
         return ''
 
-    if (donor === 'parent') {
-        if (donorSex === maleValue)
+    if (donorValue === 'Vanhempi') {
+        if (donorSexValue === sex.male)
             return 'Isä'
-        if (donorSex === femaleValue)
+        if (donorSexValue === sex.female)
             return 'Äiti'
         return `Vanhempi (${unknownSexText})`
     }
     
-    if (donor === 'sibling') {
-        if (donorSex === maleValue)
+    if (donorValue === 'Sisarus') {
+        if (donorSexValue === sex.male)
             return 'Veli'
-        if (donorSex === femaleValue)
+        if (donorSexValue === sex.female)
             return 'Sisko'
         return `Sisarus (${unknownSexText})`
     }
 
-    const text = donor in donorOptions ? donorOptions[donor] : 'Tuntematon luovuttaja'
-    if (donorSex === maleValue)
+    const text = donorValue === unknownValue ? 'Tuntematon luovuttaja' : donorValue
+    if (donorSexValue === sex.male)
         return `${text} (mies)`
-    if (donorSex === femaleValue)
+    if (donorSexValue === sex.female)
         return `${text} (nainen)`
     return `${text} (${unknownSexText})`
 }

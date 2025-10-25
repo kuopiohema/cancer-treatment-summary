@@ -1,7 +1,7 @@
 import { override } from "mobx";
 import { ExtendedModel, model, prop } from "mobx-keystone";
 import formatDate from "../../utils/formatDate";
-import { getTextList } from "../../utils/getTextList";
+import { buildTextList } from "../../utils/buildTextList";
 import { Entity } from "./entity";
 import { DateInputValue } from "../../types/dateInputValue";
 
@@ -27,7 +27,7 @@ export class Diagnosis extends ExtendedModel(Entity, {
 
     @override
     get sublabel() {
-        return getTextList([
+        return buildTextList([
             formatDate(this.date),
             this.detail,
             this.stage,

@@ -1,12 +1,10 @@
 import { ExtendedModel, model, prop } from "mobx-keystone";
 import { Entity } from "./entity";
 import { override } from "mobx";
-import { getTextList } from "../../utils/getTextList";
+import { buildTextList } from "../../utils/buildTextList";
 import formatDate from "../../utils/formatDate";
 import { DateInputValue } from "../../types/dateInputValue";
 import { NumberInputValue } from "../../types/numberInputValue";
-import { getOptionText } from "../../utils/getOptionText";
-import { dataCtx } from "../store";
 import { SelectValue } from "../../types/selectValue";
 
 @model('catrest/radiotherapy')
@@ -15,7 +13,6 @@ export class Radiotherapy extends ExtendedModel(Entity, {
     endDate: prop<DateInputValue>(null).withSetter(),
     target: prop('').withSetter(),
     mode: prop<SelectValue>(null).withSetter(),
-    modeOther: prop('').withSetter(),
     singleDose: prop<NumberInputValue>(0).withSetter(),
     totalDose: prop<NumberInputValue>(0).withSetter(),
     fractions: prop<NumberInputValue>(0).withSetter(),
@@ -30,9 +27,8 @@ export class Radiotherapy extends ExtendedModel(Entity, {
 
     @override
     get sublabel() {
-        const data = dataCtx.get(this)
-        return getTextList([
-            getOptionText(this.mode, data.radiotherapyModeOptions, this.modeOther),
+        return buildTextList([
+            this.mode,
             `${formatDate(this.startDate)} - ${formatDate(this.endDate)}`,
             `${this.totalDose} Gy (${this.fractions} x ${this.singleDose} Gy)`,
             this.notes

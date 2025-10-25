@@ -18,12 +18,12 @@ export class Drug extends ExtendedModel(Entity, {
     get doxoEquivalent() {
         const doxoEquivalents = dataCtx.get(this).doxoEquivalents
         const factor = doxoEquivalents.find((value) => value.drug === this.drug.toLocaleLowerCase())?.factor
-        if (typeof this.dose === 'number' && factor) {
-            switch (this.doseFormula) {
-                case 'mgm2': return this.dose * factor
-                case 'mgkg': return this.dose * 30 * factor
-                default: return 0
-            }
+        if (factor && typeof this.dose === 'number') {
+            if (this.doseFormula === 'mg/m²')
+                return this.dose * factor
+            if (this.doseFormula === 'mg/kg')
+                return this.dose * 30 * factor
+            return 0
         }
         else
             return 0
