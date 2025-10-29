@@ -3,5 +3,11 @@ export const fetchJson = async <Data>(file: string): Promise<Data> => {
     if (!response.ok) {
         throw new Error(response.statusText)
     }
-    return await response.json() as Data
+    let json
+    try {
+        json = await response.json() as Data
+    } catch {
+        return {} as Data
+    }
+    return json
 }

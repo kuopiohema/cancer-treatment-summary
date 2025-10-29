@@ -5,7 +5,6 @@ import {
     Button,
     Container,
     Group,
-    NavLink,
     ScrollArea,
     Text,
     useComputedColorScheme,
@@ -16,14 +15,8 @@ import { IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, Ico
 import { getSnapshot } from 'mobx-keystone'
 import { observer } from 'mobx-react'
 import { use } from 'react'
-import NavList from './components/entityLists/NavList.tsx'
+import Navbar from './components/Navbar.tsx'
 import PageDisplay from './components/PageDisplay.tsx'
-import { CellTherapy } from './store/entity/cellTherapy.ts'
-import { Chemotherapy } from './store/entity/chemotherapy.ts'
-import { Diagnosis } from './store/entity/diagnosis.ts'
-import { Procedure } from './store/entity/procedure.ts'
-import { Radiotherapy } from './store/entity/radiotherapy.ts'
-import { Treatment } from './store/entity/treatment.ts'
 import { StoreContext } from './store/StoreContext.ts'
 
 const App = observer(() => {
@@ -102,73 +95,7 @@ const App = observer(() => {
             </AppShell.Header>
             <AppShell.Navbar>
                 <AppShell.Section component={ScrollArea}>
-                    <NavLink
-                        label="Aloitus"
-                        active={store.nav.page === 'start'}
-                        onClick={() => store.nav.selectPage('start')}
-                    />
-                    <NavList
-                        entityList={store.form.diagnoses}
-                        entityFactory={() => new Diagnosis({})}
-                        title="Diagnoosit"
-                        emptyText="Ei diagnooseja"
-                        addButtonText="Lisää diagnoosi"
-                    />
-                    <NavList
-                        entityList={store.form.treatments}
-                        entityFactory={() => new Treatment({})}
-                        title="Hoidot"
-                        emptyText="Ei hoitoja"
-                        addButtonText="Lisää hoito"
-                    />
-                    <NavList
-                        entityList={store.form.chemotherapies}
-                        entityFactory={() => new Chemotherapy({})}
-                        title="Lääkehoitojaksot"
-                        emptyText="Ei lääkehoitojaksoja"
-                        addButtonText="Lisää lääkehoitojakso"
-                    />
-                    <NavList
-                        entityList={store.form.radiotherapies}
-                        entityFactory={() => new Radiotherapy({})}
-                        title="Sädehoitojaksot"
-                        emptyText="Ei sädehoitojaksoja"
-                        addButtonText="Lisää sädehoitojakso"
-                    />
-                    <NavList
-                        entityList={store.form.procedures}
-                        entityFactory={() => new Procedure({})}
-                        title="Leikkaukset ja toimenpiteet"
-                        emptyText="Ei toimenpiteitä"
-                        addButtonText="Lisää toimenpide"
-                    />
-                    <NavList
-                        entityList={store.form.cellTherapies}
-                        entityFactory={() => new CellTherapy({})}
-                        title="Kantasolusiirrot ja muut soluhoidot"
-                        emptyText="Ei soluhoitoja"
-                        addButtonText="Lisää soluhoito"
-                    />
-                    <NavLink
-                        label="Vierasesineet"
-                        active={store.nav.page === 'foreignBodies'}
-                        onClick={() => store.nav.selectPage('foreignBodies')}
-                    />
-                    <NavLink
-                        label="Pitkäaikaishaitat"
-                        active={store.nav.page === 'adverseEffects'}
-                        onClick={() => store.nav.selectPage('adverseEffects')}
-                    />
-                    <NavLink
-                        label="Jälkiseuranta"
-                        active={store.nav.page === 'followup'}
-                        onClick={() => store.nav.selectPage('followup')}
-                    />
-                    <NavLink
-                        label="Lomakkeen täyttäjä"
-                        active={store.nav.page === 'signature'}
-                        onClick={() => store.nav.selectPage('signature')}
-                    />
+                    <Navbar />
                 </AppShell.Section>
             </AppShell.Navbar>
             <AppShell.Main>

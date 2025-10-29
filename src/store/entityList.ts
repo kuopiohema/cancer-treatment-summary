@@ -1,5 +1,6 @@
 import { arrayActions, Model, model, modelAction, prop } from "mobx-keystone";
 import { Entity } from "./entity/entity";
+import { computed } from "mobx";
 
 @model('catrest/entityList')
 export class EntityList<E extends Entity> extends Model(<E>() => ({
@@ -31,5 +32,10 @@ export class EntityList<E extends Entity> extends Model(<E>() => ({
     @modelAction
     clear() {
         this.entities = []
+    }
+
+    @computed
+    get entityCount() {
+        return this.entities.length
     }
 }

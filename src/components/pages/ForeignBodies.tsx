@@ -25,7 +25,7 @@ const ForeignBodies = () => {
     return (
         <>
             <Title order={1}>Vierasesineet</Title>
-            <Text>
+            <Text mb="xl">
                 Syötä tälle sivulle syöpähoitoihin liittyen potilaalle laitetut vierasesineet sekä
                 tieto niiden mahdollisesta poistamisesta.
             </Text>
