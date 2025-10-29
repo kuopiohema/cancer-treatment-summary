@@ -1,16 +1,16 @@
 import { observer } from "mobx-react";
-import { CellTherapy } from "../../store/entity/cellTherapy";
-import { EntityComponentProps } from "./entityComponentProps";
+import { CellTherapy } from "../../../store/entity/cellTherapy";
+import { EntityComponentProps } from "../entityComponentProps";
 import { DateInput } from "@mantine/dates";
 import { Autocomplete, Fieldset, Group, NumberInput, Select, Switch, Text, TextInput } from "@mantine/core";
-import ChildList from "../entityLists/ChildList";
-import { Drug } from "../../store/entity/drug";
-import DrugComponent from "./DrugComponent";
+import ChildList from "../../entityLists/ChildList";
+import { Drug } from "../../../store/entity/drug";
+import DrugListItem from "../listItems/DrugListItem";
 import { use } from "react";
-import { StoreContext } from "../../store/StoreContext";
-import { sexOptions } from "../../options/sex";
+import { StoreContext } from "../../../store/StoreContext";
+import { sexOptions } from "../../../options/sex";
 
-const CellTherapyComponent = observer(({ data }: EntityComponentProps<CellTherapy>) => {
+const CellTherapyPage = observer(({ data }: EntityComponentProps<CellTherapy>) => {
     const store = use(StoreContext)
 
     return (
@@ -79,7 +79,7 @@ const CellTherapyComponent = observer(({ data }: EntityComponentProps<CellTherap
                 title="Esihoidon lääkkeet"
                 emptyText="Ei lääkkeitä"
                 addButtonText="Lisää lääke"
-                ListItemComponent={DrugComponent}
+                ListItemComponent={DrugListItem}
             />
             <Fieldset legend="Koko kehon sädehoito (TBI)">
                 <Switch
@@ -140,4 +140,4 @@ const CellTherapyComponent = observer(({ data }: EntityComponentProps<CellTherap
     )
 })
 
-export default CellTherapyComponent
+export default CellTherapyPage

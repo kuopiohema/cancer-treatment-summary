@@ -5,7 +5,7 @@ import { observer } from "mobx-react"
 import { Entity } from "../../store/entity/entity"
 import { EntityListProps } from "./entityListProps"
 import { ComponentType } from "react"
-import { EntityComponentProps } from "../entityComponents/entityComponentProps"
+import { EntityComponentProps } from "../entities/entityComponentProps"
 import { EntityList } from "../../store/entityList"
 import ChildListItem from "./ChildListItem"
 

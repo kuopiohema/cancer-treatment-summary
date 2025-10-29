@@ -4,7 +4,7 @@ import { draft, isTreeNode } from "mobx-keystone"
 import { observer } from "mobx-react"
 import { ComponentType, use, useEffect, useMemo } from "react"
 import { StoreContext } from "../../store/StoreContext"
-import { EntityComponentProps } from "../entityComponents/entityComponentProps"
+import { EntityComponentProps } from "../entities/entityComponentProps"
 
 interface EntityPageProps<E> {
     entity: E

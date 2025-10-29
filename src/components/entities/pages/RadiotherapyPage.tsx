@@ -2,11 +2,11 @@ import { Autocomplete, Group, NumberInput, Text, Textarea, TextInput } from "@ma
 import { DateInput } from "@mantine/dates";
 import { observer } from "mobx-react";
 import { use } from "react";
-import { Radiotherapy } from "../../store/entity/radiotherapy";
-import { StoreContext } from "../../store/StoreContext";
-import { EntityComponentProps } from "./entityComponentProps";
+import { Radiotherapy } from "../../../store/entity/radiotherapy";
+import { StoreContext } from "../../../store/StoreContext";
+import { EntityComponentProps } from "../entityComponentProps";
 
-const RadiotherapyComponent = observer(({ data }: EntityComponentProps<Radiotherapy>) => {
+const RadiotherapyPage = observer(({ data }: EntityComponentProps<Radiotherapy>) => {
     const store = use(StoreContext)
 
     return (
@@ -71,4 +71,4 @@ const RadiotherapyComponent = observer(({ data }: EntityComponentProps<Radiother
     )
 })
 
-export default RadiotherapyComponent
+export default RadiotherapyPage

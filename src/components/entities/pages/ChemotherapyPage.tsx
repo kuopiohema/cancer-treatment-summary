@@ -1,16 +1,16 @@
 import { Divider, Group, List, Text } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { observer } from "mobx-react"
-import { Chemotherapy } from "../../store/entity/chemotherapy"
-import { Drug } from "../../store/entity/drug"
-import ChildList from "../entityLists/ChildList"
-import DrugComponent from "./DrugComponent"
-import { EntityComponentProps } from "./entityComponentProps"
-import { firstLetterUppercase } from "../../utils/firstLetterUppercase"
+import { Chemotherapy } from "../../../store/entity/chemotherapy"
+import { Drug } from "../../../store/entity/drug"
+import ChildList from "../../entityLists/ChildList"
+import DrugListItem from "../listItems/DrugListItem"
+import { EntityComponentProps } from "../entityComponentProps"
+import { firstLetterUppercase } from "../../../utils/firstLetterUppercase"
 import { use, useState } from "react"
-import { StoreContext } from "../../store/StoreContext"
+import { StoreContext } from "../../../store/StoreContext"
 
-const ChemotherapyComponent = observer(({ data }: EntityComponentProps<Chemotherapy>) => {
+const ChemotherapyPage = observer(({ data }: EntityComponentProps<Chemotherapy>) => {
     const store = use(StoreContext)
     const [doxoEquivalents] = useState(store.data.doxoEquivalents)
     return (
@@ -33,7 +33,7 @@ const ChemotherapyComponent = observer(({ data }: EntityComponentProps<Chemother
                 title="Lääkkeet"
                 emptyText="Ei lääkkeitä"
                 addButtonText="Lisää lääke"
-                ListItemComponent={DrugComponent}
+                ListItemComponent={DrugListItem}
             />
             <Divider orientation="horizontal" />
             <Text>Kumulatiivinen antrasykliiniannos (doksorubisiiniekvivalentti) = {data.doxoEquivalent} mg/m²<br /></Text>
@@ -47,4 +47,4 @@ const ChemotherapyComponent = observer(({ data }: EntityComponentProps<Chemother
     )
 })
 
-export default ChemotherapyComponent
+export default ChemotherapyPage

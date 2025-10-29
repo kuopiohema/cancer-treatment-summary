@@ -2,11 +2,11 @@ import { Autocomplete, Group, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { observer } from "mobx-react";
 import { use } from "react";
-import { Treatment } from "../../store/entity/treatment";
-import { StoreContext } from "../../store/StoreContext";
-import { EntityComponentProps } from "./entityComponentProps";
+import { Treatment } from "../../../store/entity/treatment";
+import { StoreContext } from "../../../store/StoreContext";
+import { EntityComponentProps } from "../entityComponentProps";
 
-const TreatmentComponent = observer(({ data }: EntityComponentProps<Treatment>) => {
+const TreatmentPage = observer(({ data }: EntityComponentProps<Treatment>) => {
     const store = use(StoreContext)
 
     return (
@@ -46,4 +46,4 @@ const TreatmentComponent = observer(({ data }: EntityComponentProps<Treatment>) 
     )
 })
 
-export default TreatmentComponent
+export default TreatmentPage

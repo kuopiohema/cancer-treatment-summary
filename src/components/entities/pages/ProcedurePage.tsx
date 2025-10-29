@@ -1,10 +1,10 @@
 import { observer } from "mobx-react";
-import { Procedure } from "../../store/entity/procedure";
-import { EntityComponentProps } from "./entityComponentProps";
+import { Procedure } from "../../../store/entity/procedure";
+import { EntityComponentProps } from "../entityComponentProps";
 import { Group, Textarea, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 
-const ProcedureComponent = observer(({ data }: EntityComponentProps<Procedure>) => {
+const ProcedurePage = observer(({ data }: EntityComponentProps<Procedure>) => {
     return (
         <>
             <Group grow preventGrowOverflow={false}>
@@ -38,4 +38,4 @@ const ProcedureComponent = observer(({ data }: EntityComponentProps<Procedure>) 
     )
 })
 
-export default ProcedureComponent
+export default ProcedurePage

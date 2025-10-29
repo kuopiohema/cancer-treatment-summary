@@ -8,12 +8,12 @@ import { Procedure } from "../store/entity/procedure"
 import { Radiotherapy } from "../store/entity/radiotherapy"
 import { Treatment } from "../store/entity/treatment"
 import { StoreContext } from "../store/StoreContext"
-import CellTherapyComponent from "./entityComponents/CellTherapyComponent"
-import ChemotherapyComponent from "./entityComponents/ChemotherapyComponent"
-import DiagnosisComponent from "./entityComponents/DiagnosisComponent"
-import ProcedureComponent from "./entityComponents/ProcedureComponent"
-import RadiotherapyComponent from "./entityComponents/RadiotherapyComponent"
-import TreatmentComponent from "./entityComponents/TreatmentComponent"
+import CellTherapyPage from "./entities/pages/CellTherapyPage"
+import ChemotherapyPage from "./entities/pages/ChemotherapyPage"
+import DiagnosisPage from "./entities/pages/DiagnosisPage"
+import ProcedurePage from "./entities/pages/ProcedurePage"
+import RadiotherapyPage from "./entities/pages/RadiotherapyPage"
+import TreatmentPage from "./entities/pages/TreatmentPage"
 import EntityPage from "./entityLists/EntityPage"
 import AdverseEffects from "./pages/AdverseEffects"
 import ErrorPage from "./pages/ErrorPage"
@@ -24,17 +24,17 @@ import Start from "./pages/Start"
 
 const getEntityPage = (entity: Entity | undefined): JSX.Element => {
     if (entity instanceof Diagnosis)
-        return <EntityPage entity={entity} InnerComponent={DiagnosisComponent} />
+        return <EntityPage entity={entity} InnerComponent={DiagnosisPage} />
     if (entity instanceof Treatment)
-        return <EntityPage entity={entity} InnerComponent={TreatmentComponent} />
+        return <EntityPage entity={entity} InnerComponent={TreatmentPage} />
     if (entity instanceof Chemotherapy)
-        return <EntityPage entity={entity} InnerComponent={ChemotherapyComponent} />
+        return <EntityPage entity={entity} InnerComponent={ChemotherapyPage} />
     if (entity instanceof Radiotherapy)
-        return <EntityPage entity={entity} InnerComponent={RadiotherapyComponent} />
+        return <EntityPage entity={entity} InnerComponent={RadiotherapyPage} />
     if (entity instanceof Procedure)
-        return <EntityPage entity={entity} InnerComponent={ProcedureComponent} />
+        return <EntityPage entity={entity} InnerComponent={ProcedurePage} />
     if (entity instanceof CellTherapy)
-        return <EntityPage entity={entity} InnerComponent={CellTherapyComponent} />
+        return <EntityPage entity={entity} InnerComponent={CellTherapyPage} />
     return <ErrorPage error={"Kohdetta ei löydy!"} />
 }
 

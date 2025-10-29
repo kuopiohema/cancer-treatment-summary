@@ -1,11 +1,11 @@
 import { observer } from "mobx-react"
-import { Drug } from "../../store/entity/drug"
-import { EntityComponentProps } from "./entityComponentProps"
+import { Drug } from "../../../store/entity/drug"
+import { EntityComponentProps } from "../entityComponentProps"
 import { Group, NumberInput, Select, Text, Textarea, TextInput } from "@mantine/core"
 import { use } from "react"
-import { StoreContext } from "../../store/StoreContext"
+import { StoreContext } from "../../../store/StoreContext"
 
-const DrugComponent = observer(({ data }: EntityComponentProps<Drug>) => {
+const DrugListItem = observer(({ data }: EntityComponentProps<Drug>) => {
     const store = use(StoreContext)
     
     return (
@@ -53,4 +53,4 @@ const DrugComponent = observer(({ data }: EntityComponentProps<Drug>) => {
     )
 })
 
-export default DrugComponent
+export default DrugListItem
