@@ -20,7 +20,7 @@ import ErrorPage from "./pages/ErrorPage"
 import Followup from "./pages/Followup"
 import ForeignBodies from "./pages/ForeignBodies"
 import Signature from "./pages/Signature"
-import Start from "./pages/Start"
+import Help from "./pages/Help"
 
 const getEntityPage = (entity: Entity | undefined): JSX.Element => {
     if (entity instanceof Diagnosis)
@@ -42,7 +42,7 @@ const PageDisplay = observer(() => {
     const store = use(StoreContext)
     const Page: JSX.Element = useMemo(() => {
         switch (store.nav.page) {
-            case 'start': return <Start />
+            case 'help': return <Help />
             case 'foreignBodies': return <ForeignBodies />
             case 'adverseEffects': return <AdverseEffects />
             case 'followup': return <Followup />

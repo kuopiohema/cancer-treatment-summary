@@ -15,11 +15,6 @@ const Navbar = observer(() => {
     const store = use(StoreContext)
     return (
         <>
-            <NavLink
-                label="Aloitus"
-                active={store.nav.page === 'start'}
-                onClick={() => store.nav.selectPage('start')}
-            />
             <NavList
                 entityList={store.form.diagnoses}
                 entityFactory={() => new Diagnosis({})}

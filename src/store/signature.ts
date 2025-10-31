@@ -1,4 +1,4 @@
-import { Model, model, prop } from "mobx-keystone";
+import { Model, model, modelAction, prop } from "mobx-keystone";
 import { DateInputValue } from "../types/dateInputValue";
 import { computed } from "mobx";
 import { buildTextList } from "../utils/buildTextList";
@@ -11,6 +11,14 @@ export class Signature extends Model({
     place: prop('').withSetter(),
     date: prop<DateInputValue>(null).withSetter()
 }) {
+    @modelAction
+    clear() {
+        this.name = ''
+        this.phone = ''
+        this.place = ''
+        this.date = ''
+    }
+
     @computed
     get sublabel() {
         return buildTextList([

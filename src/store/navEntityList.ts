@@ -23,7 +23,7 @@ export class NavEntityList<E extends Entity> extends ExtendedModel(EntityList, {
             if (this.entities.length > 0)
                 nav.selectEntity(this.entities[this.entities.length - 1])
             else
-                nav.selectPage('start')
+                nav.selectPage('help')
         }
     }
 }

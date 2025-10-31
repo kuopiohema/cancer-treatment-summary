@@ -7,17 +7,20 @@ import {
     Group,
     ScrollArea,
     Text,
+    Tooltip,
     useComputedColorScheme,
     useMantineColorScheme
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, IconSun } from '@tabler/icons-react'
+import { IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, IconQuestionMark, IconSun } from '@tabler/icons-react'
 import { getSnapshot } from 'mobx-keystone'
 import { observer } from 'mobx-react'
 import { use } from 'react'
 import Navbar from './components/Navbar.tsx'
 import PageDisplay from './components/PageDisplay.tsx'
 import { StoreContext } from './store/StoreContext.ts'
+import { modals } from '@mantine/modals'
+import { exportJsonToFile } from './utils/exportFile.ts'
 
 const App = observer(() => {
     const { setColorScheme } = useMantineColorScheme()
@@ -30,12 +33,28 @@ const App = observer(() => {
 
     const store = use(StoreContext)
 
-    const handleReset = () => {
+    const handleResetConfirmed = () => {
         store.clear()
     }
 
+    const handleReset = () => modals.openConfirmModal({
+        title: 'Aloita uusi yhteenveto',
+        children: (
+            <Text size="sm">
+                Aloitetaanko uusi yhteenveto? Kaikki tiedot tyhjennetään, eikä niitä voi palauttaa!
+            </Text>
+        ),
+        labels: {confirm: 'Tyhjennä kaikki', cancel: 'Peruuta'},
+        confirmProps: {color: 'red'},
+        onConfirm: handleResetConfirmed
+    })
+
     const handleSave = () => {
-        console.log(getSnapshot(store.form))
+        const data = JSON.stringify(getSnapshot(store.form))
+        const status = exportJsonToFile('yhteenveto.json', data)
+        if (status instanceof Error) {
+            
+        }
     }
 
     const handleLoad = () => {
@@ -88,9 +107,18 @@ const App = observer(() => {
                             Luo Word-tiedosto
                         </Button>
                     </Group>
-                    <ActionIcon variant="subtle" onClick={toggleColorScheme}>
-                        {computedColorScheme === 'dark' ? <IconSun /> : <IconMoon />}
-                    </ActionIcon>
+                    <Group>
+                        <Tooltip label="Käyttöohjeet">
+                            <ActionIcon variant="subtle" onClick={() => store.nav.selectPage('help')}>
+                                <IconQuestionMark />
+                            </ActionIcon>
+                        </Tooltip>
+                        <Tooltip label={`Vaihda ${computedColorScheme === 'dark' ? 'vaaleaan' : 'tummaan'} tilaan`}>
+                            <ActionIcon variant="subtle" onClick={toggleColorScheme}>
+                                {computedColorScheme === 'dark' ? <IconSun /> : <IconMoon />}
+                            </ActionIcon>
+                        </Tooltip>
+                    </Group>
                 </Group>
             </AppShell.Header>
             <AppShell.Navbar>

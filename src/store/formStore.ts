@@ -36,5 +36,6 @@ export class FormStore extends Model({
         this.foreignBodies.clear()
         this.adverseEffects.clear()
         this.followup.clear()
+        this.signature.clear()
     }
 }
