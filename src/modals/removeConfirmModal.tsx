@@ -1,5 +1,12 @@
 import { modals } from "@mantine/modals"
 import { Text } from "@mantine/core"
+import { firstLetterUppercase } from "../utils/firstLetterUppercase"
+import { notifications } from "@mantine/notifications"
+
+const confirmMessage = (itemName: string, onConfirm: () => void) => {
+    notifications.show({message: `${firstLetterUppercase(itemName)} poistettu!`})
+    onConfirm()
+}
 
 export const removeConfirmModal = (itemName: string, onConfirm: () => void) => modals.openConfirmModal({
     title: `Poista ${itemName}`,
@@ -10,5 +17,5 @@ export const removeConfirmModal = (itemName: string, onConfirm: () => void) => m
     ),
     labels: {confirm: 'Poista', cancel: 'Peruuta'},
     confirmProps: {color: 'red'},
-    onConfirm: onConfirm
+    onConfirm: () => confirmMessage(itemName, onConfirm)
 })

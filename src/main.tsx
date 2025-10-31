@@ -10,8 +10,10 @@ import App from './App.tsx'
 
 import '@mantine/core/styles.css'
 import '@mantine/dates/styles.css'
+import '@mantine/notifications/styles.css'
 import { theme } from './theme.ts'
 import StoreProvider from './store/StoreProvider.tsx'
+import { Notifications } from '@mantine/notifications'
 
 dayjs.extend(customParseFormat)
 
@@ -21,6 +23,7 @@ createRoot(document.getElementById('root')!).render(
             <DatesProvider settings={{ locale: 'fi' }}>
                 <ModalsProvider>
                     <StoreProvider>
+                        <Notifications />
                         <App />
                     </StoreProvider>
                 </ModalsProvider>

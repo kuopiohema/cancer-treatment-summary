@@ -11,7 +11,7 @@ import {
     useComputedColorScheme,
     useMantineColorScheme
 } from '@mantine/core'
-import { useDisclosure } from '@mantine/hooks'
+import { useDisclosure, useFileDialog } from '@mantine/hooks'
 import { IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, IconQuestionMark, IconSun } from '@tabler/icons-react'
 import { getSnapshot } from 'mobx-keystone'
 import { observer } from 'mobx-react'
@@ -21,6 +21,7 @@ import PageDisplay from './components/PageDisplay.tsx'
 import { StoreContext } from './store/StoreContext.ts'
 import { modals } from '@mantine/modals'
 import { exportJsonToFile } from './utils/exportFile.ts'
+import { notifications } from '@mantine/notifications'
 
 const App = observer(() => {
     const { setColorScheme } = useMantineColorScheme()
@@ -35,6 +36,7 @@ const App = observer(() => {
 
     const handleResetConfirmed = () => {
         store.clear()
+        notifications.show({message: 'Kaikki tiedot tyhjennetty!'})
     }
 
     const handleReset = () => modals.openConfirmModal({
@@ -50,16 +52,30 @@ const App = observer(() => {
     })
 
     const handleSave = () => {
-        const data = JSON.stringify(getSnapshot(store.form))
+        const data = JSON.stringify(getSnapshot(store.form), null, 2)
         const status = exportJsonToFile('yhteenveto.json', data)
         if (status instanceof Error) {
-            
+            notifications.show({
+                title: 'Tietojen tallennuksessa tapahtui virhe:',
+                message: status.message
+            })
+        } else {
+            notifications.show({
+                title: 'Tietojen tallennus',
+                message: 'Lataa tiedosto tallentaaksesi sovellukseen syötetyt tiedot!'
+            })
         }
     }
 
-    const handleLoad = () => {
-        console.log('Load')
+    const handleLoad = (files: FileList | null) => {
+        console.log(files)
     }
+
+    const fileDialog = useFileDialog({
+        multiple: false,
+        accept: '.json',
+        onChange: handleLoad
+    })
 
     return (
         <AppShell
@@ -92,7 +108,7 @@ const App = observer(() => {
                         <Button
                             variant="default"
                             leftSection={<IconFolderOpen size={20} />}
-                            onClick={handleLoad}
+                            onClick={fileDialog.open}
                         >
                             Lataa
                         </Button>
