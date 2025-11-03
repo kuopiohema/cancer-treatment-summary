@@ -1,4 +1,4 @@
-import { Divider, NavLink } from "@mantine/core"
+import { Divider, NavLink, Text } from "@mantine/core"
 import { CellTherapy } from "../store/entity/cellTherapy"
 import { Chemotherapy } from "../store/entity/chemotherapy"
 import { Diagnosis } from "../store/entity/diagnosis"
@@ -57,27 +57,31 @@ const Navbar = observer(() => {
                 emptyText="Ei soluhoitoja"
                 addButtonText="Lisää soluhoito"
             />
+            <Divider mb="xs"/>
             <Divider />
             <NavLink
-                label="Vierasesineet"
+                label={<Text>Vierasesineet</Text>}
                 description={countWithLabel(store.form.foreignBodies.entityCount, 'vierasesineitä', 'vierasesine', 'vierasesinettä')}
                 active={store.nav.page === 'foreignBodies'}
                 onClick={() => store.nav.selectPage('foreignBodies')}
             />
+            <Divider />
             <NavLink
-                label="Haittavaikutukset"
+                label={<Text>Haittavaikutukset</Text>}
                 description={countWithLabel(store.form.adverseEffects.entityCount, 'haittavaikutuksia', 'haittavaikutus', 'haittavaikutusta')}
                 active={store.nav.page === 'adverseEffects'}
                 onClick={() => store.nav.selectPage('adverseEffects')}
             />
+            <Divider />
             <NavLink
-                label="Jälkiseuranta"
+                label={<Text>Jälkiseuranta</Text>}
                 description={store.form.followup.sublabel}
                 active={store.nav.page === 'followup'}
                 onClick={() => store.nav.selectPage('followup')}
             />
+            <Divider />
             <NavLink
-                label="Lomakkeen täyttäjä"
+                label={<Text>Lomakkeen täyttäjä</Text>}
                 description={store.form.signature.sublabel}
                 active={store.nav.page === 'signature'}
                 onClick={() => store.nav.selectPage('signature')}

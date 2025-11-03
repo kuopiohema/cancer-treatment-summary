@@ -23,7 +23,7 @@ createRoot(document.getElementById('root')!).render(
             <DatesProvider settings={{ locale: 'fi' }}>
                 <ModalsProvider>
                     <StoreProvider>
-                        <Notifications />
+                        <Notifications position="bottom-center" />
                         <App />
                     </StoreProvider>
                 </ModalsProvider>

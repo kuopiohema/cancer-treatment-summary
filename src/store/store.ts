@@ -21,6 +21,12 @@ export class RootStore extends Model({
         this.form.clear()
         this.nav.reset()
     }
+
+    @modelAction
+    load(data: FormStore) {
+        this.clear()
+        this.form = data
+    }
 }
 
 export const rootStore = new RootStore({

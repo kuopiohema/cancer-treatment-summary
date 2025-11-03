@@ -1,8 +1,8 @@
-import {Autocomplete, createTheme, NumberInput, Select, Textarea} from '@mantine/core'
-import {DateInput, type DateInputProps} from '@mantine/dates'
-import dayjs, {type Dayjs} from 'dayjs'
+import { Autocomplete, createTheme, NumberInput, Select, Textarea } from '@mantine/core'
+import { DateInput, type DateInputProps } from '@mantine/dates'
+import dayjs, { type Dayjs } from 'dayjs'
 
-const defaultDateParser: DateInputProps['dateParser'] = (input) =>{
+const defaultDateParser: DateInputProps['dateParser'] = (input) => {
     let date: Dayjs
     if (input === 't')
         date = dayjs()

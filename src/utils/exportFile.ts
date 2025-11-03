@@ -8,8 +8,7 @@ const clean = (link: HTMLAnchorElement) => {
     link.remove()
 }
 
-export const exportJsonToFile = (filename: string, data: string) => {
-    const mimeType = 'application/json;charset=utf-8'
+export const exportFile = (filename: string, data: BlobPart, mimeType: string) => {
     const blob = new Blob([data], { type: mimeType })
     
     const link = document.createElement('a')

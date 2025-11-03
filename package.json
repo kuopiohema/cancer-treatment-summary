@@ -18,6 +18,7 @@
     "@mantine/notifications": "^8.3.6",
     "@tabler/icons-react": "^3.35.0",
     "dayjs": "^1.11.19",
+    "docx": "^9.5.1",
     "mobx": "^6.15.0",
     "mobx-keystone": "^1.11.4",
     "mobx-react": "^9.2.1",

@@ -12,16 +12,18 @@ import {
     useMantineColorScheme
 } from '@mantine/core'
 import { useDisclosure, useFileDialog } from '@mantine/hooks'
-import { IconDeviceFloppy, IconFile, IconFileWord, IconFolderOpen, IconMoon, IconQuestionMark, IconSun } from '@tabler/icons-react'
-import { getSnapshot } from 'mobx-keystone'
+import { modals } from '@mantine/modals'
+import { IconDeviceFloppy, IconFile, IconFolderOpen, IconMoon, IconQuestionMark, IconSun } from '@tabler/icons-react'
+import { fromSnapshot, getSnapshot, type SnapshotInOf } from 'mobx-keystone'
 import { observer } from 'mobx-react'
 import { use } from 'react'
 import Navbar from './components/Navbar.tsx'
 import PageDisplay from './components/PageDisplay.tsx'
+import CreateWordButton from './CreateWordButton.tsx'
+import type { FormStore } from './store/formStore.ts'
 import { StoreContext } from './store/StoreContext.ts'
-import { modals } from '@mantine/modals'
-import { exportJsonToFile } from './utils/exportFile.ts'
-import { notifications } from '@mantine/notifications'
+import { exportFile } from './utils/exportFile.ts'
+import { showNotification } from './utils/showNotification.tsx'
 
 const App = observer(() => {
     const { setColorScheme } = useMantineColorScheme()
@@ -36,7 +38,7 @@ const App = observer(() => {
 
     const handleResetConfirmed = () => {
         store.clear()
-        notifications.show({message: 'Kaikki tiedot tyhjennetty!'})
+        showNotification('', 'Kaikki tiedot tyhjennetty!')
     }
 
     const handleReset = () => modals.openConfirmModal({
@@ -46,34 +48,71 @@ const App = observer(() => {
                 Aloitetaanko uusi yhteenveto? Kaikki tiedot tyhjennetään, eikä niitä voi palauttaa!
             </Text>
         ),
-        labels: {confirm: 'Tyhjennä kaikki', cancel: 'Peruuta'},
-        confirmProps: {color: 'red'},
+        labels: { confirm: 'Tyhjennä kaikki', cancel: 'Peruuta' },
+        confirmProps: { color: 'red' },
         onConfirm: handleResetConfirmed
     })
 
     const handleSave = () => {
         const data = JSON.stringify(getSnapshot(store.form), null, 2)
-        const status = exportJsonToFile('yhteenveto.json', data)
+        const status = exportFile('yhteenveto.json', data, 'application/json;charset=utf-8')
         if (status instanceof Error) {
-            notifications.show({
-                title: 'Tietojen tallennuksessa tapahtui virhe:',
-                message: status.message
-            })
+            showNotification(
+                'Tallenna tiedot',
+                `Tietojen tallennuksessa tapahtui virhe: ${status.message}`,
+                false
+            )
         } else {
-            notifications.show({
-                title: 'Tietojen tallennus',
-                message: 'Lataa tiedosto tallentaaksesi sovellukseen syötetyt tiedot!'
-            })
+            showNotification(
+                'Tallenna tiedot',
+                'Lataa tiedosto koneellesi tallentaaksesi sovellukseen syötetyt tiedot!',
+                true
+            )
         }
     }
 
+    const showLoadFailMessage = (message?: string) => showNotification(
+        'Lataa tiedot',
+        `Tiedoston lataaminen epäonnistui: ${message ?? 'Tuntematon virhe'}`,
+        false
+    )
+
     const handleLoad = (files: FileList | null) => {
-        console.log(files)
+        if (!files)
+            return
+
+        if (files.length > 1)
+            return
+
+        const file = files[0]
+
+        const reader = new FileReader()
+        reader.onerror = () => showLoadFailMessage(reader.error?.message)
+        reader.onload = () => {
+            if (typeof reader.result !== 'string') {
+                showLoadFailMessage('Tiedoston sisältöä ei tunnistettu')
+                return
+            }
+
+            try {
+                const snapshot = JSON.parse(reader.result) as SnapshotInOf<FormStore>
+                store.load(fromSnapshot<FormStore>(snapshot))
+                showNotification(
+                    'Lataa tiedot',
+                    'Tietojen lataaminen onnistui!',
+                    true
+                )
+            } catch {
+                showLoadFailMessage('Tiedoston sisältöä ei tunnistettu')
+            }
+        }
+        reader.readAsText(file)
     }
 
     const fileDialog = useFileDialog({
         multiple: false,
         accept: '.json',
+        resetOnOpen: true,
         onChange: handleLoad
     })
 
@@ -119,9 +158,7 @@ const App = observer(() => {
                         >
                             Tallenna
                         </Button>
-                        <Button variant="default" leftSection={<IconFileWord size={20} />}>
-                            Luo Word-tiedosto
-                        </Button>
+                        <CreateWordButton />
                     </Group>
                     <Group>
                         <Tooltip label="Käyttöohjeet">

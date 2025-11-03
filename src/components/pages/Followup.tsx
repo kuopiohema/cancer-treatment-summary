@@ -1,4 +1,4 @@
-import { Button, Divider, Group, Text, Textarea, Title } from '@mantine/core'
+import {Button, Divider, Grid, Group, Text, Textarea, Title} from '@mantine/core'
 import { observer } from 'mobx-react'
 import { use, useMemo } from 'react'
 import { Followup as FollowupData } from '../../store/followup'
@@ -43,41 +43,62 @@ const FollowupPage = observer(({ data }: EntityComponentProps<FollowupData>) => 
         <Divider />
         <Title order={2}>Vakiotekstit</Title>
         <Title order={3}>Yleisohjeet</Title>
-        <Group>
-            <Text>Yleiset asiat:</Text>
-            <Button onClick={() => handleAddToGeneral(defaults.growth)}>Kasvu</Button>
-            <Button onClick={() => handleAddToGeneral(defaults.bloodPressure)}>Verenpaine</Button>
-            <Button onClick={() => handleAddToGeneral(defaults.lifestyle)}>Elämäntavat</Button>
-        </Group>
-        <Group>
-            <Text>Sydänseuranta (poika):</Text>
-            <Button onClick={() => handleAddToGeneral(defaults.heart.boy.lowRisk)}>Matala riski</Button>
-            <Button onClick={() => handleAddToGeneral(defaults.heart.boy.mediumRisk)}>Keskiriski</Button>
-            <Button onClick={() => handleAddToGeneral(defaults.heart.boy.highRisk)}>Korkea riski</Button>
-        </Group>
-        <Group>
-            <Text>Sydänseuranta (tyttö):</Text>
-            <Button onClick={() => handleAddToGeneral(defaults.heart.girl.lowRisk)}>Matala riski</Button>
-            <Button onClick={() => handleAddToGeneral(defaults.heart.girl.mediumRisk)}>Keskiriski</Button>
-            <Button onClick={() => handleAddToGeneral(defaults.heart.girl.highRisk)}>Korkea riski</Button>
-        </Group>
-        <Title order={4}>Rokotusohjeet</Title>
-        <Group>
-            <Text>Rokotusohjelma:</Text>
-            <Button onClick={() => handleAddToVaccination(defaults.vaccination.unvaccinated)}>Aiemmin rokottamaton</Button>
-            <Button onClick={() => handleAddToVaccination(defaults.vaccination.interrupted)}>Rokotusohjelma keskeytynyt</Button>
-            <Button onClick={() => handleAddToVaccination(defaults.vaccination.influenza)}>Influenssarokotus</Button>
-        </Group>
-        <Group>
-            <Text>Rokottamisajankohta:</Text>
-            <Button onClick={() => handleAddToVaccination(defaults.vaccination.standardRisk)}>Normaali riski</Button>
-            <Button onClick={() => handleAddToVaccination(defaults.vaccination.highRisk)}>Korkea riski (HR-ALL, AML)</Button>
-        </Group>
-        <Group>
-            <Text>Kantasolusiirron saanut:</Text>
-            <Button onClick={() => handleAddToVaccination(defaults.vaccination.autoSCT)}>Autologinen siirto</Button>
-            <Button onClick={() => handleAddToVaccination(defaults.vaccination.alloSCT)}>Allogeeninen siirto</Button>
-        </Group>
+        <Grid align="center">
+            <Grid.Col span={3}>
+                <Text style={{textAlign: 'right'}}>Yleiset asiat:</Text>
+            </Grid.Col>
+            <Grid.Col span={9}>
+                <Group>
+                    <Button onClick={() => handleAddToGeneral(defaults.growth)}>Kasvu</Button>
+                    <Button onClick={() => handleAddToGeneral(defaults.bloodPressure)}>Verenpaine</Button>
+                    <Button onClick={() => handleAddToGeneral(defaults.lifestyle)}>Elämäntavat</Button>
+                </Group>
+            </Grid.Col>
+            <Grid.Col span={3}>
+                <Text style={{textAlign: 'right'}}>Sydänseuranta (poika):</Text>
+            </Grid.Col>
+            <Grid.Col span={9}>
+                <Group>
+                    <Button onClick={() => handleAddToGeneral(defaults.heart.boy.lowRisk)}>Matala riski</Button>
+                    <Button onClick={() => handleAddToGeneral(defaults.heart.boy.mediumRisk)}>Keskiriski</Button>
+                    <Button onClick={() => handleAddToGeneral(defaults.heart.boy.highRisk)}>Korkea riski</Button>
+                </Group>
+            </Grid.Col>
+            <Grid.Col span={3}>
+                <Text style={{textAlign: 'right'}}>Sydänseuranta (tyttö):</Text>
+            </Grid.Col>
+            <Grid.Col span={9}>
+                <Group>
+                    <Button onClick={() => handleAddToGeneral(defaults.heart.girl.lowRisk)}>Matala riski</Button>
+                    <Button onClick={() => handleAddToGeneral(defaults.heart.girl.mediumRisk)}>Keskiriski</Button>
+                    <Button onClick={() => handleAddToGeneral(defaults.heart.girl.highRisk)}>Korkea riski</Button>
+                </Group>
+            </Grid.Col>
+        </Grid>
+        <Title order={3} mt="lg">Rokotusohjeet</Title>
+        <Grid align="center">
+            <Grid.Col span={3}>
+                <Text style={{textAlign: 'right'}}>Rokotusohjelma:</Text>
+            </Grid.Col>
+            <Grid.Col span={9}>
+                <Group>
+                    <Button onClick={() => handleAddToVaccination(defaults.vaccination.unvaccinated)}>Aiemmin rokottamaton</Button>
+                    <Button onClick={() => handleAddToVaccination(defaults.vaccination.interrupted)}>Rokotusohjelma keskeytynyt</Button>
+                    <Button onClick={() => handleAddToVaccination(defaults.vaccination.influenza)}>Influenssarokotus</Button>
+                    <Button onClick={() => handleAddToVaccination(defaults.vaccination.autoSCT)}>Autologinen siirto</Button>
+                    <Button onClick={() => handleAddToVaccination(defaults.vaccination.alloSCT)}>Allogeeninen siirto</Button>
+                </Group>
+            </Grid.Col>
+            <Grid.Col span={3}>
+                <Text style={{textAlign: 'right'}}>Rokottamisajankohta:</Text>
+            </Grid.Col>
+            <Grid.Col span={9}>
+                <Group>
+                    <Button onClick={() => handleAddToVaccination(defaults.vaccination.standardRisk)}>Normaali riski</Button>
+                    <Button onClick={() => handleAddToVaccination(defaults.vaccination.highRisk)}>Korkea riski (HR-ALL, AML)</Button>
+                </Group>
+            </Grid.Col>
+        </Grid>
     </>
 })
 

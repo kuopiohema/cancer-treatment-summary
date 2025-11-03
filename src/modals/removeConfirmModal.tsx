@@ -1,10 +1,10 @@
-import { modals } from "@mantine/modals"
-import { Text } from "@mantine/core"
-import { firstLetterUppercase } from "../utils/firstLetterUppercase"
-import { notifications } from "@mantine/notifications"
+import { Text } from '@mantine/core'
+import { modals } from '@mantine/modals'
+import { firstLetterUppercase } from '../utils/firstLetterUppercase'
+import { showNotification } from '../utils/showNotification.tsx'
 
 const confirmMessage = (itemName: string, onConfirm: () => void) => {
-    notifications.show({message: `${firstLetterUppercase(itemName)} poistettu!`})
+    showNotification('', `${firstLetterUppercase(itemName)} poistettu!`)
     onConfirm()
 }
 
@@ -15,7 +15,7 @@ export const removeConfirmModal = (itemName: string, onConfirm: () => void) => m
             Poistetaanko {itemName}? Tietoja ei voi palauttaa!
         </Text>
     ),
-    labels: {confirm: 'Poista', cancel: 'Peruuta'},
-    confirmProps: {color: 'red'},
+    labels: { confirm: 'Poista', cancel: 'Peruuta' },
+    confirmProps: { color: 'red' },
     onConfirm: () => confirmMessage(itemName, onConfirm)
 })
