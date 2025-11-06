@@ -1,17 +1,14 @@
 import { _async, _await, Model, model, modelFlow, prop } from "mobx-keystone";
 import { fetchJson } from "../utils/fetchJson";
 import { withUnknown } from "../utils/withUnknown";
+import { type DrugEquivalenceList, getEmptyDrugEquivalenceList } from './dataInterfaces/drugEquivalenceList.ts'
 import { getEmptyFollowupDefaults, FollowupDefaults } from "./dataInterfaces/followupDefaults";
 import { getEmptySignatureDefaults, SignatureDefaults } from "./dataInterfaces/signatureDefaults";
 
-interface DoxoEquivalent {
-    drug: string,
-    factor: number
-}
-
 @model('catrest/dataStore')
 export class DataStore extends Model({
-    doxoEquivalents: prop<DoxoEquivalent[]>(() => []),
+    doxoEquivalents: prop<DrugEquivalenceList>(getEmptyDrugEquivalenceList),
+    cycloEquivalents: prop<DrugEquivalenceList>(getEmptyDrugEquivalenceList),
     followupDefaults: prop<FollowupDefaults>(getEmptyFollowupDefaults),
     signatureDefaults: prop<SignatureDefaults>(getEmptySignatureDefaults),
 
@@ -34,7 +31,8 @@ export class DataStore extends Model({
 }) {
     @modelFlow
     fetchData = _async(function* (this: DataStore) {
-        this.doxoEquivalents = yield* _await(fetchJson<DoxoEquivalent[]>('doxoEquivalents'))
+        this.doxoEquivalents = yield* _await(fetchJson<DrugEquivalenceList>('doxoEquivalents'))
+        this.cycloEquivalents = yield* _await(fetchJson<DrugEquivalenceList>('cycloEquivalents'))
         this.followupDefaults = yield* _await(fetchJson<FollowupDefaults>('followupDefaults'))
         this.signatureDefaults = yield* _await(fetchJson<SignatureDefaults>('signatureDefaults'))
         

@@ -24,12 +24,18 @@ export class Chemotherapy extends ExtendedModel(Entity, {
     get sublabel() {
         return buildTextList([
             `${this.drugs.entities.length} lääke${this.drugs.entities.length !== 1 ? 'ttä' : ''}`,
-            `Doksorubisiiniekvivalentti: ${this.doxoEquivalent} mg/m²`
+            `Doksorubisiiniekvivalentti: ${this.doxoEquivalent} mg/m²`,
+            `Syklofosfamidiekvivalentti: ${this.cycloEquivalent} mg/m²`
         ])
     }
 
     @computed
     get doxoEquivalent() {
         return this.drugs.entities.reduce((value, drug) => value + drug.doxoEquivalent, 0)
+    }
+
+    @computed
+    get cycloEquivalent() {
+        return this.drugs.entities.reduce((value, drug) => value + drug.cycloEquivalent, 0)
     }
 }

@@ -1,6 +1,7 @@
 import { computed } from "mobx";
 import { ExtendedModel, model, prop } from "mobx-keystone";
 import { NumberInputValue } from "../../types/numberInputValue";
+import { calculateEquivalentDose } from '../../utils/calculateEquivalentDose.ts'
 import { dataCtx } from "../store";
 import { Entity } from "./entity";
 import { SelectValue } from "../../types/selectValue";
@@ -16,16 +17,13 @@ export class Drug extends ExtendedModel(Entity, {
 
     @computed
     get doxoEquivalent() {
-        const doxoEquivalents = dataCtx.get(this).doxoEquivalents
-        const factor = doxoEquivalents.find((value) => value.drug === this.drug.toLocaleLowerCase())?.factor
-        if (factor && typeof this.dose === 'number') {
-            if (this.doseFormula === 'mg/m²')
-                return this.dose * factor
-            if (this.doseFormula === 'mg/kg')
-                return this.dose * 30 * factor
-            return 0
-        }
-        else
-            return 0
+        const doxoEquivalents = dataCtx.get(this).doxoEquivalents.drugs
+        return calculateEquivalentDose(this, doxoEquivalents)
+    }
+
+    @computed
+    get cycloEquivalent() {
+        const cycloEquivalents = dataCtx.get(this).cycloEquivalents.drugs
+        return calculateEquivalentDose(this, cycloEquivalents)
     }
 }

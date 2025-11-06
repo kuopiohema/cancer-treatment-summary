@@ -1,7 +1,6 @@
 import { Button, Group, Modal, Stack, Text, TextInput } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconFileWord } from '@tabler/icons-react'
-import { getSnapshot } from 'mobx-keystone'
 import { type ChangeEvent, use, useState } from 'react'
 import { StoreContext } from './store/StoreContext.ts'
 import { generateDoc } from './utils/generateDoc.ts'
@@ -26,7 +25,7 @@ const CreateWordButton = () => {
     }
 
     const handleConfirm = () => {
-        generateDoc(getSnapshot(store.form), { name, id })
+        generateDoc(store.form, { name, id })
             .then(() => showNotification(
                 'Luo Word-tiedosto',
                 <p>Tiedoston luonti onnistunut!<br />Avaa tiedosto muokkausta ja tulostusta varten.<br />Poista tiedosto

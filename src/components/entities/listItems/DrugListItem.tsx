@@ -49,6 +49,7 @@ const DrugListItem = observer(({ data }: EntityComponentProps<Drug>) => {
                 />
             </Group>
             {data.doxoEquivalent > 0 && <Text size="sm">Doksorubisiiniekvivalentti: {data.doxoEquivalent} mg/m²</Text>}
+            {data.cycloEquivalent > 0 && <Text size="sm">Syklofosfamidiekvivalentti: {data.cycloEquivalent} mg/m²</Text>}
         </>
     )
 })

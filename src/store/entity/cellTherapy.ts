@@ -1,4 +1,4 @@
-import { override } from "mobx";
+import { computed, override } from 'mobx'
 import { ExtendedModel, model, prop } from "mobx-keystone";
 import { formatDate, formatDateRange } from "../../utils/formatDate";
 import { getDonorText } from "../../utils/getDonorText";
@@ -55,5 +55,15 @@ export class CellTherapy extends ExtendedModel(Entity, {
             { heading: 'TBI-annos', content: this.tbi ? `${this.tbiDoseBody} Gy (vartalo) / ${this.tbiDoseLungs} Gy (keuhkot)` : '' },
             { heading: 'DLI-hoito', content: this.dli ? `${formatDateRange(this.dliStartDate, this.dliEndDate)}, ${this.dliDoses} annosta` : '' }
         ])
+    }
+
+    @computed
+    get doxoEquivalent() {
+        return this.drugs.entities.reduce((value, drug) => value + drug.doxoEquivalent, 0)
+    }
+
+    @computed
+    get cycloEquivalent() {
+        return this.drugs.entities.reduce((value, drug) => value + drug.cycloEquivalent, 0)
     }
 }

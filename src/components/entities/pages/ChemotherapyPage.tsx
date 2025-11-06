@@ -13,6 +13,7 @@ import { StoreContext } from "../../../store/StoreContext"
 const ChemotherapyPage = observer(({ data }: EntityComponentProps<Chemotherapy>) => {
     const store = use(StoreContext)
     const [doxoEquivalents] = useState(store.data.doxoEquivalents)
+    const [cycloEquivalents] = useState(store.data.cycloEquivalents)
     return (
         <>
             <Group>
@@ -39,10 +40,20 @@ const ChemotherapyPage = observer(({ data }: EntityComponentProps<Chemotherapy>)
             <Text>Kumulatiivinen antrasykliiniannos (doksorubisiiniekvivalentti) = {data.doxoEquivalent} mg/m²<br /></Text>
             <Text size="xs">Käytetyt kertoimet:</Text>
             <List size="xs">
-                {doxoEquivalents.map(item => (
+                {doxoEquivalents.drugs.map(item => (
                     <List.Item key={item.drug}>{firstLetterUppercase(item.drug)}: {item.factor}</List.Item>
                 ))}
             </List>
+            <Text size="xs">Lähde: {doxoEquivalents.source}</Text>
+            <Divider orientation="horizontal" />
+            <Text>Kumulatiivinen alkyloivien aineiden annos (syklofosfamidiekvivalentti) = {data.cycloEquivalent} mg/m²<br /></Text>
+            <Text size="xs">Käytetyt kertoimet:</Text>
+            <List size="xs">
+                {cycloEquivalents.drugs.map(item => (
+                    <List.Item key={item.drug}>{firstLetterUppercase(item.drug)}: {item.factor}</List.Item>
+                ))}
+            </List>
+            <Text size="xs">Lähde: {doxoEquivalents.source}</Text>
         </>
     )
 })
