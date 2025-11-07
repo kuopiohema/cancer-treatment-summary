@@ -1,9 +1,9 @@
-import { ExtendedModel, model, prop } from "mobx-keystone";
-import { Entity } from "./entity";
-import { override } from "mobx";
-import { buildTextList } from "../../utils/buildTextList";
-import { formatDate } from "../../utils/formatDate";
-import { DateInputValue } from "../../types/dateInputValue";
+import { override } from 'mobx'
+import { ExtendedModel, model, prop } from 'mobx-keystone'
+import { DateInputValue } from '../../types/dateInputValue'
+import type { TextListItem } from '../../utils/buildTextList.tsx'
+import { formatDate } from '../../utils/formatDate'
+import { Entity } from './entity'
 
 @model('catrest/procedure')
 export class Procedure extends ExtendedModel(Entity, {
@@ -15,16 +15,16 @@ export class Procedure extends ExtendedModel(Entity, {
     itemName = 'toimenpide'
 
     @override
-    get label() {
+    get heading() {
         return this.procedure || '(Uusi toimenpide)'
     }
 
     @override
-    get sublabel() {
-        return buildTextList([
+    get content(): TextListItem[] {
+        return [
             formatDate(this.date),
             this.details,
-            { heading: 'Komplikaatiot', content: this.complications }
-        ])
+            { label: 'Komplikaatiot', content: this.complications }
+        ]
     }
 }

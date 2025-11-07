@@ -1,9 +1,9 @@
-import { override } from "mobx";
-import { ExtendedModel, model, prop } from "mobx-keystone";
-import { formatDate } from "../../utils/formatDate";
-import { buildTextList } from "../../utils/buildTextList";
-import { Entity } from "./entity";
-import { DateInputValue } from "../../types/dateInputValue";
+import { override } from 'mobx'
+import { ExtendedModel, model, prop } from 'mobx-keystone'
+import { DateInputValue } from '../../types/dateInputValue'
+import type { TextListItem } from '../../utils/buildTextList.tsx'
+import { formatDate } from '../../utils/formatDate'
+import { Entity } from './entity'
 
 @model('catrest/diagnosis')
 export class Diagnosis extends ExtendedModel(Entity, {
@@ -17,7 +17,7 @@ export class Diagnosis extends ExtendedModel(Entity, {
     itemName = 'diagnoosi'
 
     @override
-    get label() {
+    get heading() {
         let result = this.icd10
         if (result)
             result += ' '
@@ -26,12 +26,12 @@ export class Diagnosis extends ExtendedModel(Entity, {
     }
 
     @override
-    get sublabel() {
-        return buildTextList([
-            formatDate(this.date),
+    get content(): TextListItem[] {
+        return [
             this.detail,
-            this.stage,
-            this.spread
-        ])
+            { label: 'Todettu', content: formatDate(this.date) },
+            { label: 'Stage', content: this.stage },
+            { label: 'Levinneisyys', content: this.spread }
+        ]
     }
 }

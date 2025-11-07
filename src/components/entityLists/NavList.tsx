@@ -4,6 +4,7 @@ import { IconPlus } from "@tabler/icons-react";
 import { observer } from "mobx-react";
 import { Entity } from "../../store/entity/entity";
 import { EntityList } from "../../store/entityList";
+import { buildTextList } from '../../utils/buildTextList.tsx'
 import NavListItem from "./NavListItem";
 import { EntityListProps } from "./entityListProps";
 
@@ -22,8 +23,8 @@ const NavListInner = observer(<E extends Entity>({ entityList, emptyText, onRemo
                 index={index}
                 id={entity.id}
                 itemName={entity.itemName}
-                label={entity.label}
-                sublabel={entity.sublabel}
+                label={entity.heading}
+                sublabel={buildTextList(entity.content)}
                 isSelected={entity.isSelected}
                 onSelect={() => entity.select()}
                 onRemove={onRemove}

@@ -23,6 +23,7 @@ import type { Treatment } from '../store/entity/treatment.ts'
 import type { EntityList } from '../store/entityList.ts'
 import type { FormStore } from '../store/formStore.ts'
 import type { DateInputValue } from '../types/dateInputValue.ts'
+import type { TextListItem } from './buildTextList.tsx'
 import { exportFile } from './exportFile.ts'
 
 const styles: IStylesOptions = {
@@ -115,32 +116,27 @@ const styles: IStylesOptions = {
     ]
 }
 
-const formatDate = (date: string) => dayjs(date).format('DD.MM.YYYY')
-
-const dateOrUnknown = (date: DateInputValue) => date ? formatDate(date) : 'Ei tiedossa'
-
-const textWithLabel = (label: string, text: string, breakBefore?: boolean) => [
+const textWithLabel = (label: string, content: string, breakBefore?: boolean) => [
     new TextRun({ text: `${label}: `, bold: true, break: breakBefore ? 1 : undefined }),
-    new TextRun(text)
+    new TextRun(content)
 ]
 
-type TextListContent = { label?: string, text: string }[]
-
-const textList = (content: TextListContent): TextRun[] => {
-    const textRuns: TextRun[] = []
+export const buildDocxTextList = (data: (TextListItem | null)[]): TextRun[] => {
+    const list: TextRun[] = []
     let isFirst = true
-    content.forEach((item) => {
-        if (item.text) {
-            const breakBefore = !isFirst
-            if (item.label) {
-                textRuns.push(...textWithLabel(item.label, item.text, breakBefore))
-            } else {
-                textRuns.push(new TextRun({ text: item.text, break: breakBefore ? 1 : undefined }))
+    data.filter((item): item is TextListItem => !!item)
+        .forEach(item => {
+            const { label, content } = typeof item === 'string' ? { label: '', content: item } : item
+            if (content) {
+                const breakBefore = !isFirst
+                if (label)
+                    list.push(...textWithLabel(label, content, breakBefore))
+                else
+                    list.push(new TextRun({ text: content, break: breakBefore ? 1 : undefined }))
+                isFirst = false
             }
-            isFirst = false
-        }
-    })
-    return textRuns
+        })
+    return list
 }
 
 const drugList = (drugs: EntityList<Drug>): TextRun[] => {
@@ -254,9 +250,9 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
     }))
 
     content.push(new Paragraph({
-        children: textList([
-            { label: 'Nimi', text: patient.name },
-            { label: 'Henkilötunnus', text: patient.id }
+        children: buildDocxTextList([
+            { label: 'Nimi', content: patient.name },
+            { label: 'Henkilötunnus', content: patient.id }
         ])
     }))
 
@@ -270,13 +266,8 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
 
         diagnoses.forEach((item, index, list) => {
             content.push(...itemParagraphs(
-                `${item.icd10} ${item.text}`,
-                textList([
-                    { text: item.detail },
-                    { label: 'Todettu', text: dateOrUnknown(item.date) },
-                    { label: 'Stage', text: item.stage },
-                    { label: 'Levinneisyys', text: item.spread }
-                ]),
+                item.heading,
+                buildDocxTextList(item.content),
                 index === list.length - 1
             ))
         })
@@ -292,12 +283,8 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
 
         treatments.forEach((item, index, list) => {
             content.push(...itemParagraphs(
-                item.protocol,
-                textList([
-                    { text: `${dateOrUnknown(item.startDate)} - ${dateOrUnknown(item.endDate)}` },
-                    { label: 'Hoitoryhmä', text: item.group },
-                    { label: 'Hoidon loppumisen syy', text: item.stopReason }
-                ]),
+                item.heading,
+                buildDocxTextList(item.content),
                 index === list.length - 1
             ))
         })
@@ -322,7 +309,7 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
 
         chemotherapies.forEach(item => {
             content.push(...itemParagraphs(
-                `${dateOrUnknown(item.startDate)} - ${dateOrUnknown(item.endDate)}`,
+                item.heading,
                 drugList(item.drugs),
                 false // chapter continues after this --> prevent page break
             ))
@@ -342,9 +329,9 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
             cellTherapies.reduce((value, item) => value + item.cycloEquivalent, 0)
 
         content.push(new Paragraph({
-            children: textList([
-                { label: 'Antrasykliinit', text: `${totalDoxoEquivalent.toFixed(0)} mg/m² doksorubisiiniekvivalenttia`},
-                { label: 'Alkyloivat aineet', text: `${totalCycloEquivalent.toFixed(0)} mg/m² syklofosfamidiekvivalenttia`}
+            children: buildDocxTextList([
+                { label: 'Antrasykliinit', content: `${totalDoxoEquivalent.toFixed(0)} mg/m² doksorubisiiniekvivalenttia`},
+                { label: 'Alkyloivat aineet', content: `${totalCycloEquivalent.toFixed(0)} mg/m² syklofosfamidiekvivalenttia`}
             ]),
             keepLines: true
         }))
@@ -360,13 +347,8 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
 
         radiotherapies.forEach((item, index, list) => {
             content.push(...itemParagraphs(
-                item.target,
-                textList([
-                    { text: `${dateOrUnknown(item.startDate)} - ${dateOrUnknown(item.endDate)}` },
-                    { label: 'Hoitomuoto', text: item.mode },
-                    { label: 'Annos', text: `${item.fractions} x ${item.singleDose} Gy = ${item.totalDose} Gy` },
-                    { label: 'Lisätiedot', text: item.notes }
-                ]),
+                item.heading,
+                buildDocxTextList(item.content),
                 index === list.length - 1
             ))
         })
@@ -382,12 +364,8 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
 
         procedures.forEach((item, index, list) => {
             content.push(...itemParagraphs(
-                item.procedure,
-                textList([
-                    { text: `${dateOrUnknown(item.date)}` },
-                    { label: 'Tarkempi kuvaus', text: item.details },
-                    { label: 'Komplikaatiot', text: item.complications },
-                ]),
+                item.heading,
+                buildDocxTextList(item.content),
                 index === list.length - 1
             ))
         })
@@ -401,8 +379,22 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
             heading: HeadingLevel.HEADING_1
         }))
 
-        cellTherapies.forEach((item, index, list) => {
-
+        cellTherapies.forEach((item) => {
+            content.push(...itemParagraphs(
+                item.heading,
+                buildDocxTextList(
+                    item.content.map(item => {
+                        if (typeof item === 'string')
+                            return item
+                        if (item.label === 'TBI')
+                            return { label: 'Koko kehon sädehoito (TBI)', content: item.content }
+                        if (item.label === 'DLI')
+                            return { label: 'Luovuttajan lymfosyytti-infuusiot (DLI)', content: item.content }
+                        return item
+                    })
+                ),
+                false
+            ))
         })
     }
 

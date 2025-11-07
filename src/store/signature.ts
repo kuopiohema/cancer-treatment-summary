@@ -22,10 +22,10 @@ export class Signature extends Model({
     @computed
     get sublabel() {
         return buildTextList([
-            { heading: 'Nimi', content: this.name || 'Ei syötetty'},
-            { heading: 'Puhelin', content: this.phone || 'Ei syötetty'},
-            { heading: 'Yksikkö', content: this.place || 'Ei syötetty'},
-            { heading: 'Päiväys', content: formatDate(this.date, 'Ei syötetty')}
+            { label: 'Nimi', content: this.name || 'Ei syötetty'},
+            { label: 'Puhelin', content: this.phone || 'Ei syötetty'},
+            { label: 'Yksikkö', content: this.place || 'Ei syötetty'},
+            { label: 'Päiväys', content: formatDate(this.date, 'Ei syötetty')}
         ])
     }
 }

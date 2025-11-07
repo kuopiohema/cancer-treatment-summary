@@ -1,15 +1,15 @@
 import { Fragment, ReactNode } from 'react'
 
-type TextListItem = string | { heading: string, content: string | null }
+export type TextListItem = string | { label: string, content: string | null }
 
 export const buildTextList = (data: (TextListItem | null)[]): ReactNode => {
-    const list = [] as string[]
+    const list: string[] = []
     data.filter((item): item is TextListItem => !!item)
         .forEach(item => {
-            const { heading, content } = typeof item === 'string' ? { heading: '', content: item } : item
+            const { label, content } = typeof item === 'string' ? { label: '', content: item } : item
             if (content)
-                if (heading)
-                    list.push(`${heading}: ${content}`)
+                if (label)
+                    list.push(`${label}: ${content}`)
                 else
                     list.push(content)
         })

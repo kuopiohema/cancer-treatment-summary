@@ -16,8 +16,8 @@ export class Followup extends Model({
     @computed
     get sublabel() {
         return buildTextList([
-            { heading: 'Yleisohjeet', content: this.general ? 'Syötetty' : 'Ei syötetty' },
-            { heading: 'Rokotusohjeet', content: this.vaccination ? 'Syötetty' : 'Ei syötetty' }
+            { label: 'Yleisohjeet', content: this.general ? 'Syötetty' : 'Ei syötetty' },
+            { label: 'Rokotusohjeet', content: this.vaccination ? 'Syötetty' : 'Ei syötetty' }
         ])
     }
 }

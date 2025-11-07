@@ -1,8 +1,8 @@
-import { randomId } from "@mantine/hooks";
-import { computed } from "mobx";
-import { detach, Model, model, modelAction, prop, rootRef } from "mobx-keystone";
-import { ReactNode } from "react";
-import { navCtx } from "../store";
+import { randomId } from '@mantine/hooks'
+import { computed } from 'mobx'
+import { detach, Model, model, modelAction, prop, rootRef } from 'mobx-keystone'
+import type { TextListItem } from '../../utils/buildTextList.tsx'
+import { navCtx } from '../store'
 
 @model('catrest/entity')
 export class Entity extends Model({
@@ -20,13 +20,13 @@ export class Entity extends Model({
     }
 
     @computed
-    get label(): ReactNode {
+    get heading(): string {
         return this.id
     }
 
     @computed
-    get sublabel(): ReactNode {
-        return this.id
+    get content(): TextListItem[] {
+        return [this.id]
     }
 
     @modelAction
@@ -40,7 +40,7 @@ export class Entity extends Model({
     }
 }
 
-export const entityRef = rootRef<Entity>("catrest/EntityRef", {
+export const entityRef = rootRef<Entity>('catrest/EntityRef', {
     onResolvedValueChange(ref, newEntity, oldEntity) {
         if (oldEntity && !newEntity) {
             detach(ref)

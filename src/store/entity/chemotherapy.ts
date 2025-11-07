@@ -1,11 +1,11 @@
-import { ExtendedModel, model, prop } from "mobx-keystone";
-import { Entity } from "./entity";
-import { formatDateRange } from "../../utils/formatDate";
-import { computed, override } from "mobx";
-import { EntityList } from "../entityList";
-import { Drug } from "./drug";
-import { buildTextList } from "../../utils/buildTextList";
-import { DateInputValue } from "../../types/dateInputValue";
+import { computed, override } from 'mobx'
+import { ExtendedModel, model, prop } from 'mobx-keystone'
+import { DateInputValue } from '../../types/dateInputValue'
+import type { TextListItem } from '../../utils/buildTextList.tsx'
+import { formatDateRange } from '../../utils/formatDate'
+import { EntityList } from '../entityList'
+import { Drug } from './drug'
+import { Entity } from './entity'
 
 @model('catrest/chemotherapy')
 export class Chemotherapy extends ExtendedModel(Entity, {
@@ -16,17 +16,17 @@ export class Chemotherapy extends ExtendedModel(Entity, {
     itemName = 'kemoterapiajakso'
 
     @override
-    get label() {
+    get heading() {
         return formatDateRange(this.startDate, this.endDate)
     }
 
     @override
-    get sublabel() {
-        return buildTextList([
+    get content(): TextListItem[] {
+        return [
             `${this.drugs.entities.length} lääke${this.drugs.entities.length !== 1 ? 'ttä' : ''}`,
             `Doksorubisiiniekvivalentti: ${this.doxoEquivalent} mg/m²`,
             `Syklofosfamidiekvivalentti: ${this.cycloEquivalent} mg/m²`
-        ])
+        ]
     }
 
     @computed

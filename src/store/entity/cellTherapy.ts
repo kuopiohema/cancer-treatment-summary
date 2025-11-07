@@ -1,14 +1,14 @@
 import { computed, override } from 'mobx'
-import { ExtendedModel, model, prop } from "mobx-keystone";
-import { formatDate, formatDateRange } from "../../utils/formatDate";
-import { getDonorText } from "../../utils/getDonorText";
-import { buildTextList } from "../../utils/buildTextList";
-import { EntityList } from "../entityList";
-import { Drug } from "./drug";
-import { Entity } from "./entity";
-import { NumberInputValue } from "../../types/numberInputValue";
-import { DateInputValue } from "../../types/dateInputValue";
-import { SelectValue } from "../../types/selectValue";
+import { ExtendedModel, model, prop } from 'mobx-keystone'
+import { DateInputValue } from '../../types/dateInputValue'
+import { NumberInputValue } from '../../types/numberInputValue'
+import { SelectValue } from '../../types/selectValue'
+import type { TextListItem } from '../../utils/buildTextList.tsx'
+import { formatDate, formatDateRange } from '../../utils/formatDate'
+import { getDonorText } from '../../utils/getDonorText'
+import { EntityList } from '../entityList'
+import { Drug } from './drug'
+import { Entity } from './entity'
 
 @model('catrest/stemCellTransplant')
 export class CellTherapy extends ExtendedModel(Entity, {
@@ -28,33 +28,34 @@ export class CellTherapy extends ExtendedModel(Entity, {
     dli: prop(false).withSetter(),
     dliStartDate: prop<DateInputValue>(null).withSetter(),
     dliEndDate: prop<DateInputValue>(null).withSetter(),
-    dliDoses: prop<NumberInputValue>(0).withSetter(),
+    dliDoses: prop<NumberInputValue>(0).withSetter()
 }) {
     itemName = 'soluhoito'
 
     @override
-    get label() {
-        const result = this.type || '(Uusi soluhoito)'
-        if (this.origin)
-            return `${result} (${this.origin})`
-        return result
+    get heading() {
+        return this.type || '(Uusi soluhoito)'
     }
 
     @override
-    get sublabel() {
-        return buildTextList([
-            { heading: 'CAR-solujen kohde', content: this.carTarget},
-            formatDate(this.date),
+    get content(): TextListItem[] {
+        return [
+            this.origin ? `${this.origin} siirto` : '',
+            { label: 'Siirtopäivä', content: formatDate(this.date) },
+            { label: 'CAR-solujen kohde', content: this.carTarget },
+            { label: 'Luovuttaja', content: getDonorText(this.donor, this.donorSex) },
+            { label: 'HLA-sopivuus', content: this.hlaMatch },
+            { label: 'Luovuttajan veriryhmä', content: this.donorBloodGroup },
+            { label: 'Esihoito', content: this.conditioning },
             {
-                heading: 'Luovuttaja',
-                content: getDonorText(this.donor, this.donorSex)
+                label: 'TBI',
+                content: this.tbi ? `${this.tbiDoseBody} Gy (vartalo) / ${this.tbiDoseLungs} Gy (keuhkot)` : ''
             },
-            { heading: 'HLA-sopivuus', content: this.hlaMatch },
-            { heading: 'Luovuttajan veriryhmä', content: this.donorBloodGroup },
-            { heading: 'Esihoito', content: this.conditioning },
-            { heading: 'TBI-annos', content: this.tbi ? `${this.tbiDoseBody} Gy (vartalo) / ${this.tbiDoseLungs} Gy (keuhkot)` : '' },
-            { heading: 'DLI-hoito', content: this.dli ? `${formatDateRange(this.dliStartDate, this.dliEndDate)}, ${this.dliDoses} annosta` : '' }
-        ])
+            {
+                label: 'DLI',
+                content: this.dli ? `${formatDateRange(this.dliStartDate, this.dliEndDate)}, ${this.dliDoses} annosta` : ''
+            }
+        ]
     }
 
     @computed

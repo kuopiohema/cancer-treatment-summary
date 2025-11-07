@@ -1,9 +1,9 @@
-import { ExtendedModel, model, prop } from "mobx-keystone";
-import { Entity } from "./entity";
-import { override } from "mobx";
-import { buildTextList } from "../../utils/buildTextList";
-import { formatDateRange } from "../../utils/formatDate";
-import { DateInputValue } from "../../types/dateInputValue";
+import { override } from 'mobx'
+import { ExtendedModel, model, prop } from 'mobx-keystone'
+import { DateInputValue } from '../../types/dateInputValue'
+import type { TextListItem } from '../../utils/buildTextList.tsx'
+import { formatDateRange } from '../../utils/formatDate'
+import { Entity } from './entity'
 
 @model('catrest/treatment')
 export class Treatment extends ExtendedModel(Entity, {
@@ -11,24 +11,21 @@ export class Treatment extends ExtendedModel(Entity, {
     group: prop('').withSetter(),
     startDate: prop<DateInputValue>(null).withSetter(),
     endDate: prop<DateInputValue>(null).withSetter(),
-    stopReason: prop('').withSetter(),
+    stopReason: prop('').withSetter()
 }) {
     itemName = 'hoito'
-    
+
     @override
-    get label() {
+    get heading() {
         return this.protocol || '(Uusi hoito)'
     }
 
     @override
-    get sublabel() {
-        return buildTextList([
+    get content(): TextListItem[] {
+        return [
             formatDateRange(this.startDate, this.endDate),
-            this.group,
-            {
-                heading: 'Hoidon loppumisen syy',
-                content: this.stopReason
-            }
-        ])
+            { label: 'Hoitoryhmä', content: this.group },
+            { label: 'Hoidon loppumisen syy', content: this.stopReason }
+        ]
     }
 }

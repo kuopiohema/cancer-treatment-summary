@@ -1,10 +1,10 @@
-import { ExtendedModel, model, prop } from "mobx-keystone";
-import { Entity } from "./entity";
-import { override } from "mobx";
-import { buildTextList } from "../../utils/buildTextList";
-import { DateInputValue } from "../../types/dateInputValue";
-import { NumberInputValue } from "../../types/numberInputValue";
-import { formatDateRange } from "../../utils/formatDate";
+import { override } from 'mobx'
+import { ExtendedModel, model, prop } from 'mobx-keystone'
+import { DateInputValue } from '../../types/dateInputValue'
+import { NumberInputValue } from '../../types/numberInputValue'
+import type { TextListItem } from '../../utils/buildTextList.tsx'
+import { formatDateRange } from '../../utils/formatDate'
+import { Entity } from './entity'
 
 @model('catrest/radiotherapy')
 export class Radiotherapy extends ExtendedModel(Entity, {
@@ -20,17 +20,17 @@ export class Radiotherapy extends ExtendedModel(Entity, {
     itemName = 'sädehoitojakso'
 
     @override
-    get label() {
+    get heading() {
         return this.target || '(Uusi sädehoitojakso)'
     }
 
     @override
-    get sublabel() {
-        return buildTextList([
-            this.mode,
+    get content(): TextListItem[] {
+        return [
             formatDateRange(this.startDate, this.endDate),
-            `${this.totalDose} Gy (${this.fractions} x ${this.singleDose} Gy)`,
-            this.notes
-        ])
+            { label: 'Hoitomuoto', content: this.mode },
+            { label: 'Annos', content: `${this.totalDose} Gy (${this.fractions} x ${this.singleDose} Gy)` },
+            { label: 'Lisätiedot', content: this.notes }
+        ]
     }
 }
