@@ -24,17 +24,17 @@ import Help from "./pages/Help"
 
 const getEntityPage = (entity: Entity | undefined): JSX.Element => {
     if (entity instanceof Diagnosis)
-        return <EntityPage entity={entity} InnerComponent={DiagnosisPage} />
+        return <EntityPage entity={entity} InnerComponent={DiagnosisPage} key={entity.id} />
     if (entity instanceof Treatment)
-        return <EntityPage entity={entity} InnerComponent={TreatmentPage} />
+        return <EntityPage entity={entity} InnerComponent={TreatmentPage} key={entity.id} />
     if (entity instanceof Chemotherapy)
-        return <EntityPage entity={entity} InnerComponent={ChemotherapyPage} />
+        return <EntityPage entity={entity} InnerComponent={ChemotherapyPage} key={entity.id} />
     if (entity instanceof Radiotherapy)
-        return <EntityPage entity={entity} InnerComponent={RadiotherapyPage} />
+        return <EntityPage entity={entity} InnerComponent={RadiotherapyPage} key={entity.id} />
     if (entity instanceof Procedure)
-        return <EntityPage entity={entity} InnerComponent={ProcedurePage} />
+        return <EntityPage entity={entity} InnerComponent={ProcedurePage} key={entity.id} />
     if (entity instanceof CellTherapy)
-        return <EntityPage entity={entity} InnerComponent={CellTherapyPage} />
+        return <EntityPage entity={entity} InnerComponent={CellTherapyPage} key={entity.id} />
     return <ErrorPage error={"Kohdetta ei löydy!"} />
 }
 
