@@ -20,7 +20,6 @@ import type { Drug } from '../store/entity/drug.ts'
 import type { Procedure } from '../store/entity/procedure.ts'
 import type { Radiotherapy } from '../store/entity/radiotherapy.ts'
 import type { Treatment } from '../store/entity/treatment.ts'
-import type { EntityList } from '../store/entityList.ts'
 import type { FormStore } from '../store/formStore.ts'
 import type { TextListItem } from './buildTextList.tsx'
 import { exportFile } from './exportFile.ts'
@@ -134,17 +133,19 @@ export const buildDocxTextList = (data: (TextListItem | null)[]): TextRun[] => {
     return list
 }
 
-const drugList = (drugs: EntityList<Drug>): TextRun[] => {
+const drugList = (drugs: Drug[]): TextRun[] => {
     const textRuns: TextRun[] = []
-    drugs.entities.forEach((drug, index) => {
+    drugs.forEach((drug, index) => {
         textRuns.push(new TextRun({
             text: `${drug.drug} ${drug.dose.toLocaleString()} ${drug.doseFormula ?? '[annoskaava puuttuu]'}`,
             break: index !== 0 ? 1 : undefined
         }))
+        
         const doxoEquivalent = drug.doxoEquivalent
         if (doxoEquivalent && drug.drug.toLocaleLowerCase() !== 'doksorubisiini') {
             textRuns.push(new TextRun(`(vastaa doksorubisiinia ${doxoEquivalent} mg/m²)`))
         }
+
         if (drug.notes) {
             textRuns.push(new TextRun({
                 text: `\t${drug.notes}`,
@@ -302,34 +303,27 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
             }))
         }
 
-        chemotherapies.forEach(item => {
-            content.push(...itemParagraphs(
-                item.heading,
-                drugList(item.drugs),
-                false // chapter continues after this --> prevent page break
-            ))
-        })
-
-        content.push(new Paragraph({
-            text: `Kumulatiiviset annokset${cellTherapiesHaveDrugs ? ' (ml. soluhoitojen esihoitolääkkeet)' : ''}`,
-            heading: HeadingLevel.HEADING_2
-        }))
-
         const totalDoxoEquivalent =
             chemotherapies.reduce((value, item) => value + item.doxoEquivalent, 0) +
             cellTherapies.reduce((value, item) => value + item.doxoEquivalent, 0)
 
-        const totalCycloEquivalent =
-            chemotherapies.reduce((value, item) => value + item.cycloEquivalent, 0) +
-            cellTherapies.reduce((value, item) => value + item.cycloEquivalent, 0)
-
         content.push(new Paragraph({
-            children: buildDocxTextList([
-                { label: 'Antrasykliinit', content: `${totalDoxoEquivalent.toFixed(0)} mg/m² doksorubisiiniekvivalenttia` },
-                { label: 'Alkyloivat aineet', content: `${totalCycloEquivalent.toFixed(0)} mg/m² syklofosfamidiekvivalenttia` }
-            ]),
-            keepLines: true
+            children: textWithLabel(
+                'Kumulatiivinen antrasykliiniannos',
+                totalDoxoEquivalent > 0 ?
+                    `${totalDoxoEquivalent.toFixed(0)} mg/m² doksorubisiiniekvivalenttia` :
+                    'Ei ole saanut antrasykliinejä'
+            ),
+            keepNext: true
         }))
+
+        chemotherapies.forEach((item, index, list) => {
+            content.push(...itemParagraphs(
+                item.heading,
+                drugList(item.drugs.entities),
+                index === list.length - 1
+            ))
+        })
     }
 
     // RADIOTHERAPIES
@@ -411,7 +405,7 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
                 }))
 
                 content.push(new Paragraph({
-                    children: drugList(item.drugs),
+                    children: drugList(item.drugs.entities),
                     indent: {
                         left: 6 * space
                     }
@@ -428,12 +422,23 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
             heading: HeadingLevel.HEADING_1
         }))
 
+        content.push(new Paragraph({
+            text: 'Syöpähoitoihin liittyen on asennettu seuraavat vierasesineet:',
+            keepNext: true
+        }))
+
         foreignBodies.forEach((item, index, list) => {
-            content.push(...itemParagraphs(
-                item.type,
-                item.removal ? [new TextRun(item.removal)] : [],
-                index === list.length - 1
-            ))
+            const isLast = index === list.length - 1
+            content.push(new Paragraph({
+                children: [
+                    new TextRun({ text: item.type, bold: true }),
+                    new TextRun({ text: item.removal ? ` (${item.removal})` : '' })
+                ],
+                keepNext: !isLast,
+                spacing: {
+                    after: isLast ? undefined : 0.5 * space
+                }
+            }))
         })
     }
 
@@ -447,12 +452,20 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
     if (adverseEffects.length === 0) {
         content.push(new Paragraph('Ei todettu merkittäviä syöpähoitojen pitkäaikaishaittoja.'))
     } else {
+        content.push(new Paragraph({
+            text: 'Seuraavia syöpähoitojen pitkäaikaishaittoja on todettu:',
+            keepNext: true
+        }))
+
         adverseEffects.forEach((item, index, list) => {
-            content.push(...itemParagraphs(
-                item.organSystem,
-                [new TextRun(item.description)],
-                index === list.length - 1
-            ))
+            const isLast = index === list.length - 1
+            content.push(new Paragraph({
+                children: textWithLabel(item.organSystem, item.description),
+                keepNext: !isLast,
+                spacing: {
+                    after: isLast ? undefined : 0.5 * space
+                }
+            }))
         })
     }
 
