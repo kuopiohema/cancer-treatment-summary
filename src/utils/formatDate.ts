@@ -8,5 +8,5 @@ export function formatDate(date: DateInputValue, emptyString?: string): string {
 export function formatDateRange(startDate: DateInputValue, endDate: DateInputValue): string {
     if (!startDate && !endDate)
         return ''
-    return `${formatDate(startDate, 'Ei aloituspäivää')} - ${formatDate(endDate, 'Ei lopetuspäivää')}`
+    return `${formatDate(startDate, 'Ei aloituspäivää')} \u2013 ${formatDate(endDate, 'Ei lopetuspäivää')}`
 }

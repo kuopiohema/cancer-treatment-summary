@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import {
     AlignmentType,
     Document,
@@ -9,6 +8,7 @@ import {
     Packer,
     PageNumber,
     Paragraph,
+    TabStopDefinition,
     TabStopPosition,
     TabStopType,
     TextRun
@@ -22,9 +22,11 @@ import type { Radiotherapy } from '../store/entity/radiotherapy.ts'
 import type { Treatment } from '../store/entity/treatment.ts'
 import type { EntityList } from '../store/entityList.ts'
 import type { FormStore } from '../store/formStore.ts'
-import type { DateInputValue } from '../types/dateInputValue.ts'
 import type { TextListItem } from './buildTextList.tsx'
 import { exportFile } from './exportFile.ts'
+import { formatDate } from './formatDate.ts'
+
+const space = 120
 
 const styles: IStylesOptions = {
     default: {
@@ -35,7 +37,7 @@ const styles: IStylesOptions = {
             },
             paragraph: {
                 spacing: {
-                    after: 360
+                    after: 3 * space
                 },
                 alignment: AlignmentType.CENTER,
                 keepNext: true
@@ -48,8 +50,8 @@ const styles: IStylesOptions = {
             },
             paragraph: {
                 spacing: {
-                    before: 480,
-                    after: 120
+                    before: 4 * space,
+                    after: 1 * space
                 },
                 keepNext: true
             }
@@ -61,7 +63,7 @@ const styles: IStylesOptions = {
             },
             paragraph: {
                 spacing: {
-                    after: 240
+                    after: 2 * space
                 },
                 keepNext: true
             }
@@ -94,27 +96,20 @@ const styles: IStylesOptions = {
             paragraph: {
                 spacing: {
                     before: 0,
-                    after: 240,
+                    after: 2 * space,
                     line: 260
-                }
+                },
             }
         }
-    },
-    paragraphStyles: [
-        {
-            id: 'indented',
-            name: 'Indented',
-            basedOn: 'Normal',
-            next: 'Normal',
-            quickFormat: true,
-            paragraph: {
-                indent: {
-                    left: 240
-                }
-            }
-        }
-    ]
+    }
 }
+
+const defaultTabStops: TabStopDefinition[] = [
+    {
+        type: TabStopType.LEFT,
+        position: 6 * space
+    }
+]
 
 const textWithLabel = (label: string, content: string, breakBefore?: boolean) => [
     new TextRun({ text: `${label}: `, bold: true, break: breakBefore ? 1 : undefined }),
@@ -147,11 +142,8 @@ const drugList = (drugs: EntityList<Drug>): TextRun[] => {
             break: index !== 0 ? 1 : undefined
         }))
         const doxoEquivalent = drug.doxoEquivalent
-        if (doxoEquivalent) {
-            textRuns.push(new TextRun({
-                text: `\tvastaa doksorubisiinia ${doxoEquivalent} mg/m²`,
-                break: 1
-            }))
+        if (doxoEquivalent && drug.drug.toLocaleLowerCase() !== 'doksorubisiini') {
+            textRuns.push(new TextRun(`(vastaa doksorubisiinia ${doxoEquivalent} mg/m²)`))
         }
         if (drug.notes) {
             textRuns.push(new TextRun({
@@ -173,9 +165,12 @@ const itemParagraphs = (heading: string, content: TextRun[], isLast: boolean): P
 
     paragraphs.push(new Paragraph({
         children: content,
-        style: 'indented',
         keepLines: true,
-        keepNext: !isLast
+        keepNext: !isLast,
+        indent: {
+            left: 3 * space
+        },
+        tabStops: defaultTabStops
     }))
 
     return paragraphs
@@ -330,8 +325,8 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
 
         content.push(new Paragraph({
             children: buildDocxTextList([
-                { label: 'Antrasykliinit', content: `${totalDoxoEquivalent.toFixed(0)} mg/m² doksorubisiiniekvivalenttia`},
-                { label: 'Alkyloivat aineet', content: `${totalCycloEquivalent.toFixed(0)} mg/m² syklofosfamidiekvivalenttia`}
+                { label: 'Antrasykliinit', content: `${totalDoxoEquivalent.toFixed(0)} mg/m² doksorubisiiniekvivalenttia` },
+                { label: 'Alkyloivat aineet', content: `${totalCycloEquivalent.toFixed(0)} mg/m² syklofosfamidiekvivalenttia` }
             ]),
             keepLines: true
         }))
@@ -379,7 +374,10 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
             heading: HeadingLevel.HEADING_1
         }))
 
-        cellTherapies.forEach((item) => {
+        cellTherapies.forEach((item, index, list) => {
+            const hasDrugs = item.drugs.entityCount > 0
+            const isLast = index === list.length - 1
+
             content.push(...itemParagraphs(
                 item.heading,
                 buildDocxTextList(
@@ -393,10 +391,112 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
                         return item
                     })
                 ),
-                false
+                !hasDrugs && isLast
+            ))
+
+            if (hasDrugs) {
+                content.push(new Paragraph({
+                    children: [
+                        new TextRun({
+                            text: 'Esihoidon lääkkeet:',
+                            bold: true
+                        })
+                    ],
+                    indent: {
+                        left: 3 * space
+                    },
+                    spacing: {
+                        after: 0
+                    }
+                }))
+
+                content.push(new Paragraph({
+                    children: drugList(item.drugs),
+                    indent: {
+                        left: 6 * space
+                    }
+                }))
+            }
+        })
+    }
+
+    // FOREIGN BODIES
+
+    if (foreignBodies.length > 0) {
+        content.push(new Paragraph({
+            text: 'Vierasesineet',
+            heading: HeadingLevel.HEADING_1
+        }))
+
+        foreignBodies.forEach((item, index, list) => {
+            content.push(...itemParagraphs(
+                item.type,
+                item.removal ? [new TextRun(item.removal)] : [],
+                index === list.length - 1
             ))
         })
     }
+
+    // ADVERSE EFFECTS
+
+    content.push(new Paragraph({
+        text: 'Haittavaikutukset',
+        heading: HeadingLevel.HEADING_1
+    }))
+
+    if (adverseEffects.length === 0) {
+        content.push(new Paragraph('Ei todettu merkittäviä syöpähoitojen pitkäaikaishaittoja.'))
+    } else {
+        adverseEffects.forEach((item, index, list) => {
+            content.push(...itemParagraphs(
+                item.organSystem,
+                [new TextRun(item.description)],
+                index === list.length - 1
+            ))
+        })
+    }
+
+    // FOLLOWUP
+
+    content.push(new Paragraph({
+        text: 'Jälkiseuranta',
+        heading: HeadingLevel.HEADING_1
+    }))
+
+    content.push(...itemParagraphs(
+        'Yleiset ohjeet',
+        [new TextRun(followup.general)],
+        false
+    ))
+
+    content.push(...itemParagraphs(
+        'Rokotusohjeet',
+        [new TextRun(followup.vaccination)],
+        true
+    ))
+
+    // SIGNATURE
+
+    content.push(new Paragraph({
+        children: [
+            new TextRun(signature.name),
+            new TextRun({ text: `puh. ${signature.phone}`, break: 1 }),
+            new TextRun({ text: signature.place, break: 1 }),
+            new TextRun({ text: formatDate(signature.date), break: 1 })
+        ],
+        keepLines: true,
+        spacing: {
+            before: 4 * space
+        },
+        border: {
+            top: {
+                color: 'auto',
+                space: 0.5 * space,
+                style: 'single',
+                size: 2
+            }
+        }
+    }))
 
     //
     // FINALIZING
