@@ -143,7 +143,7 @@ const drugList = (drugs: Drug[]): TextRun[] => {
         
         const doxoEquivalent = drug.doxoEquivalent
         if (doxoEquivalent && drug.drug.toLocaleLowerCase() !== 'doksorubisiini') {
-            textRuns.push(new TextRun(`(vastaa doksorubisiinia ${doxoEquivalent} mg/m²)`))
+            textRuns.push(new TextRun(` (vastaa doksorubisiinia ${doxoEquivalent} mg/m²)`))
         }
 
         if (drug.notes) {
@@ -175,6 +175,15 @@ const itemParagraphs = (heading: string, content: TextRun[], isLast: boolean): P
     }))
 
     return paragraphs
+}
+
+const convertNewlines = (text: string): TextRun[] => {
+    const textArray = text.split('\n')
+    const result: TextRun[] = []
+    textArray.forEach((item, index) => {
+        result.push(new TextRun({ text: item, break: index > 0 ? 1 : undefined }))
+    })
+    return result
 }
 
 export const generateDoc = async (data: FormStore, patient: { name: string, id: string }) => {
@@ -478,13 +487,13 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
 
     content.push(...itemParagraphs(
         'Yleiset ohjeet',
-        [new TextRun(followup.general)],
+        convertNewlines(followup.general),
         false
     ))
 
     content.push(...itemParagraphs(
         'Rokotusohjeet',
-        [new TextRun(followup.vaccination)],
+        convertNewlines(followup.vaccination),
         true
     ))
 

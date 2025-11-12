@@ -18,7 +18,7 @@ export class DataStore extends Model({
     radiotherapyModeOptions: prop<string[]>(() => []),
     
     cellOriginOptions: prop<string[]>(() => []),
-    cellTypeOptions: prop<string[]>(() => []),
+    cellTherapyTypeOptions: prop<string[]>(() => []),
     carTargetOptions: prop<string[]>(() => []),
     cellDonorOptions: prop<string[]>(() => []),
     hlaMatchOptions: prop<string[]>(() => []),
@@ -41,7 +41,7 @@ export class DataStore extends Model({
         this.radiotherapyModeOptions = withUnknown(yield* _await(fetchJson<string[]>('selectOptions/radiotherapyMode')))
 
         this.cellOriginOptions = yield* _await(fetchJson<string[]>('selectOptions/cellOrigin'))
-        this.cellTypeOptions = yield* _await(fetchJson<string[]>('selectOptions/cellType'))
+        this.cellTherapyTypeOptions = yield* _await(fetchJson<string[]>('selectOptions/cellTherapyType'))
         this.carTargetOptions = yield* _await(fetchJson<string[]>('selectOptions/carTarget'))
         this.cellDonorOptions = yield* _await(fetchJson<string[]>('selectOptions/cellDonor'))
         this.hlaMatchOptions = withUnknown(yield* _await(fetchJson<string[]>('selectOptions/hlaMatch')))

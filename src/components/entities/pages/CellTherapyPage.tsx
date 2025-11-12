@@ -16,18 +16,18 @@ const CellTherapyPage = observer(({ data }: EntityComponentProps<CellTherapy>) =
     return (
         <>
             <Fieldset legend="Hoidon perustiedot">
+                <Autocomplete
+                    value={data.type}
+                    onChange={value => data.setType(value)}
+                    label="Hoitomuoto"
+                    data={store.data.cellTherapyTypeOptions}
+                />
                 <Select
                     value={data.origin}
                     onChange={value => data.setOrigin(value)}
                     label="Solujen alkuperä"
                     data={store.data.cellOriginOptions}
                     flex="none"
-                />
-                <Autocomplete
-                    value={data.type}
-                    onChange={value => data.setType(value)}
-                    label="Solujen tyyppi"
-                    data={store.data.cellTypeOptions}
                 />
                 <Autocomplete
                     value={data.carTarget}
