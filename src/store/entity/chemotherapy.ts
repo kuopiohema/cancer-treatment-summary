@@ -25,7 +25,7 @@ export class Chemotherapy extends ExtendedModel(Entity, {
         return [
             `${this.drugs.entities.length} lääke${this.drugs.entities.length !== 1 ? 'ttä' : ''}`,
             `Doksorubisiiniekvivalentti: ${this.doxoEquivalent} mg/m²`,
-            `Syklofosfamidiekvivalentti: ${this.cycloEquivalent} mg/m²`
+            //`Syklofosfamidiekvivalentti: ${this.cycloEquivalent} mg/m²`
         ]
     }
 
