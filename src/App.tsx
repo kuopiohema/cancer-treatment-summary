@@ -14,13 +14,12 @@ import {
 import { useDisclosure, useFileDialog } from '@mantine/hooks'
 import { modals } from '@mantine/modals'
 import { IconDeviceFloppy, IconFile, IconFolderOpen, IconMoon, IconQuestionMark, IconSun } from '@tabler/icons-react'
-import { fromSnapshot, getSnapshot, type SnapshotInOf } from 'mobx-keystone'
+import { getSnapshot } from 'mobx-keystone'
 import { observer } from 'mobx-react'
 import { use } from 'react'
 import Navbar from './components/Navbar.tsx'
 import PageDisplay from './components/PageDisplay.tsx'
 import CreateWordButton from './CreateWordButton.tsx'
-import type { FormStore } from './store/formStore.ts'
 import { StoreContext } from './store/StoreContext.ts'
 import { exportFile } from './utils/exportFile.ts'
 import { showNotification } from './utils/showNotification.tsx'
@@ -71,49 +70,11 @@ const App = observer(() => {
         }
     }
 
-    const showLoadFailMessage = (message?: string) => showNotification(
-        'Lataa tiedot',
-        `Tiedoston lataaminen epäonnistui: ${message ?? 'Tuntematon virhe'}`,
-        false
-    )
-
-    const handleLoad = (files: FileList | null) => {
-        if (!files)
-            return
-
-        if (files.length > 1)
-            return
-
-        const file = files[0]
-
-        const reader = new FileReader()
-        reader.onerror = () => showLoadFailMessage(reader.error?.message)
-        reader.onload = () => {
-            if (typeof reader.result !== 'string') {
-                showLoadFailMessage('Tiedoston sisältöä ei tunnistettu')
-                return
-            }
-
-            try {
-                const snapshot = JSON.parse(reader.result) as SnapshotInOf<FormStore>
-                store.load(fromSnapshot<FormStore>(snapshot))
-                showNotification(
-                    'Lataa tiedot',
-                    'Tietojen lataaminen onnistui!',
-                    true
-                )
-            } catch {
-                showLoadFailMessage('Tiedoston sisältöä ei tunnistettu')
-            }
-        }
-        reader.readAsText(file)
-    }
-
     const fileDialog = useFileDialog({
         multiple: false,
         accept: '.json',
         resetOnOpen: true,
-        onChange: handleLoad
+        onChange: (files) => store.load(files)
     })
 
     return (
