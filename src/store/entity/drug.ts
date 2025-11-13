@@ -1,29 +1,27 @@
-import { computed } from "mobx";
-import { ExtendedModel, model, prop } from "mobx-keystone";
+import { computed, observable } from 'mobx'
 import { NumberInputValue } from "../../types/numberInputValue";
 import { calculateEquivalentDose } from '../../utils/calculateEquivalentDose.ts'
-import { dataCtx } from "../store";
+import { data } from '../store'
 import { Entity } from "./entity";
 import { SelectValue } from "../../types/selectValue";
 
-@model('catrest/drug')
-export class Drug extends ExtendedModel(Entity, {
-    drug: prop('').withSetter(),
-    dose: prop<NumberInputValue>(0).withSetter(),
-    doseFormula: prop<SelectValue>('mg/m²').withSetter(),
-    notes: prop('').withSetter()
-}) {
+export class Drug extends Entity {
+    @observable accessor drug = ''
+    @observable accessor dose: NumberInputValue = 0
+    @observable accessor doseFormula: SelectValue = 'mg/m²'
+    @observable accessor notes = ''
+
     itemName = 'lääke'
 
     @computed
     get doxoEquivalent() {
-        const doxoEquivalents = dataCtx.get(this).doxoEquivalents.drugs
+        const doxoEquivalents = data.doxoEquivalents.drugs
         return calculateEquivalentDose(this, doxoEquivalents)
     }
 
     @computed
     get cycloEquivalent() {
-        const cycloEquivalents = dataCtx.get(this).cycloEquivalents.drugs
+        const cycloEquivalents = data.cycloEquivalents.drugs
         return calculateEquivalentDose(this, cycloEquivalents)
     }
 }

@@ -1,24 +1,24 @@
-import { model, Model, modelAction, prop, Ref } from "mobx-keystone";
+import { action, observable } from 'mobx'
 import { rejectChangesConfirmModal } from "../modals/rejectChangesConfirmModal";
-import { Entity, entityRef } from "./entity/entity";
+import { Entity } from "./entity/entity";
 
 export type Page = 'help' | 'entity' | 'foreignBodies' | 'adverseEffects' | 'followup' | 'signature'
 
-@model('catrest/navStore')
-export class NavStore extends Model({
-    page: prop<Page>('help'),
-    selectedEntity: prop<Ref<Entity> | undefined>(undefined),
-    pageIsDirty: prop<boolean>(false).withSetter()
-}) {
-    @modelAction
+export class NavStore {
+    @observable accessor page: Page = 'help'
+    @observable accessor selectedEntity: Entity | null = null
+    @observable accessor pageIsDirty = false
+
+    @action
     navigate(page: Page, entity?: Entity) {
         this.page = page
         if (page !== 'entity' || !entity)
-            this.selectedEntity = undefined
+            this.selectedEntity = null
         else
-            this.selectedEntity = entityRef(entity)
+            this.selectedEntity = entity
     }
 
+    @action
     tryNavigate(page: Page, entity?: Entity) {
         const action = () => this.navigate(page, entity)
         if (!this.pageIsDirty)
@@ -27,18 +27,20 @@ export class NavStore extends Model({
             rejectChangesConfirmModal(action)
     }
 
+    @action
     selectPage(page: Page) {
         this.tryNavigate(page)
     }
 
+    @action
     selectEntity(entity: Entity) {
         this.tryNavigate('entity', entity)
     }
 
-    @modelAction
+    @action
     reset() {
         this.page = 'help'
-        this.selectedEntity = undefined
+        this.selectedEntity = null
         this.pageIsDirty = false
     }
 }

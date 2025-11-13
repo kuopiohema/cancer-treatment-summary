@@ -1,18 +1,20 @@
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import { PropsWithChildren, useEffect, useState } from "react";
-import { rootStore } from "./store";
+import { data, form, nav } from './store.ts'
 import { StoreContext } from "./StoreContext";
 
 const StoreProvider = observer(({children}: PropsWithChildren) => {
-    const [store] = useState(rootStore)
+    const [dataStore] = useState(data)
+    const [formStore] = useState(form)
+    const [navStore] = useState(nav)
     useEffect(() => {
         const fetchData = async() => {
-            await store.data.fetchData()
+            await dataStore.fetchData()
         }
         void fetchData()
-    }, [store.data])
+    }, [dataStore])
 
-    return <StoreContext value={store}>{children}</StoreContext>
+    return <StoreContext value={{ data: dataStore, form: formStore, nav: navStore }}>{children}</StoreContext>
 })
 
 export default StoreProvider

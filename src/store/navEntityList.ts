@@ -1,25 +1,22 @@
-import { ExtendedModel, model, modelAction } from "mobx-keystone";
-import { Entity } from "./entity/entity";
-import { EntityList } from "./entityList";
-import { navCtx } from "./store";
+import { action } from 'mobx'
+import { Entity } from './entity/entity'
+import { EntityList } from './entityList'
+import { nav } from './store.ts'
 
-@model('catrest/navEntityList')
-export class NavEntityList<E extends Entity> extends ExtendedModel(EntityList, {}) {
-    @modelAction
+export class NavEntityList<E extends Entity> extends EntityList<E> {
+    @action
     add(entity: E) {
         super.add(entity)
-        const nav = navCtx.get(this)
         if (!nav.pageIsDirty)
             nav.selectEntity(entity)
     }
 
-    @modelAction
+    @action
     remove(id: string) {
-        const nav = navCtx.get(this)
-        const isCurrentEntity = nav.selectedEntity?.current?.id === id
+        const isCurrentEntity = nav.selectedEntity?.id === id
         super.remove(id)
         if (isCurrentEntity) {
-            nav.setPageIsDirty(false)
+            nav.pageIsDirty = false
             if (this.entities.length > 0)
                 nav.selectEntity(this.entities[this.entities.length - 1])
             else

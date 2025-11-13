@@ -1,11 +1,10 @@
-import { ExtendedModel, model, prop } from "mobx-keystone";
+import { observable } from 'mobx'
 import { Entity } from "./entity";
 import { SelectValue } from "../../types/selectValue";
 
-@model('catrest/foreignBody')
-export class ForeignBody extends ExtendedModel(Entity, {
-    type: prop('').withSetter(),
-    removal: prop<SelectValue>(null).withSetter()
-}) {
+export class ForeignBody extends Entity {
+    @observable accessor type = ''
+    @observable accessor removal: SelectValue = null
+
     itemName = 'vierasesine'
 }

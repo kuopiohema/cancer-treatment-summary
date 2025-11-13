@@ -5,54 +5,55 @@ import { Diagnosis } from "../store/entity/diagnosis"
 import { Procedure } from "../store/entity/procedure"
 import { Radiotherapy } from "../store/entity/radiotherapy"
 import { Treatment } from "../store/entity/treatment"
+import { buildTextList } from '../utils/buildTextList.tsx'
 import NavList from "./entityLists/NavList"
 import { use } from "react"
 import { StoreContext } from "../store/StoreContext"
-import { observer } from "mobx-react"
+import { observer } from "mobx-react-lite"
 import { countWithLabel } from "../utils/countWithLabel"
 
 const Navbar = observer(() => {
-    const store = use(StoreContext)
+    const { form, nav } = use(StoreContext)
     return (
         <>
             <NavList
-                entityList={store.form.diagnoses}
-                entityFactory={() => new Diagnosis({})}
+                entityList={form.diagnoses}
+                entityFactory={() => new Diagnosis()}
                 title="Diagnoosit"
                 emptyText="Ei diagnooseja"
                 addButtonText="Lisää diagnoosi"
             />
             <NavList
-                entityList={store.form.treatments}
-                entityFactory={() => new Treatment({})}
+                entityList={form.treatments}
+                entityFactory={() => new Treatment()}
                 title="Hoidot"
                 emptyText="Ei hoitoja"
                 addButtonText="Lisää hoito"
             />
             <NavList
-                entityList={store.form.chemotherapies}
-                entityFactory={() => new Chemotherapy({})}
+                entityList={form.chemotherapies}
+                entityFactory={() => new Chemotherapy()}
                 title="Lääkehoitojaksot"
                 emptyText="Ei lääkehoitojaksoja"
                 addButtonText="Lisää lääkehoitojakso"
             />
             <NavList
-                entityList={store.form.radiotherapies}
-                entityFactory={() => new Radiotherapy({})}
+                entityList={form.radiotherapies}
+                entityFactory={() => new Radiotherapy()}
                 title="Sädehoitojaksot"
                 emptyText="Ei sädehoitojaksoja"
                 addButtonText="Lisää sädehoitojakso"
             />
             <NavList
-                entityList={store.form.procedures}
-                entityFactory={() => new Procedure({})}
+                entityList={form.procedures}
+                entityFactory={() => new Procedure()}
                 title="Leikkaukset ja toimenpiteet"
                 emptyText="Ei toimenpiteitä"
                 addButtonText="Lisää toimenpide"
             />
             <NavList
-                entityList={store.form.cellTherapies}
-                entityFactory={() => new CellTherapy({})}
+                entityList={form.cellTherapies}
+                entityFactory={() => new CellTherapy()}
                 title="Kantasolusiirrot ja muut soluhoidot"
                 emptyText="Ei soluhoitoja"
                 addButtonText="Lisää soluhoito"
@@ -61,30 +62,30 @@ const Navbar = observer(() => {
             <Divider />
             <NavLink
                 label={<Text>Vierasesineet</Text>}
-                description={countWithLabel(store.form.foreignBodies.entityCount, 'vierasesineitä', 'vierasesine', 'vierasesinettä')}
-                active={store.nav.page === 'foreignBodies'}
-                onClick={() => store.nav.selectPage('foreignBodies')}
+                description={countWithLabel(form.foreignBodies.entityCount, 'vierasesineitä', 'vierasesine', 'vierasesinettä')}
+                active={nav.page === 'foreignBodies'}
+                onClick={() => nav.selectPage('foreignBodies')}
             />
             <Divider />
             <NavLink
                 label={<Text>Haittavaikutukset</Text>}
-                description={countWithLabel(store.form.adverseEffects.entityCount, 'haittavaikutuksia', 'haittavaikutus', 'haittavaikutusta')}
-                active={store.nav.page === 'adverseEffects'}
-                onClick={() => store.nav.selectPage('adverseEffects')}
+                description={countWithLabel(form.adverseEffects.entityCount, 'haittavaikutuksia', 'haittavaikutus', 'haittavaikutusta')}
+                active={nav.page === 'adverseEffects'}
+                onClick={() => nav.selectPage('adverseEffects')}
             />
             <Divider />
             <NavLink
                 label={<Text>Jälkiseuranta</Text>}
-                description={store.form.followup.sublabel}
-                active={store.nav.page === 'followup'}
-                onClick={() => store.nav.selectPage('followup')}
+                description={buildTextList(form.followup.content)}
+                active={nav.page === 'followup'}
+                onClick={() => nav.selectPage('followup')}
             />
             <Divider />
             <NavLink
                 label={<Text>Lomakkeen täyttäjä</Text>}
-                description={store.form.signature.sublabel}
-                active={store.nav.page === 'signature'}
-                onClick={() => store.nav.selectPage('signature')}
+                description={buildTextList(form.signature.content)}
+                active={nav.page === 'signature'}
+                onClick={() => nav.selectPage('signature')}
             />
         </>
     )

@@ -1,35 +1,28 @@
-import { arrayActions, Model, model, modelAction, prop } from "mobx-keystone";
 import { Entity } from "./entity/entity";
-import { computed } from "mobx";
+import { action, computed, observable } from 'mobx'
 
-@model('catrest/entityList')
-export class EntityList<E extends Entity> extends Model(<E>() => ({
-    entities: prop<E[]>(() => [])
-}))<E> {
-    @modelAction
+export class EntityList<E extends Entity> {
+    @observable accessor entities: E[] = []
+
+    @action
     add(entity: E) {
-        arrayActions.push(this.entities, entity)
+        this.entities.push(entity)
     }
 
-    @modelAction
-    swap(index1: number, index2: number) {
-        arrayActions.swap(this.entities, index1, index2)
+    @action
+    swap(firstIndex: number, secondIndex: number) {
+        [this.entities[firstIndex], this.entities[secondIndex]] = [this.entities[secondIndex], this.entities[firstIndex]]
     }
 
-    @modelAction
-    remove(id: string) { 
+    @action
+    remove(id: string) {
         const index = this.entities.findIndex(item => item.id === id)
         if (index === -1)
             return
-        arrayActions.delete(this.entities, index)
+        this.entities.splice(index, 1)
     }
 
-    @modelAction
-    set(list: E[]) {
-        this.entities = [...list]
-    }
-
-    @modelAction
+    @action
     clear() {
         this.entities = []
     }

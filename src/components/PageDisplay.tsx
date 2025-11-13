@@ -1,4 +1,4 @@
-import { observer } from "mobx-react"
+import { observer } from "mobx-react-lite"
 import { JSX, use, useMemo } from "react"
 import { CellTherapy } from "../store/entity/cellTherapy"
 import { Chemotherapy } from "../store/entity/chemotherapy"
@@ -22,7 +22,7 @@ import ForeignBodies from "./pages/ForeignBodies"
 import Signature from "./pages/Signature"
 import Help from "./pages/Help"
 
-const getEntityPage = (entity: Entity | undefined): JSX.Element => {
+const getEntityPage = (entity: Entity | null): JSX.Element => {
     if (entity instanceof Diagnosis)
         return <EntityPage entity={entity} InnerComponent={DiagnosisPage} key={entity.id} />
     if (entity instanceof Treatment)
@@ -39,18 +39,18 @@ const getEntityPage = (entity: Entity | undefined): JSX.Element => {
 }
 
 const PageDisplay = observer(() => {
-    const store = use(StoreContext)
+    const { nav } = use(StoreContext)
     const Page: JSX.Element = useMemo(() => {
-        switch (store.nav.page) {
+        switch (nav.page) {
             case 'help': return <Help />
             case 'foreignBodies': return <ForeignBodies />
             case 'adverseEffects': return <AdverseEffects />
             case 'followup': return <Followup />
             case 'signature': return <Signature />
-            case 'entity': return getEntityPage(store.nav.selectedEntity?.current)
+            case 'entity': return getEntityPage(nav.selectedEntity)
             default: return <ErrorPage error="Sivua ei löydy!" />
         }
-    }, [store.nav.page, store.nav.selectedEntity])
+    }, [nav.page, nav.selectedEntity])
     return Page
 })
 

@@ -14,8 +14,7 @@ import {
 import { useDisclosure, useFileDialog } from '@mantine/hooks'
 import { modals } from '@mantine/modals'
 import { IconDeviceFloppy, IconFile, IconFolderOpen, IconMoon, IconQuestionMark, IconSun } from '@tabler/icons-react'
-import { getSnapshot } from 'mobx-keystone'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import { use } from 'react'
 import Navbar from './components/Navbar.tsx'
 import PageDisplay from './components/PageDisplay.tsx'
@@ -33,10 +32,10 @@ const App = observer(() => {
 
     const [navbarCollapsed, { toggle: toggleNavbarCollapsed }] = useDisclosure(true)
 
-    const store = use(StoreContext)
+    const { form, nav } = use(StoreContext)
 
     const handleResetConfirmed = () => {
-        store.clear()
+        form.clear()
         showNotification('', 'Kaikki tiedot tyhjennetty!')
     }
 
@@ -53,7 +52,7 @@ const App = observer(() => {
     })
 
     const handleSave = () => {
-        const data = JSON.stringify(getSnapshot(store.form), null, 2)
+        const data = JSON.stringify(form.asPlainObject, null, 2)
         const status = exportFile('yhteenveto.json', data, 'application/json;charset=utf-8')
         if (status instanceof Error) {
             showNotification(
@@ -74,7 +73,7 @@ const App = observer(() => {
         multiple: false,
         accept: '.json',
         resetOnOpen: true,
-        onChange: (files) => store.load(files)
+        onChange: (files) => console.log(files)//form.load(files)
     })
 
     return (
@@ -123,7 +122,7 @@ const App = observer(() => {
                     </Group>
                     <Group>
                         <Tooltip label="Käyttöohjeet">
-                            <ActionIcon variant="subtle" onClick={() => store.nav.selectPage('help')}>
+                            <ActionIcon variant="subtle" onClick={() => nav.selectPage('help')}>
                                 <IconQuestionMark />
                             </ActionIcon>
                         </Tooltip>

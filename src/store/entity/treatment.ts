@@ -1,27 +1,25 @@
-import { override } from 'mobx'
-import { ExtendedModel, model, prop } from 'mobx-keystone'
+import { observable, override } from 'mobx'
 import { DateInputValue } from '../../types/dateInputValue'
 import type { TextListItem } from '../../utils/buildTextList.tsx'
 import { formatDateRange } from '../../utils/formatDate'
 import { Entity } from './entity'
 
-@model('catrest/treatment')
-export class Treatment extends ExtendedModel(Entity, {
-    protocol: prop('').withSetter(),
-    group: prop('').withSetter(),
-    startDate: prop<DateInputValue>(null).withSetter(),
-    endDate: prop<DateInputValue>(null).withSetter(),
-    stopReason: prop('').withSetter()
-}) {
+export class Treatment extends Entity {
+    @observable accessor protocol = ''
+    @observable accessor group = ''
+    @observable accessor startDate: DateInputValue = null
+    @observable accessor endDate: DateInputValue = null
+    @observable accessor stopReason = ''
+
     itemName = 'hoito'
 
     @override
-    get heading() {
+    override get heading() {
         return this.protocol || '(Uusi hoito)'
     }
 
     @override
-    get content(): TextListItem[] {
+    override get content(): TextListItem[] {
         return [
             formatDateRange(this.startDate, this.endDate),
             { label: 'Hoitoryhmä', content: this.group },

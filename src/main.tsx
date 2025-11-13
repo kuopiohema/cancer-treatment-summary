@@ -15,7 +15,17 @@ import { theme } from './theme.ts'
 import StoreProvider from './store/StoreProvider.tsx'
 import { Notifications } from '@mantine/notifications'
 
+import { configure } from 'mobx'
+
 dayjs.extend(customParseFormat)
+
+configure({
+    enforceActions: "always",
+    computedRequiresReaction: true,
+    reactionRequiresObservable: true,
+    observableRequiresReaction: true,
+    disableErrorBoundaries: true
+})
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>

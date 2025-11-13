@@ -1,17 +1,15 @@
-import { Model, model, modelAction, prop } from "mobx-keystone";
-import { DateInputValue } from "../types/dateInputValue";
-import { computed } from "mobx";
-import { buildTextList } from "../utils/buildTextList";
-import { formatDate } from "../utils/formatDate";
+import { action, computed, observable } from 'mobx'
+import { DateInputValue } from '../types/dateInputValue'
+import { type TextListItem } from '../utils/buildTextList'
+import { formatDate } from '../utils/formatDate'
 
-@model('catrest/signature')
-export class Signature extends Model({
-    name: prop('').withSetter(),
-    phone: prop('').withSetter(),
-    place: prop('').withSetter(),
-    date: prop<DateInputValue>(null).withSetter()
-}) {
-    @modelAction
+export class Signature {
+    @observable accessor name = ''
+    @observable accessor phone = ''
+    @observable accessor place = ''
+    @observable accessor date: DateInputValue = null
+
+    @action
     clear() {
         this.name = ''
         this.phone = ''
@@ -20,12 +18,12 @@ export class Signature extends Model({
     }
 
     @computed
-    get sublabel() {
-        return buildTextList([
-            { label: 'Nimi', content: this.name || 'Ei syötetty'},
-            { label: 'Puhelin', content: this.phone || 'Ei syötetty'},
-            { label: 'Yksikkö', content: this.place || 'Ei syötetty'},
-            { label: 'Päiväys', content: formatDate(this.date, 'Ei syötetty')}
-        ])
+    get content(): TextListItem[] {
+        return [
+            { label: 'Nimi', content: this.name || 'Ei syötetty' },
+            { label: 'Puhelin', content: this.phone || 'Ei syötetty' },
+            { label: 'Yksikkö', content: this.place || 'Ei syötetty' },
+            { label: 'Päiväys', content: formatDate(this.date, 'Ei syötetty') }
+        ]
     }
 }

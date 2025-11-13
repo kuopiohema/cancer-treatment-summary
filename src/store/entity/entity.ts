@@ -1,20 +1,17 @@
 import { randomId } from '@mantine/hooks'
-import { computed } from 'mobx'
-import { detach, Model, model, modelAction, prop, rootRef } from 'mobx-keystone'
+import { action, computed } from 'mobx'
 import type { TextListItem } from '../../utils/buildTextList.tsx'
-import { navCtx } from '../store'
+import { nav } from '../store.ts'
 
-@model('catrest/entity')
-export class Entity extends Model({
-    id: prop(() => randomId(''))
-}) {
+export class Entity {
+    id: string
     itemName = 'kohde'
 
-    getRefId() {
-        return this.id
+    constructor() {
+        this.id = randomId()
     }
 
-    @modelAction
+    @action
     set<K extends keyof this, V extends this[K]>(key: K, value: V) {
         this[key] = value
     }
@@ -29,21 +26,13 @@ export class Entity extends Model({
         return [this.id]
     }
 
-    @modelAction
+    @action
     select() {
-        navCtx.get(this)?.selectEntity(this)
+        nav.selectEntity(this)
     }
 
     @computed
     get isSelected() {
-        return navCtx.get(this)?.selectedEntity?.current?.id === this.id
+        return nav.selectedEntity?.id === this.id
     }
 }
-
-export const entityRef = rootRef<Entity>('catrest/EntityRef', {
-    onResolvedValueChange(ref, newEntity, oldEntity) {
-        if (oldEntity && !newEntity) {
-            detach(ref)
-        }
-    }
-})

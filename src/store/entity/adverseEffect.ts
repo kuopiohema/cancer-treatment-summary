@@ -1,10 +1,9 @@
-import { ExtendedModel, model, prop } from "mobx-keystone";
+import { observable } from 'mobx'
 import { Entity } from "./entity";
 
-@model('catrest/adverseEffect')
-export class AdverseEffect extends ExtendedModel(Entity, {
-    organSystem: prop('').withSetter(),
-    description: prop('').withSetter()
-}) {
+export class AdverseEffect extends Entity {
+    @observable accessor organSystem = ''
+    @observable accessor description = ''
+
     itemName = 'haittavaikutus'
 }
