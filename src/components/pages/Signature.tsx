@@ -1,45 +1,45 @@
 import {Button, Divider, Text, TextInput, Title} from '@mantine/core'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import { Signature as SignatureData } from '../../store/signature'
-import { EntityComponentProps } from '../entities/entityComponentProps'
+import { EntityPageProps } from '../entities/pages/entityPageProps'
 import { DateInput } from '@mantine/dates'
-import EntityPage from '../entityLists/EntityPage'
+import EntityPageWrapper from '../entityLists/EntityPageWrapper'
 import { use } from 'react'
 import { StoreContext } from '../../store/StoreContext'
 import dayjs from 'dayjs'
 
-const SignaturePage = observer(({ data }: EntityComponentProps<SignatureData>) => {
+const SignaturePage = observer(({ entity: data }: EntityPageProps<SignatureData>) => {
     const store = use(StoreContext)
 
     const handleUseDefaults = () => {
         const defaults = store.data.signatureDefaults
-        data.setPhone(defaults.phone)
-        data.setPlace(defaults.place)
-        data.setDate(dayjs().format('YYYY-MM-DD'))
+        data.phone = defaults.phone
+        data.place = defaults.place
+        data.date = dayjs().format('YYYY-MM-DD')
     }
 
     return <>
         <TextInput
             value={data.name}
-            onChange={e => data.setName(e.target.value)}
+            onChange={e => { data.name = e.target.value }}
             label="Nimi"
             placeholder="Nimi"
         />
         <TextInput
             value={data.phone}
-            onChange={e => data.setPhone(e.target.value)}
+            onChange={e => { data.phone = e.target.value }}
             label="Puhelin"
             placeholder="Puhelin"
         />
         <TextInput
             value={data.place}
-            onChange={e => data.setPlace(e.target.value)}
+            onChange={e => { data.place = e.target.value }}
             label="Paikka"
             placeholder="Paikka"
         />
         <DateInput
             value={data.date}
-            onChange={value => data.setDate(value)}
+            onChange={value => { data.date = value }}
             label="Päiväys"
         />
         <Divider />
@@ -52,7 +52,7 @@ const SignaturePage = observer(({ data }: EntityComponentProps<SignatureData>) =
     </>
 })
 
-export default function Signature() {
+const Signature = observer(() => {
     const store = use(StoreContext)
     return (
         <>
@@ -60,7 +60,9 @@ export default function Signature() {
             <Text mb="xl">
                 Syötä tälle sivulle lomakkeen täyttäjän tiedot.
             </Text>
-            <EntityPage entity={store.form.signature} InnerComponent={SignaturePage} />
+            <EntityPageWrapper entity={store.form.signature} InnerComponent={SignaturePage} />
         </>
     )
-}
+})
+
+export default Signature

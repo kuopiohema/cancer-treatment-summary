@@ -1,45 +1,45 @@
-import { Autocomplete, Group, TextInput } from "@mantine/core";
-import { DateInput } from "@mantine/dates";
-import { observer } from "mobx-react";
-import { use } from "react";
-import { Treatment } from "../../../store/entity/treatment";
-import { StoreContext } from "../../../store/StoreContext";
-import { EntityComponentProps } from "../entityComponentProps";
+import { Autocomplete, Group, TextInput } from "@mantine/core"
+import { DateInput } from "@mantine/dates"
+import { observer } from "mobx-react-lite"
+import { use } from "react"
+import { Treatment } from "../../../store/entity/treatment"
+import { StoreContext } from "../../../store/StoreContext"
+import { EntityPageProps } from "./entityPageProps"
 
-const TreatmentPage = observer(({ data }: EntityComponentProps<Treatment>) => {
-    const store = use(StoreContext)
+const TreatmentPage = observer(({ entity }: EntityPageProps<Treatment>) => {
+    const { data } = use(StoreContext)
 
     return (
         <>
             <TextInput
-                value={data.protocol}
-                onChange={e => data.setProtocol(e.target.value)}
+                value={entity.protocol}
+                onChange={e => { entity.protocol = e.target.value }}
                 label="Protokolla tai julkaisu"
                 placeholder="Esim. 'ALLTogether' tai 'Shankar et al. Eur J Cancer. 2012 Jul;48(11):1700-6'"
                 flex="none"
             />
             <Group>
                 <DateInput
-                    value={data.startDate}
-                    onChange={value => data.setStartDate(value)}
+                    value={entity.startDate}
+                    onChange={value => { entity.startDate = value }}
                     label="Aloituspäivä"
                 />
                 <DateInput
-                    value={data.endDate}
-                    onChange={value => data.setEndDate(value)}
+                    value={entity.endDate}
+                    onChange={value => { entity.endDate = value }}
                     label="Lopetuspäivä"
                 />
             </Group>
             <TextInput
-                value={data.group}
-                onChange={e => data.setGroup(e.target.value)}
+                value={entity.group}
+                onChange={e => { entity.group = e.target.value }}
                 label="Hoitoryhmä"
                 placeholder="Esim. 'Intermediate Risk - High'"
             />
             <Autocomplete
-                value={data.stopReason}
-                onChange={value => data.setStopReason(value)}
-                data={store.data.treatmentStopReasonOptions}
+                value={entity.stopReason}
+                onChange={value => { entity.stopReason = value }}
+                data={data.treatmentStopReasonOptions}
                 label="Hoidon loppumisen syy"
             />
         </>

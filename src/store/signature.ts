@@ -1,15 +1,18 @@
-import { action, computed, observable } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 import { DateInputValue } from '../types/dateInputValue'
 import { type TextListItem } from '../utils/buildTextList'
 import { formatDate } from '../utils/formatDate'
 
 export class Signature {
-    @observable accessor name = ''
-    @observable accessor phone = ''
-    @observable accessor place = ''
-    @observable accessor date: DateInputValue = null
+    name = ''
+    phone = ''
+    place = ''
+    date: DateInputValue = null
 
-    @action
+    constructor() {
+        makeAutoObservable(this)
+    }
+
     clear() {
         this.name = ''
         this.phone = ''
@@ -17,7 +20,6 @@ export class Signature {
         this.date = ''
     }
 
-    @computed
     get content(): TextListItem[] {
         return [
             { label: 'Nimi', content: this.name || 'Ei syötetty' },

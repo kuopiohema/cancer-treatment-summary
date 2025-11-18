@@ -1,20 +1,31 @@
-import { observable, override } from 'mobx'
+import { makeObservable, observable } from 'mobx'
 import { DateInputValue } from '../../types/dateInputValue'
 import type { TextListItem } from '../../utils/buildTextList.tsx'
 import { formatDate } from '../../utils/formatDate'
 import { Entity } from './entity'
 
 export class Diagnosis extends Entity {
-    @observable accessor date: DateInputValue = null
-    @observable accessor icd10 = ''
-    @observable accessor text = ''
-    @observable accessor detail = ''
-    @observable accessor stage = ''
-    @observable accessor spread = ''
+    date: DateInputValue = null
+    icd10 = ''
+    text = ''
+    detail = ''
+    stage = ''
+    spread = ''
+
+    constructor() {
+        super()
+        makeObservable(this, {
+            date: observable,
+            icd10: observable,
+            text: observable,
+            detail: observable,
+            stage: observable,
+            spread: observable
+        })
+    }
 
     itemName = 'diagnoosi'
 
-    @override
     override get heading() {
         let result = this.icd10
         if (result)
@@ -23,7 +34,6 @@ export class Diagnosis extends Entity {
         return result || '(Uusi diagnoosi)'
     }
 
-    @override
     override get content(): TextListItem[] {
         return [
             this.detail,

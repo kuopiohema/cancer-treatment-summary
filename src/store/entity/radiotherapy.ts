@@ -1,4 +1,4 @@
-import { observable, override } from 'mobx'
+import { makeObservable, observable } from 'mobx'
 import { DateInputValue } from '../../types/dateInputValue'
 import { NumberInputValue } from '../../types/numberInputValue'
 import type { TextListItem } from '../../utils/buildTextList.tsx'
@@ -6,23 +6,35 @@ import { formatDateRange } from '../../utils/formatDate'
 import { Entity } from './entity'
 
 export class Radiotherapy extends Entity {
-    @observable accessor startDate: DateInputValue = null
-    @observable accessor endDate: DateInputValue = null
-    @observable accessor target = ''
-    @observable accessor mode = ''
-    @observable accessor singleDose: NumberInputValue = 0
-    @observable accessor totalDose: NumberInputValue = 0
-    @observable accessor fractions: NumberInputValue = 0
-    @observable accessor notes = ''
+    startDate: DateInputValue = null
+    endDate: DateInputValue = null
+    target = ''
+    mode = ''
+    singleDose: NumberInputValue = 0
+    totalDose: NumberInputValue = 0
+    fractions: NumberInputValue = 0
+    notes = ''
+
+    constructor() {
+        super()
+        makeObservable(this, {
+            startDate: observable,
+            endDate: observable,
+            target: observable,
+            mode: observable,
+            singleDose: observable,
+            totalDose: observable,
+            fractions: observable,
+            notes: observable
+        })
+    }
 
     itemName = 'sädehoitojakso'
 
-    @override
     override get heading() {
         return this.target || '(Uusi sädehoitojakso)'
     }
 
-    @override
     override get content(): TextListItem[] {
         return [
             formatDateRange(this.startDate, this.endDate),

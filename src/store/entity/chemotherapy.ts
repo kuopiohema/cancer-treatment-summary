@@ -1,4 +1,4 @@
-import { computed, observable, override } from 'mobx'
+import { computed, makeObservable, observable } from 'mobx'
 import { DateInputValue } from '../../types/dateInputValue'
 import type { TextListItem } from '../../utils/buildTextList.tsx'
 import { formatDateRange } from '../../utils/formatDate'
@@ -7,18 +7,27 @@ import { Drug } from './drug'
 import { Entity } from './entity'
 
 export class Chemotherapy extends Entity {
-    @observable accessor startDate: DateInputValue = null
-    @observable accessor endDate: DateInputValue = null
-    @observable accessor drugs: EntityList<Drug> = new EntityList<Drug>()
+    startDate: DateInputValue = null
+    endDate: DateInputValue = null
+    drugs: EntityList<Drug> = new EntityList<Drug>()
+
+    constructor() {
+        super()
+        makeObservable(this, {
+            startDate: observable,
+            endDate: observable,
+            drugs: observable,
+            doxoEquivalent: computed,
+            cycloEquivalent: computed
+        })
+    }
 
     itemName = 'kemoterapiajakso'
 
-    @override
     override get heading() {
         return formatDateRange(this.startDate, this.endDate)
     }
 
-    @override
     override get content(): TextListItem[] {
         return [
             `${this.drugs.entities.length} lääke${this.drugs.entities.length !== 1 ? 'ttä' : ''}`,
@@ -27,12 +36,10 @@ export class Chemotherapy extends Entity {
         ]
     }
 
-    @computed
     get doxoEquivalent() {
         return this.drugs.entities.reduce((value, drug) => value + drug.doxoEquivalent, 0)
     }
 
-    @computed
     get cycloEquivalent() {
         return this.drugs.entities.reduce((value, drug) => value + drug.cycloEquivalent, 0)
     }

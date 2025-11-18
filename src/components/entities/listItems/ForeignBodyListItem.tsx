@@ -1,12 +1,13 @@
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import { ForeignBody } from "../../../store/entity/foreignBody";
-import { EntityComponentProps } from "../entityComponentProps";
 import { Autocomplete, Group, Select } from "@mantine/core";
 import { use } from "react";
 import { StoreContext } from "../../../store/StoreContext";
+import { ListItemProps } from "./listItemProps";
 
-const ForeignBodyListItem = observer(({ data }: EntityComponentProps<ForeignBody>) => {
+const ForeignBodyListItem = observer(({ entity }: ListItemProps<ForeignBody>) => {
     const store = use(StoreContext)
+    
     return (
         <>
             <Group
@@ -15,14 +16,14 @@ const ForeignBodyListItem = observer(({ data }: EntityComponentProps<ForeignBody
                 align="flex-start"
             >
                 <Autocomplete
-                    value={data.type}
-                    onChange={value => data.setType(value)}
+                    value={entity.type}
+                    onChange={value => { entity.type = value }}
                     label="Vierasesine"
                     data={store.data.foreignBodyTypeOptions}
                 />
                 <Select
-                    value={data.removal}
-                    onChange={value => data.setRemoval(value)}
+                    value={entity.removal}
+                    onChange={value => { entity.removal = value }}
                     label="Poisto"
                     data={store.data.foreignBodyRemovalOptions}
                 />

@@ -1,6 +1,6 @@
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import { CellTherapy } from "../../../store/entity/cellTherapy";
-import { EntityComponentProps } from "../entityComponentProps";
+import { EntityPageProps } from "./entityPageProps";
 import { DateInput } from "@mantine/dates";
 import { Autocomplete, Fieldset, Group, NumberInput, Select, Switch, Text, TextInput } from "@mantine/core";
 import ChildList from "../../entityLists/ChildList";
@@ -10,72 +10,72 @@ import { use } from "react";
 import { StoreContext } from "../../../store/StoreContext";
 import { sexOptions } from "../../../options/sex";
 
-const CellTherapyPage = observer(({ data }: EntityComponentProps<CellTherapy>) => {
+const CellTherapyPage = observer(({ entity }: EntityPageProps<CellTherapy>) => {
     const store = use(StoreContext)
 
     return (
         <>
             <Fieldset legend="Hoidon perustiedot">
                 <Autocomplete
-                    value={data.type}
-                    onChange={value => data.setType(value)}
+                    value={entity.type}
+                    onChange={value => { entity.type = value }}
                     label="Hoitomuoto"
                     data={store.data.cellTherapyTypeOptions}
                 />
                 <Select
-                    value={data.origin}
-                    onChange={value => data.setOrigin(value)}
+                    value={entity.origin}
+                    onChange={value => { entity.origin = value }}
                     label="Solujen alkuperä"
                     data={store.data.cellOriginOptions}
                     flex="none"
                 />
                 <Autocomplete
-                    value={data.carTarget}
-                    onChange={value => data.setCarTarget(value)}
+                    value={entity.carTarget}
+                    onChange={value => { entity.carTarget = value }}
                     label="CAR-solujen kohde"
                     data={store.data.carTargetOptions}
                 />
                 <DateInput
-                    value={data.date}
-                    onChange={value => data.setDate(value)}
+                    value={entity.date}
+                    onChange={value => { entity.date = value }}
                     label="Siirtopäivä"
                 />
                 <TextInput
-                    value={data.conditioning}
-                    onChange={e => data.setConditioning(e.target.value)}
+                    value={entity.conditioning}
+                    onChange={e => { entity.conditioning = e.target.value }}
                     label="Esihoito"
                     placeholder="Esim. 'Busulfaani-syklofosfamidi-melfalaani'"
                 />
             </Fieldset>
             <Fieldset legend="Luovuttajan tiedot (allogeeninen kantasolusiirto)">
                 <Select
-                    value={data.donor}
-                    onChange={value => data.setDonor(value)}
+                    value={entity.donor}
+                    onChange={value => { entity.donor = value }}
                     label="Luovuttaja"
                     data={store.data.cellDonorOptions}
                 />
                 <Select
-                    value={data.donorSex}
-                    onChange={value => data.setDonorSex(value)}
+                    value={entity.donorSex}
+                    onChange={value => { entity.donorSex = value }}
                     label="Sukupuoli"
                     data={sexOptions}
                 />
                 <Select
-                    value={data.hlaMatch}
-                    onChange={value => data.setHlaMatch(value)}
+                    value={entity.hlaMatch}
+                    onChange={value => { entity.hlaMatch = value }}
                     label="HLA-sopivuus"
                     data={store.data.hlaMatchOptions}
                 />
                 <Select
-                    value={data.donorBloodGroup}
-                    onChange={value => data.setDonorBloodGroup(value)}
+                    value={entity.donorBloodGroup}
+                    onChange={value => { entity.donorBloodGroup = value }}
                     label="Veriryhmä"
                     data={store.data.bloodGroupOptions}
                 />
             </Fieldset>
             <ChildList
-                entityList={data.drugs}
-                entityFactory={() => new Drug({})}
+                entityList={entity.drugs}
+                entityFactory={() => new Drug()}
                 title="Esihoidon lääkkeet"
                 emptyText="Ei lääkkeitä"
                 addButtonText="Lisää lääke"
@@ -83,56 +83,56 @@ const CellTherapyPage = observer(({ data }: EntityComponentProps<CellTherapy>) =
             />
             <Fieldset legend="Koko kehon sädehoito (TBI)">
                 <Switch
-                    checked={data.tbi}
-                    onChange={e => data.setTbi(e.target.checked)}
+                    checked={entity.tbi}
+                    onChange={e => { entity.tbi = e.target.checked }}
                     label="Annettu"
                 />
                 <NumberInput
-                    value={data.tbiDoseBody}
-                    onChange={value => data.setTbiDoseBody(value)}
+                    value={entity.tbiDoseBody}
+                    onChange={value => { entity.tbiDoseBody = value }}
                     label="Annos (vartalo)"
                     rightSection={<Text pr="sm">Gy</Text>}
                     w={200}
                     flex="none"
-                    disabled={!data.tbi}
+                    disabled={!entity.tbi}
                 />
                 <NumberInput
-                    value={data.tbiDoseLungs}
-                    onChange={value => data.setTbiDoseLungs(value)}
+                    value={entity.tbiDoseLungs}
+                    onChange={value => { entity.tbiDoseLungs = value }}
                     label="Annos (keuhkot)"
                     rightSection={<Text pr="sm">Gy</Text>}
                     w={200}
                     flex="none"
-                    disabled={!data.tbi}
+                    disabled={!entity.tbi}
                 />
             </Fieldset>
             <Fieldset legend="Luovuttajan lymfosyytti-infuusiohoito (DLI)">
                 <Switch
-                    checked={data.dli}
-                    onChange={e => data.setDli(e.target.checked)}
+                    checked={entity.dli}
+                    onChange={e => { entity.dli = e.target.checked }}
                     label="Annettu"
                 />
                 <Group>
                     <DateInput
-                        value={data.dliStartDate}
-                        onChange={value => data.setDliStartDate(value)}
+                        value={entity.dliStartDate}
+                        onChange={value => { entity.dliStartDate = value }}
                         label="Aloituspäivä"
-                        disabled={!data.dli}
+                        disabled={!entity.dli}
                     />
                     <DateInput
-                        value={data.dliEndDate}
-                        onChange={value => data.setDliEndDate(value)}
+                        value={entity.dliEndDate}
+                        onChange={value => { entity.dliEndDate = value }}
                         label="Lopetuspäivä"
-                        disabled={!data.dli}
+                        disabled={!entity.dli}
                     />
                     <NumberInput
-                        value={data.dliDoses}
-                        onChange={value => data.setDliDoses(value)}
+                        value={entity.dliDoses}
+                        onChange={value => { entity.dliDoses = value }}
                         label="Annokset"
                         allowDecimal={false}
                         w={100}
                         flex="none"
-                        disabled={!data.dli}
+                        disabled={!entity.dli}
                     />
                 </Group>
             </Fieldset>

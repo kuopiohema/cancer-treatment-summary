@@ -1,12 +1,12 @@
 import {Button, Divider, Grid, Group, Text, Textarea, Title} from '@mantine/core'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import { use, useMemo } from 'react'
 import { Followup as FollowupData } from '../../store/followup'
 import { StoreContext } from '../../store/StoreContext'
-import { EntityComponentProps } from '../entities/entityComponentProps'
-import EntityPage from '../entityLists/EntityPage'
+import { EntityPageProps } from '../entities/pages/entityPageProps'
+import EntityPageWrapper from '../entityLists/EntityPageWrapper'
 
-const FollowupPage = observer(({ data }: EntityComponentProps<FollowupData>) => {
+const FollowupPage = observer(({ entity: data }: EntityPageProps<FollowupData>) => {
     const store = use(StoreContext)
 
     const defaults = useMemo(() => store.data.followupDefaults, [store.data.followupDefaults])
@@ -16,7 +16,7 @@ const FollowupPage = observer(({ data }: EntityComponentProps<FollowupData>) => 
         if (newText)
             newText = newText.concat('\n')
         newText = newText.concat(value)
-        data.setGeneral(newText)
+        data.general = newText
     }
 
     const handleAddToVaccination = (value: string) => {
@@ -24,19 +24,19 @@ const FollowupPage = observer(({ data }: EntityComponentProps<FollowupData>) => 
         if (newText)
             newText = newText.concat('\n')
         newText = newText.concat(value)
-        data.setVaccination(newText)
+        data.vaccination = newText
     }
 
     return <>
         <Textarea
             value={data.general}
-            onChange={e => data.setGeneral(e.target.value)}
+            onChange={e => { data.general = e.target.value }}
             label="Yleisohjeet"
             minRows={3}
         />
         <Textarea
             value={data.vaccination}
-            onChange={e => data.setVaccination(e.target.value)}
+            onChange={e => { data.vaccination = e.target.value }}
             label="Rokotusohjeet"
             minRows={3}
         />
@@ -102,7 +102,7 @@ const FollowupPage = observer(({ data }: EntityComponentProps<FollowupData>) => 
     </>
 })
 
-const Followup = () => {
+const Followup = observer(() => {
     const store = use(StoreContext)
     return (
         <>
@@ -110,9 +110,9 @@ const Followup = () => {
             <Text mb="xl">
                 Syötä tälle sivulle yleiset seurantaohjeet sekä rokotusohjeet. Käytä halutessasi vakiotekstejä ja täydennä vapaalla tekstillä tarpeen mukaan.
             </Text>
-            <EntityPage entity={store.form.followup} InnerComponent={FollowupPage} />
+            <EntityPageWrapper entity={store.form.followup} InnerComponent={FollowupPage} />
         </>
     )
-}
+})
 
 export default Followup

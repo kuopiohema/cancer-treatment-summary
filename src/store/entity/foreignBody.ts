@@ -1,10 +1,18 @@
-import { observable } from 'mobx'
+import { makeObservable, observable } from 'mobx'
 import { Entity } from "./entity";
 import { SelectValue } from "../../types/selectValue";
 
 export class ForeignBody extends Entity {
-    @observable accessor type = ''
-    @observable accessor removal: SelectValue = null
+    type = ''
+    removal: SelectValue = null
+
+    constructor() {
+        super()
+        makeObservable(this, {
+            type: observable,
+            removal: observable
+        })
+    }
 
     itemName = 'vierasesine'
 }

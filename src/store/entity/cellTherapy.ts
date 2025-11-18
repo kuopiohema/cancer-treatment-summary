@@ -1,4 +1,4 @@
-import { computed, observable, override } from 'mobx'
+import { computed, makeObservable, observable } from 'mobx'
 import { DateInputValue } from '../../types/dateInputValue'
 import { NumberInputValue } from '../../types/numberInputValue'
 import { SelectValue } from '../../types/selectValue'
@@ -10,32 +10,55 @@ import { Drug } from './drug'
 import { Entity } from './entity'
 
 export class CellTherapy extends Entity {
-    @observable accessor date: DateInputValue = null
-    @observable accessor origin: SelectValue = null
-    @observable accessor type = ''
-    @observable accessor carTarget = ''
-    @observable accessor donor: SelectValue = null
-    @observable accessor donorSex: SelectValue = null
-    @observable accessor hlaMatch: SelectValue = null
-    @observable accessor donorBloodGroup: SelectValue = null
-    @observable accessor conditioning = ''
-    @observable accessor drugs: EntityList<Drug> = new EntityList<Drug>()
-    @observable accessor tbi = false
-    @observable accessor tbiDoseBody: NumberInputValue = 0
-    @observable accessor tbiDoseLungs: NumberInputValue = 0
-    @observable accessor dli = false
-    @observable accessor dliStartDate: DateInputValue = null
-    @observable accessor dliEndDate: DateInputValue = null
-    @observable accessor dliDoses: NumberInputValue = 0
+    date: DateInputValue = null
+    origin: SelectValue = null
+    type = ''
+    carTarget = ''
+    donor: SelectValue = null
+    donorSex: SelectValue = null
+    hlaMatch: SelectValue = null
+    donorBloodGroup: SelectValue = null
+    conditioning = ''
+    drugs: EntityList<Drug> = new EntityList<Drug>()
+    tbi = false
+    tbiDoseBody: NumberInputValue = 0
+    tbiDoseLungs: NumberInputValue = 0
+    dli = false
+    dliStartDate: DateInputValue = null
+    dliEndDate: DateInputValue = null
+    dliDoses: NumberInputValue = 0
+
+    constructor() {
+        super()
+        makeObservable(this, {
+            date: observable,
+            origin: observable,
+            type: observable,
+            carTarget: observable,
+            donor: observable,
+            donorSex: observable,
+            hlaMatch: observable,
+            donorBloodGroup: observable,
+            conditioning: observable,
+            drugs: observable,
+            tbi: observable,
+            tbiDoseBody: observable,
+            tbiDoseLungs: observable,
+            dli: observable,
+            dliStartDate: observable,
+            dliEndDate: observable,
+            dliDoses: observable,
+            doxoEquivalent: computed,
+            cycloEquivalent: computed
+        })
+    }
 
     itemName = 'soluhoito'
 
-    @override
     override get heading() {
         return this.type || '(Uusi soluhoito)'
     }
 
-    @override
     override get content(): TextListItem[] {
         return [
             this.origin ? `${this.origin} siirto` : '',
@@ -56,12 +79,10 @@ export class CellTherapy extends Entity {
         ]
     }
 
-    @computed
     get doxoEquivalent() {
         return this.drugs.entities.reduce((value, drug) => value + drug.doxoEquivalent, 0)
     }
 
-    @computed
     get cycloEquivalent() {
         return this.drugs.entities.reduce((value, drug) => value + drug.cycloEquivalent, 0)
     }

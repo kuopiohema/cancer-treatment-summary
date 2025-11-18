@@ -1,4 +1,4 @@
-import { observable, runInAction } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { fetchJson } from "../utils/fetchJson";
 import { showNotification } from '../utils/showNotification.tsx'
 import { withUnknown } from "../utils/withUnknown";
@@ -7,27 +7,31 @@ import { getEmptyFollowupDefaults, FollowupDefaults } from "./dataInterfaces/fol
 import { getEmptySignatureDefaults, SignatureDefaults } from "./dataInterfaces/signatureDefaults";
 
 export class Data {
-    @observable accessor doxoEquivalents: DrugEquivalenceList = getEmptyDrugEquivalenceList()
-    @observable accessor cycloEquivalents: DrugEquivalenceList = getEmptyDrugEquivalenceList()
-    @observable accessor followupDefaults: FollowupDefaults = getEmptyFollowupDefaults()
-    @observable accessor signatureDefaults: SignatureDefaults = getEmptySignatureDefaults()
+    doxoEquivalents: DrugEquivalenceList = getEmptyDrugEquivalenceList()
+    cycloEquivalents: DrugEquivalenceList = getEmptyDrugEquivalenceList()
+    followupDefaults: FollowupDefaults = getEmptyFollowupDefaults()
+    signatureDefaults: SignatureDefaults = getEmptySignatureDefaults()
 
     // SELECT OPTIONS
-    @observable accessor treatmentStopReasonOptions: string[] = []
-    @observable accessor doseFormulaOptions: string[] = []
-    @observable accessor radiotherapyModeOptions: string[] = []
+    treatmentStopReasonOptions: string[] = []
+    doseFormulaOptions: string[] = []
+    radiotherapyModeOptions: string[] = []
 
-    @observable accessor cellOriginOptions: string[] = []
-    @observable accessor cellTherapyTypeOptions: string[] = []
-    @observable accessor carTargetOptions: string[] = []
-    @observable accessor cellDonorOptions: string[] = []
-    @observable accessor hlaMatchOptions: string[] = []
-    @observable accessor bloodGroupOptions: string[] = []
+    cellOriginOptions: string[] = []
+    cellTherapyTypeOptions: string[] = []
+    carTargetOptions: string[] = []
+    cellDonorOptions: string[] = []
+    hlaMatchOptions: string[] = []
+    bloodGroupOptions: string[] = []
 
-    @observable accessor foreignBodyTypeOptions: string[] = []
-    @observable accessor foreignBodyRemovalOptions: string[] = []
+    foreignBodyTypeOptions: string[] = []
+    foreignBodyRemovalOptions: string[] = []
 
-    @observable accessor organSystemOptions: string[] = []
+    organSystemOptions: string[] = []
+
+    constructor() {
+        makeAutoObservable(this)
+    }
 
     async fetchData() {
         try {

@@ -1,60 +1,60 @@
 import { Autocomplete, Group, NumberInput, Text, Textarea, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import { use } from "react";
 import { Radiotherapy } from "../../../store/entity/radiotherapy";
 import { StoreContext } from "../../../store/StoreContext";
-import { EntityComponentProps } from "../entityComponentProps";
+import { EntityPageProps } from "./entityPageProps";
 
-const RadiotherapyPage = observer(({ data }: EntityComponentProps<Radiotherapy>) => {
+const RadiotherapyPage = observer(({ entity }: EntityPageProps<Radiotherapy>) => {
     const store = use(StoreContext)
 
     return (
         <>
             <Group>
                 <DateInput
-                    value={data.startDate}
-                    onChange={value => data.setStartDate(value)}
+                    value={entity.startDate}
+                    onChange={value => { entity.startDate = value }}
                     label="Aloituspäivä"
                 />
                 <DateInput
-                    value={data.endDate}
-                    onChange={value => data.setEndDate(value)}
+                    value={entity.endDate}
+                    onChange={value => { entity.endDate = value }}
                     label="Lopetuspäivä"
                 />
             </Group>
             <TextInput
-                value={data.target}
-                onChange={e => data.setTarget(e.target.value)}
+                value={entity.target}
+                onChange={e => { entity.target = e.target.value }}
                 label="Kohteet"
                 placeholder="Esim. 'Oikea lisämunuainen, maksa'"
             />
             <Autocomplete
-                value={data.mode}
-                onChange={value => data.setMode(value)}
+                value={entity.mode}
+                onChange={value => { entity.mode = value }}
                 label="Hoitomuoto"
                 data={store.data.radiotherapyModeOptions}
             />
             <Group>
                 <NumberInput
-                    value={data.fractions}
-                    onChange={value => data.setFractions(value)}
+                    value={entity.fractions}
+                    onChange={value => { entity.fractions = value }}
                     label="Fraktiot"
                     allowDecimal={false}
                     w={100}
                     flex="none"
                 />
                 <NumberInput
-                    value={data.singleDose}
-                    onChange={value => data.setSingleDose(value)}
+                    value={entity.singleDose}
+                    onChange={value => { entity.singleDose = value }}
                     label="Kerta-annos"
                     rightSection={<Text pr="sm">Gy</Text>}
                     w={100}
                     flex="none"
                 />
                 <NumberInput
-                    value={data.totalDose}
-                    onChange={value => data.setTotalDose(value)}
+                    value={entity.totalDose}
+                    onChange={value => { entity.totalDose = value }}
                     label="Kokonaisannos"
                     rightSection={<Text pr="sm">Gy</Text>}
                     w={100}
@@ -62,8 +62,8 @@ const RadiotherapyPage = observer(({ data }: EntityComponentProps<Radiotherapy>)
                 />
             </Group>
             <Textarea
-                value={data.notes}
-                onChange={e => data.setNotes(e.target.value)}
+                value={entity.notes}
+                onChange={e => { entity.notes = e.target.value }}
                 label="Lisätiedot"
                 placeholder="Keskeytys, haittavaikutukset yms."
             />

@@ -14,7 +14,7 @@ import DiagnosisPage from "./entities/pages/DiagnosisPage"
 import ProcedurePage from "./entities/pages/ProcedurePage"
 import RadiotherapyPage from "./entities/pages/RadiotherapyPage"
 import TreatmentPage from "./entities/pages/TreatmentPage"
-import EntityPage from "./entityLists/EntityPage"
+import EntityPageWrapper from "./entityLists/EntityPageWrapper"
 import AdverseEffects from "./pages/AdverseEffects"
 import ErrorPage from "./pages/ErrorPage"
 import Followup from "./pages/Followup"
@@ -24,17 +24,17 @@ import Help from "./pages/Help"
 
 const getEntityPage = (entity: Entity | null): JSX.Element => {
     if (entity instanceof Diagnosis)
-        return <EntityPage entity={entity} InnerComponent={DiagnosisPage} key={entity.id} />
+        return <EntityPageWrapper entity={entity} InnerComponent={DiagnosisPage} key={entity.id} />
     if (entity instanceof Treatment)
-        return <EntityPage entity={entity} InnerComponent={TreatmentPage} key={entity.id} />
+        return <EntityPageWrapper entity={entity} InnerComponent={TreatmentPage} key={entity.id} />
     if (entity instanceof Chemotherapy)
-        return <EntityPage entity={entity} InnerComponent={ChemotherapyPage} key={entity.id} />
+        return <EntityPageWrapper entity={entity} InnerComponent={ChemotherapyPage} key={entity.id} />
     if (entity instanceof Radiotherapy)
-        return <EntityPage entity={entity} InnerComponent={RadiotherapyPage} key={entity.id} />
+        return <EntityPageWrapper entity={entity} InnerComponent={RadiotherapyPage} key={entity.id} />
     if (entity instanceof Procedure)
-        return <EntityPage entity={entity} InnerComponent={ProcedurePage} key={entity.id} />
+        return <EntityPageWrapper entity={entity} InnerComponent={ProcedurePage} key={entity.id} />
     if (entity instanceof CellTherapy)
-        return <EntityPage entity={entity} InnerComponent={CellTherapyPage} key={entity.id} />
+        return <EntityPageWrapper entity={entity} InnerComponent={CellTherapyPage} key={entity.id} />
     return <ErrorPage error={"Kohdetta ei löydy!"} />
 }
 

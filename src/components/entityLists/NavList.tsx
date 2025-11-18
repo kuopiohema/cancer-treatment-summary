@@ -1,7 +1,7 @@
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { ActionIcon, Divider, Group, Stack, Text, Tooltip } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import { Entity } from "../../store/entity/entity";
 import { EntityList } from "../../store/entityList";
 import { buildTextList } from '../../utils/buildTextList.tsx'
@@ -32,7 +32,7 @@ const NavListInner = observer(<E extends Entity>({ entityList, emptyText, onRemo
         ))
 ))
 
-const NavList = observer(<E extends Entity>({ entityList, entityFactory, title, emptyText, addButtonText }: EntityListProps<E>) => {
+const NavList = <E extends Entity>({ entityList, entityFactory, title, emptyText, addButtonText }: EntityListProps<E>) => {
     const handleAdd = () => entityList.add(entityFactory())
     const handleSwap = (destinationIndex: number, sourceIndex: number) => { entityList.swap(destinationIndex, sourceIndex) }
     const handleRemove = (id: string) => entityList.remove(id)
@@ -83,6 +83,6 @@ const NavList = observer(<E extends Entity>({ entityList, entityFactory, title, 
             </DragDropContext>
         </>
     )
-})
+}
 
 export default NavList

@@ -1,20 +1,28 @@
 import { Entity } from "./entity/entity";
-import { action, computed, observable } from 'mobx'
+import { action, computed, makeObservable, observable } from 'mobx'
 
 export class EntityList<E extends Entity> {
-    @observable accessor entities: E[] = []
+    entities: E[] = []
 
-    @action
+    constructor() {
+        makeObservable(this, {
+            entities: observable,
+            add: action,
+            swap: action,
+            remove: action,
+            clear: action,
+            entityCount: computed
+        })
+    }
+
     add(entity: E) {
         this.entities.push(entity)
     }
 
-    @action
     swap(firstIndex: number, secondIndex: number) {
         [this.entities[firstIndex], this.entities[secondIndex]] = [this.entities[secondIndex], this.entities[firstIndex]]
     }
 
-    @action
     remove(id: string) {
         const index = this.entities.findIndex(item => item.id === id)
         if (index === -1)
@@ -22,12 +30,10 @@ export class EntityList<E extends Entity> {
         this.entities.splice(index, 1)
     }
 
-    @action
     clear() {
         this.entities = []
     }
 
-    @computed
     get entityCount() {
         return this.entities.length
     }

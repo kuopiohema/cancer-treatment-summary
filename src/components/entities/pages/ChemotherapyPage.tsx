@@ -1,16 +1,16 @@
 import { Divider, Group, List, Text } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
-import { observer } from "mobx-react"
+import { observer } from "mobx-react-lite"
 import { Chemotherapy } from "../../../store/entity/chemotherapy"
 import { Drug } from "../../../store/entity/drug"
 import ChildList from "../../entityLists/ChildList"
 import DrugListItem from "../listItems/DrugListItem"
-import { EntityComponentProps } from "../entityComponentProps"
+import { EntityPageProps } from "./entityPageProps"
 import { firstLetterUppercase } from "../../../utils/firstLetterUppercase"
 import { use, useState } from "react"
 import { StoreContext } from "../../../store/StoreContext"
 
-const ChemotherapyPage = observer(({ data }: EntityComponentProps<Chemotherapy>) => {
+const ChemotherapyPage = observer(({ entity }: EntityPageProps<Chemotherapy>) => {
     const store = use(StoreContext)
     const [doxoEquivalents] = useState(store.data.doxoEquivalents)
     //const [cycloEquivalents] = useState(store.data.cycloEquivalents)
@@ -18,26 +18,26 @@ const ChemotherapyPage = observer(({ data }: EntityComponentProps<Chemotherapy>)
         <>
             <Group>
                 <DateInput
-                    value={data.startDate}
-                    onChange={value => data.setStartDate(value)}
+                    value={entity.startDate}
+                    onChange={value => { entity.startDate = value }}
                     label="Aloituspäivä"
                 />
                 <DateInput
-                    value={data.endDate}
-                    onChange={value => data.setEndDate(value)}
+                    value={entity.endDate}
+                    onChange={value => { entity.endDate = value }}
                     label="Lopetuspäivä"
                 />
             </Group>
             <ChildList
-                entityList={data.drugs}
-                entityFactory={() => new Drug({})}
+                entityList={entity.drugs}
+                entityFactory={() => new Drug()}
                 title="Lääkkeet"
                 emptyText="Ei lääkkeitä"
                 addButtonText="Lisää lääke"
                 ListItemComponent={DrugListItem}
             />
             <Divider orientation="horizontal" />
-            <Text>Kumulatiivinen antrasykliiniannos (doksorubisiiniekvivalentti) = {data.doxoEquivalent} mg/m²<br /></Text>
+            <Text>Kumulatiivinen antrasykliiniannos (doksorubisiiniekvivalentti) = {entity.doxoEquivalent} mg/m²<br /></Text>
             <Text size="xs">Käytetyt kertoimet:</Text>
             <List size="xs">
                 {doxoEquivalents.drugs.map(item => (

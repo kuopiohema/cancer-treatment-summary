@@ -1,4 +1,4 @@
-import { action, computed, observable } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 import { AdverseEffect } from './entity/adverseEffect'
 import { CellTherapy } from './entity/cellTherapy'
 import { Chemotherapy } from './entity/chemotherapy'
@@ -14,18 +14,21 @@ import { Signature } from './signature'
 import { nav } from './store.ts'
 
 export class FormStore {
-    @observable accessor diagnoses = new NavEntityList<Diagnosis>()
-    @observable accessor treatments = new NavEntityList<Treatment>()
-    @observable accessor chemotherapies = new NavEntityList<Chemotherapy>()
-    @observable accessor radiotherapies = new NavEntityList<Radiotherapy>()
-    @observable accessor procedures = new NavEntityList<Procedure>()
-    @observable accessor cellTherapies = new NavEntityList<CellTherapy>()
-    @observable accessor foreignBodies = new NavEntityList<ForeignBody>()
-    @observable accessor adverseEffects = new EntityList<AdverseEffect>()
-    @observable accessor followup = new Followup()
-    @observable accessor signature = new Signature()
+    diagnoses = new NavEntityList<Diagnosis>()
+    treatments = new NavEntityList<Treatment>()
+    chemotherapies = new NavEntityList<Chemotherapy>()
+    radiotherapies = new NavEntityList<Radiotherapy>()
+    procedures = new NavEntityList<Procedure>()
+    cellTherapies = new NavEntityList<CellTherapy>()
+    foreignBodies = new NavEntityList<ForeignBody>()
+    adverseEffects = new EntityList<AdverseEffect>()
+    followup = new Followup()
+    signature = new Signature()
 
-    @action
+    constructor() {
+        makeAutoObservable(this)
+    }
+
     clear() {
         this.diagnoses.clear()
         this.treatments.clear()
@@ -41,7 +44,6 @@ export class FormStore {
         nav.reset()
     }
 
-    @action
     load(data: FormStore) {
         this.diagnoses = data.diagnoses
         this.treatments = data.treatments
@@ -57,8 +59,9 @@ export class FormStore {
         nav.reset()
     }
 
-    @computed
-    get asPlainObject() {
-        return { diagnoses: [] }
+    toJSON() {
+        return {
+            diagnoses: 'diag'
+        }
     }
 }

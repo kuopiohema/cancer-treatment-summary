@@ -1,12 +1,13 @@
-import { observer } from "mobx-react";
-import { AdverseEffect } from "../../../store/entity/adverseEffect";
-import { EntityComponentProps } from "../entityComponentProps";
-import { StoreContext } from "../../../store/StoreContext";
-import { use } from "react";
-import { Autocomplete, Group, Textarea } from "@mantine/core";
+import { observer } from "mobx-react-lite"
+import { AdverseEffect } from "../../../store/entity/adverseEffect"
+import { StoreContext } from "../../../store/StoreContext"
+import { use } from "react"
+import { Autocomplete, Group, Textarea } from "@mantine/core"
+import { ListItemProps } from "./listItemProps"
 
-const AdverseEffectListItem = observer(({ data }: EntityComponentProps<AdverseEffect>) => {
+const AdverseEffectListItem = observer(({ entity }: ListItemProps<AdverseEffect>) => {
     const store = use(StoreContext)
+
     return (
         <>
             <Group
@@ -15,16 +16,16 @@ const AdverseEffectListItem = observer(({ data }: EntityComponentProps<AdverseEf
                 align="flex-start"
             >
                 <Autocomplete
-                    value={data.organSystem}
-                    onChange={value => data.setOrganSystem(value)}
+                    value={entity.organSystem}
+                    onChange={value => { entity.organSystem = value }}
                     label="Elinjärjestelmä"
                     data={store.data.organSystemOptions}
                     w={300}
                     flex="none"
                 />
                 <Textarea
-                    value={data.description}
-                    onChange={e => data.setDescription(e.target.value)}
+                    value={entity.description}
+                    onChange={e => { entity.description = e.target.value }}
                     label="Kuvaus"
                 />
             </Group>

@@ -1,15 +1,30 @@
-import { action, observable } from 'mobx'
+import { action, makeObservable, observable } from "mobx";
 import { rejectChangesConfirmModal } from "../modals/rejectChangesConfirmModal";
 import { Entity } from "./entity/entity";
 
 export type Page = 'help' | 'entity' | 'foreignBodies' | 'adverseEffects' | 'followup' | 'signature'
 
 export class NavStore {
-    @observable accessor page: Page = 'help'
-    @observable accessor selectedEntity: Entity | null = null
-    @observable accessor pageIsDirty = false
+    page: Page = 'help'
+    selectedEntity: Entity | null = null
+    pageIsDirty = false
 
-    @action
+    constructor() {
+        makeObservable(this, {
+            page: observable,
+            selectedEntity: observable,
+            pageIsDirty: observable,
+            setPageIsDirty: action,
+            navigate: action,
+            tryNavigate: action,
+            selectPage: action,
+            selectEntity: action,
+            reset: action
+        })
+    }
+
+    setPageIsDirty(value: boolean) { this.pageIsDirty = value }
+
     navigate(page: Page, entity?: Entity) {
         this.page = page
         if (page !== 'entity' || !entity)
@@ -18,7 +33,6 @@ export class NavStore {
             this.selectedEntity = entity
     }
 
-    @action
     tryNavigate(page: Page, entity?: Entity) {
         const action = () => this.navigate(page, entity)
         if (!this.pageIsDirty)
@@ -27,17 +41,14 @@ export class NavStore {
             rejectChangesConfirmModal(action)
     }
 
-    @action
     selectPage(page: Page) {
         this.tryNavigate(page)
     }
 
-    @action
     selectEntity(entity: Entity) {
         this.tryNavigate('entity', entity)
     }
 
-    @action
     reset() {
         this.page = 'help'
         this.selectedEntity = null

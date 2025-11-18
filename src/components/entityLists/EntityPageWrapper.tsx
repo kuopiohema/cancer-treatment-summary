@@ -1,33 +1,39 @@
 import { Affix, Button, Group, Stack } from "@mantine/core"
 import { IconArrowBackUp, IconCheck } from "@tabler/icons-react"
-import { draft, isTreeNode } from "mobx-keystone"
-import { observer } from "mobx-react"
+import { observer } from "mobx-react-lite"
 import { ComponentType, use, useEffect, useMemo } from "react"
 import { StoreContext } from "../../store/StoreContext"
-import { EntityComponentProps } from "../entities/entityComponentProps"
+import { EntityPageProps } from "../entities/pages/entityPageProps"
+import { autorun, isObservable, runInAction } from "mobx"
+import { createViewModel } from "mobx-utils"
 
-interface EntityPageProps<E> {
+interface EntityPageWrapperProps<E> {
     entity: E
-    InnerComponent: ComponentType<EntityComponentProps<E>>
+    InnerComponent: ComponentType<EntityPageProps<E>>
 }
 
-const EntityPage = observer(<E extends object>({ entity, InnerComponent }: EntityPageProps<E>) => {  
-    const store = use(StoreContext)
-    if (!isTreeNode(entity))
+const EntityPageWrapper = observer(<E extends object>({ entity, InnerComponent }: EntityPageWrapperProps<E>) => {  
+    const { nav } = use(StoreContext)
+    if (!isObservable(entity))
         throw new Error('Invalid entity object')
     
-    const entityDraft = useMemo(() => draft(entity), [entity])
-    useEffect(() => store.nav.setPageIsDirty(entityDraft.isDirty), [store.nav, entityDraft.isDirty])
+    const entityViewModel = useMemo(() => runInAction(() => createViewModel(entity)), [entity])
+    
+    useEffect(() => {
+        autorun(() => {
+            nav.setPageIsDirty(entityViewModel.isDirty)
+        })
+    }, [nav, entityViewModel.isDirty])
 
-    const handleConfirm = () => entityDraft.commit()
-    const handleAbort = () => entityDraft.reset()
+    const handleConfirm = () => entityViewModel.submit()
+    const handleAbort = () => entityViewModel.reset()
 
-    const buttonsDisabled = !entityDraft.isDirty
+    const buttonsDisabled = !entityViewModel.isDirty
 
     return (
         <>
             <Stack gap="sm">
-                <InnerComponent data={entityDraft.data} />
+                <InnerComponent entity={entityViewModel} />
             </Stack>
             <Affix position={{bottom: 10, right: 20}}>
                 <Group>
@@ -53,4 +59,4 @@ const EntityPage = observer(<E extends object>({ entity, InnerComponent }: Entit
     )
 })
 
-export default EntityPage
+export default EntityPageWrapper

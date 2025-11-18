@@ -14,7 +14,6 @@ import {
 import { useDisclosure, useFileDialog } from '@mantine/hooks'
 import { modals } from '@mantine/modals'
 import { IconDeviceFloppy, IconFile, IconFolderOpen, IconMoon, IconQuestionMark, IconSun } from '@tabler/icons-react'
-import { observer } from 'mobx-react-lite'
 import { use } from 'react'
 import Navbar from './components/Navbar.tsx'
 import PageDisplay from './components/PageDisplay.tsx'
@@ -23,7 +22,7 @@ import { StoreContext } from './store/StoreContext.ts'
 import { exportFile } from './utils/exportFile.ts'
 import { showNotification } from './utils/showNotification.tsx'
 
-const App = observer(() => {
+const App = (() => {
     const { setColorScheme } = useMantineColorScheme()
     const computedColorScheme = useComputedColorScheme('light')
     const toggleColorScheme = () => {
@@ -52,7 +51,7 @@ const App = observer(() => {
     })
 
     const handleSave = () => {
-        const data = JSON.stringify(form.asPlainObject, null, 2)
+        const data = JSON.stringify(form, null, 2)
         const status = exportFile('yhteenveto.json', data, 'application/json;charset=utf-8')
         if (status instanceof Error) {
             showNotification(

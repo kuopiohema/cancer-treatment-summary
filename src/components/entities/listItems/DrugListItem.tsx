@@ -1,11 +1,11 @@
-import { observer } from "mobx-react"
+import { observer } from "mobx-react-lite"
 import { Drug } from "../../../store/entity/drug"
-import { EntityComponentProps } from "../entityComponentProps"
 import { Group, NumberInput, Select, Text, Textarea, TextInput } from "@mantine/core"
 import { use } from "react"
 import { StoreContext } from "../../../store/StoreContext"
+import { ListItemProps } from "./listItemProps"
 
-const DrugListItem = observer(({ data }: EntityComponentProps<Drug>) => {
+const DrugListItem = observer(({ entity }: ListItemProps<Drug>) => {
     const store = use(StoreContext)
     
     return (
@@ -16,23 +16,23 @@ const DrugListItem = observer(({ data }: EntityComponentProps<Drug>) => {
                 align="flex-start"
             >
                 <TextInput
-                    value={data.drug}
-                    onChange={e => data.setDrug(e.target.value)}
+                    value={entity.drug}
+                    onChange={e => { entity.drug = e.target.value }}
                     label="Lääke"
                     placeholder="Lääkkeen nimi"
                     w={220}
                     flex="none"
                 />
                 <NumberInput
-                    value={data.dose}
-                    onChange={value => data.setDose(value)}
+                    value={entity.dose}
+                    onChange={value => { entity.dose = value }}
                     label="Annos"
                     w={80}
                     flex="none"
                 />
                 <Select
-                    value={data.doseFormula}
-                    onChange={value => data.setDoseFormula(value)}
+                    value={entity.doseFormula}
+                    onChange={value => { entity.doseFormula = value }}
                     label="Annoskaava"
                     data={store.data.doseFormulaOptions}
                     w={100}
@@ -41,15 +41,15 @@ const DrugListItem = observer(({ data }: EntityComponentProps<Drug>) => {
                     allowDeselect={false}
                 />
                 <Textarea
-                    value={data.notes}
-                    onChange={e => data.setNotes(e.target.value)}
+                    value={entity.notes}
+                    onChange={e => { entity.notes = e.target.value }}
                     label="Lisätiedot"
                     placeholder="Keskeytys, haittavaikutus jne."
                     minRows={1}
                 />
             </Group>
-            {data.doxoEquivalent > 0 && <Text size="sm">Doksorubisiiniekvivalentti: {data.doxoEquivalent} mg/m²</Text>}
-            {data.cycloEquivalent > 0 && <Text size="sm">Syklofosfamidiekvivalentti: {data.cycloEquivalent} mg/m²</Text>}
+            {entity.doxoEquivalent > 0 && <Text size="sm">Doksorubisiiniekvivalentti: {entity.doxoEquivalent} mg/m²</Text>}
+            {entity.cycloEquivalent > 0 && <Text size="sm">Syklofosfamidiekvivalentti: {entity.cycloEquivalent} mg/m²</Text>}
         </>
     )
 })

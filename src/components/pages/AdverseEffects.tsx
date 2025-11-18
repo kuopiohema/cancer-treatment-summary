@@ -1,15 +1,15 @@
 import {Title, Text} from '@mantine/core'
-import EntityPage from '../entityLists/EntityPage'
+import EntityPageWrapper from '../entityLists/EntityPageWrapper'
 import { use } from 'react'
 import { StoreContext } from '../../store/StoreContext'
-import { observer } from 'mobx-react-lite'
 import { EntityList } from '../../store/entityList'
 import { AdverseEffect } from '../../store/entity/adverseEffect'
-import { EntityComponentProps } from '../entities/entityComponentProps'
+import { EntityPageProps } from '../entities/pages/entityPageProps'
 import ChildList from '../entityLists/ChildList'
 import AdverseEffectListItem from '../entities/listItems/AdverseEffectListItem'
+import { observer } from 'mobx-react-lite'
 
-const AdverseEffectsPage = observer(({ data }: EntityComponentProps<EntityList<AdverseEffect>>) => {
+const AdverseEffectsPage = ({ entity: data }: EntityPageProps<EntityList<AdverseEffect>>) => {
     return <ChildList
         entityList={data}
         entityFactory={() => new AdverseEffect()}
@@ -18,9 +18,9 @@ const AdverseEffectsPage = observer(({ data }: EntityComponentProps<EntityList<A
         addButtonText="Lisää haittavaikutus"
         ListItemComponent={AdverseEffectListItem}
     />
-})
+}
 
-const AdverseEffects = () => {
+const AdverseEffects = observer(() => {
     const { form } = use(StoreContext)
     return (
         <>
@@ -28,9 +28,9 @@ const AdverseEffects = () => {
             <Text mb="xl">
                 Syötä tälle sivulle potilaalla todetut syöpähoitojen aiheuttamat haittavaikutukset.
             </Text>
-            <EntityPage entity={form.adverseEffects} InnerComponent={AdverseEffectsPage} />
+            <EntityPageWrapper entity={form.adverseEffects} InnerComponent={AdverseEffectsPage} />
         </>
     )
-}
+})
 
 export default AdverseEffects

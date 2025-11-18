@@ -1,19 +1,19 @@
 import { DragDropContext, Droppable } from "@hello-pangea/dnd"
 import { Button, Fieldset, Stack, Text } from "@mantine/core"
 import { IconPlus } from "@tabler/icons-react"
-import { observer } from "mobx-react"
+import { observer } from "mobx-react-lite"
 import { Entity } from "../../store/entity/entity"
 import { EntityListProps } from "./entityListProps"
 import { ComponentType } from "react"
-import { EntityComponentProps } from "../entities/entityComponentProps"
 import { EntityList } from "../../store/entityList"
 import ChildListItem from "./ChildListItem"
+import { ListItemProps } from "../entities/listItems/listItemProps"
 
 interface ChildListInnerProps<E extends Entity> {
     entityList: EntityList<E>
     emptyText: string
     onRemove: (id: string) => void
-    ListItemComponent: ComponentType<EntityComponentProps<E>>
+    ListItemComponent: ComponentType<ListItemProps<E>>
 }
 
 const ChildListInner = observer(<E extends Entity>({ entityList, emptyText, onRemove, ListItemComponent }: ChildListInnerProps<E>) => (
@@ -28,17 +28,17 @@ const ChildListInner = observer(<E extends Entity>({ entityList, emptyText, onRe
                 onRemove={onRemove}
             >
                 <ListItemComponent
-                    data={entity}
+                    entity={entity}
                 />
             </ChildListItem>
         ))
 ))
 
 interface ChildListProps<E extends Entity> extends EntityListProps<E> {
-    ListItemComponent: ComponentType<EntityComponentProps<E>>
+    ListItemComponent: ComponentType<ListItemProps<E>>
 }
 
-const ChildList = observer(<E extends Entity>({ entityList, entityFactory, title, emptyText, addButtonText, ListItemComponent }: ChildListProps<E>) => {
+const ChildList = <E extends Entity>({ entityList, entityFactory, title, emptyText, addButtonText, ListItemComponent }: ChildListProps<E>) => {
     const handleAdd = () => entityList.add(entityFactory())
     const handleSwap = (destinationIndex: number, sourceIndex: number) => { entityList.swap(destinationIndex, sourceIndex) }
     const handleRemove = (id: string) => entityList.remove(id)
@@ -81,6 +81,6 @@ const ChildList = observer(<E extends Entity>({ entityList, entityFactory, title
             </Button>
         </Fieldset>
     )
-})
+}
 
 export default ChildList
