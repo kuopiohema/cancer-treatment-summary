@@ -2,6 +2,9 @@ import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { ActionIcon, Divider, Group, Stack, Text, Tooltip } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { observer } from "mobx-react-lite";
+import { use } from 'react'
+import { DataContext } from '../../context/DataContext.ts'
+import { getEntityLabel } from '../../store/entities/getEntityLabel.ts'
 import { Entity } from "../../store/entity/entity";
 import { EntityList } from "../../store/entityList";
 import { buildTextList } from '../../utils/buildTextList.tsx'
@@ -14,23 +17,27 @@ interface NavListInnerProps<E extends Entity> {
     onRemove: (id: string) => void
 }
 
-const NavListInner = observer(<E extends Entity>({ entityList, emptyText, onRemove }: NavListInnerProps<E>) => (
-    entityList.entities.length === 0 ?
+const NavListInner = observer(<E extends Entity>({ entityList, emptyText, onRemove }: NavListInnerProps<E>) => {
+    const data = use(DataContext)
+
+    return entityList.entities.length === 0 ?
         <Text px="sm" pb="xs">{emptyText}</Text> :
-        entityList.entities.map((entity, index) => (
-            <NavListItem
+        entityList.entities.map((entity, index) => {
+            const { heading, content } = getEntityLabel(entity, data)
+
+            return <NavListItem
                 key={entity.id}
                 index={index}
                 id={entity.id}
                 itemName={entity.itemName}
-                label={entity.heading}
-                sublabel={buildTextList(entity.content)}
+                label={heading}
+                sublabel={buildTextList(content)}
                 isSelected={entity.isSelected}
                 onSelect={() => entity.select()}
                 onRemove={onRemove}
             />
-        ))
-))
+        })
+})
 
 const NavList = <E extends Entity>({ entityList, entityFactory, title, emptyText, addButtonText }: EntityListProps<E>) => {
     const handleAdd = () => entityList.add(entityFactory())

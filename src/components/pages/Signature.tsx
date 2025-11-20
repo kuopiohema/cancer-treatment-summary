@@ -8,7 +8,7 @@ import { use } from 'react'
 import { StoreContext } from '../../store/StoreContext'
 import dayjs from 'dayjs'
 import { useQuery } from '@tanstack/react-query'
-import { emptySignatureDefaults, SignatureDefaults } from '../../store/dataInterfaces/signatureDefaults'
+import { emptySignatureDefaults, SignatureDefaults } from '../../types/signatureDefaults.ts'
 import { fetchJson } from '../../utils/fetchJson'
 
 const SignaturePage = observer(({ entity: data }: EntityPageProps<SignatureData>) => {

@@ -1,7 +1,5 @@
 import { makeObservable, observable } from 'mobx'
 import { DateInputValue } from '../../types/dateInputValue'
-import type { TextListItem } from '../../utils/buildTextList.tsx'
-import { formatDateRange } from '../../utils/formatDate'
 import { Entity } from './entity'
 
 export class Treatment extends Entity {
@@ -23,16 +21,4 @@ export class Treatment extends Entity {
     }
 
     itemName = 'hoito'
-
-    override get heading() {
-        return this.protocol || '(Uusi hoito)'
-    }
-
-    override get content(): TextListItem[] {
-        return [
-            formatDateRange(this.startDate, this.endDate),
-            { label: 'Hoitoryhmä', content: this.group },
-            { label: 'Hoidon loppumisen syy', content: this.stopReason }
-        ]
-    }
 }

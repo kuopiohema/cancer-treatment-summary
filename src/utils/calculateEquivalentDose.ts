@@ -1,4 +1,4 @@
-import type { DrugEquivalence } from '../store/dataInterfaces/drugEquivalenceList.ts'
+import type { DrugEquivalence } from '../context/DataContext.ts'
 import type { Drug } from '../store/entity/drug.ts'
 
 export const calculateEquivalentDose = (drug: Drug, factors: DrugEquivalence[]) => {
@@ -13,3 +13,6 @@ export const calculateEquivalentDose = (drug: Drug, factors: DrugEquivalence[]) 
     else
         return 0
 }
+
+export const calculateTotalEquivalentDose = (drugs: Drug[], factors: DrugEquivalence[]) =>
+    drugs.reduce((value, drug) => value + calculateEquivalentDose(drug, factors), 0)

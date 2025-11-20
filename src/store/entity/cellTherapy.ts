@@ -1,10 +1,7 @@
-import { computed, makeObservable, observable } from 'mobx'
+import { makeObservable, observable } from 'mobx'
 import { DateInputValue } from '../../types/dateInputValue'
 import { NumberInputValue } from '../../types/numberInputValue'
 import { SelectValue } from '../../types/selectValue'
-import type { TextListItem } from '../../utils/buildTextList.tsx'
-import { formatDate, formatDateRange } from '../../utils/formatDate'
-import { getDonorText } from '../../utils/getDonorText'
 import { EntityList } from '../entityList'
 import { Drug } from './drug'
 import { Entity } from './entity'
@@ -47,43 +44,9 @@ export class CellTherapy extends Entity {
             dli: observable,
             dliStartDate: observable,
             dliEndDate: observable,
-            dliDoses: observable,
-            doxoEquivalent: computed,
-            cycloEquivalent: computed
+            dliDoses: observable
         })
     }
 
     itemName = 'soluhoito'
-
-    override get heading() {
-        return this.type || '(Uusi soluhoito)'
-    }
-
-    override get content(): TextListItem[] {
-        return [
-            this.origin ? `${this.origin} siirto` : '',
-            { label: 'Siirtopäivä', content: formatDate(this.date) },
-            { label: 'CAR-solujen kohde', content: this.carTarget },
-            { label: 'Luovuttaja', content: getDonorText(this.donor, this.donorSex) },
-            { label: 'HLA-sopivuus', content: this.hlaMatch },
-            { label: 'Luovuttajan veriryhmä', content: this.donorBloodGroup },
-            { label: 'Esihoito', content: this.conditioning },
-            {
-                label: 'TBI',
-                content: this.tbi ? `${this.tbiDoseBody} Gy (vartalo) / ${this.tbiDoseLungs} Gy (keuhkot)` : ''
-            },
-            {
-                label: 'DLI',
-                content: this.dli ? `${formatDateRange(this.dliStartDate, this.dliEndDate)}, ${this.dliDoses} annosta` : ''
-            }
-        ]
-    }
-
-    get doxoEquivalent() {
-        return this.drugs.entities.reduce((value, drug) => value + drug.doxoEquivalent, 0)
-    }
-
-    get cycloEquivalent() {
-        return this.drugs.entities.reduce((value, drug) => value + drug.cycloEquivalent, 0)
-    }
 }

@@ -7,7 +7,7 @@ import { EntityPageProps } from '../entities/pages/entityPageProps'
 import EntityPageWrapper from '../entityLists/EntityPageWrapper'
 import { useQuery } from '@tanstack/react-query'
 import { fetchJson } from '../../utils/fetchJson'
-import { emptyFollowupDefaults, FollowupDefaults } from '../../store/dataInterfaces/followupDefaults'
+import { emptyFollowupDefaults, FollowupDefaults } from '../../types/followupDefaults.ts'
 
 const FollowupPage = observer(({ entity: data }: EntityPageProps<FollowupData>) => {
     const followupDefaults = useQuery({

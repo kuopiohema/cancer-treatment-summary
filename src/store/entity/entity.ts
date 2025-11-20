@@ -1,6 +1,5 @@
 import { randomId } from '@mantine/hooks'
 import { action, computed, makeObservable } from 'mobx'
-import type { TextListItem } from '../../utils/buildTextList.tsx'
 import { nav } from '../store.ts'
 
 export class Entity {
@@ -11,8 +10,6 @@ export class Entity {
         this.id = randomId()
         makeObservable(this, {
             set: action,
-            heading: computed,
-            content: computed,
             select: action,
             isSelected: computed
         })
@@ -20,14 +17,6 @@ export class Entity {
 
     set<K extends keyof this, V extends this[K]>(key: K, value: V) {
         this[key] = value
-    }
-
-    get heading(): string {
-        return this.id
-    }
-
-    get content(): TextListItem[] {
-        return [this.id]
     }
 
     select() {
