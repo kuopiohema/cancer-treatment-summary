@@ -25,7 +25,7 @@ export interface FollowupDefaults {
     }
 }
 
-export const getEmptyFollowupDefaults = (): FollowupDefaults => ({
+export const emptyFollowupDefaults: FollowupDefaults = {
     growth: '',
     bloodPressure: '',
     heart: {
@@ -50,4 +50,4 @@ export const getEmptyFollowupDefaults = (): FollowupDefaults => ({
         autoSCT: '',
         alloSCT: ''
     }
-})
+}

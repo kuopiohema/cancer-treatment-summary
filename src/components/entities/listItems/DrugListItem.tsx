@@ -1,12 +1,15 @@
 import { observer } from "mobx-react-lite"
 import { Drug } from "../../../store/entity/drug"
 import { Group, NumberInput, Select, Text, Textarea, TextInput } from "@mantine/core"
-import { use } from "react"
-import { StoreContext } from "../../../store/StoreContext"
 import { ListItemProps } from "./listItemProps"
+import { useQuery } from "@tanstack/react-query"
+import { fetchSelectOptions } from "../../../utils/fetchJson"
 
 const DrugListItem = observer(({ entity }: ListItemProps<Drug>) => {
-    const store = use(StoreContext)
+    const doseFormulaOptions = useQuery({
+        queryKey: ['doseFormula'],
+        queryFn: fetchSelectOptions
+    })
     
     return (
         <>
@@ -34,7 +37,7 @@ const DrugListItem = observer(({ entity }: ListItemProps<Drug>) => {
                     value={entity.doseFormula}
                     onChange={value => { entity.doseFormula = value }}
                     label="Annoskaava"
-                    data={store.data.doseFormulaOptions}
+                    data={doseFormulaOptions.data}
                     w={100}
                     flex="none"
                     clearable={false}

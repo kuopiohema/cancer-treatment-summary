@@ -16,6 +16,7 @@ import StoreProvider from './store/StoreProvider.tsx'
 import { Notifications } from '@mantine/notifications'
 
 import { configure } from 'mobx'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 dayjs.extend(customParseFormat)
 
@@ -27,17 +28,21 @@ configure({
     disableErrorBoundaries: true
 })
 
+const queryClient = new QueryClient()
+
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
-        <MantineProvider defaultColorScheme="auto" theme={theme}>
-            <DatesProvider settings={{ locale: 'fi' }}>
-                <ModalsProvider>
-                    <StoreProvider>
-                        <Notifications position="bottom-center" />
-                        <App />
-                    </StoreProvider>
-                </ModalsProvider>
-            </DatesProvider>
-        </MantineProvider>
+        <QueryClientProvider client={queryClient}>
+            <MantineProvider defaultColorScheme="auto" theme={theme}>
+                <DatesProvider settings={{ locale: 'fi' }}>
+                    <ModalsProvider>
+                        <StoreProvider>
+                            <Notifications position="bottom-center" />
+                            <App />
+                        </StoreProvider>
+                    </ModalsProvider>
+                </DatesProvider>
+            </MantineProvider>
+        </QueryClientProvider>
     </StrictMode>
 )

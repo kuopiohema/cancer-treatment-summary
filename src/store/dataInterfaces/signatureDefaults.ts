@@ -3,7 +3,7 @@ export interface SignatureDefaults {
     place: string
 }
 
-export const getEmptySignatureDefaults = (): SignatureDefaults => ({
+export const emptySignatureDefaults: SignatureDefaults = {
     phone: '',
     place: ''
-})
+}

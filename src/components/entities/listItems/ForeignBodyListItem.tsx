@@ -1,12 +1,20 @@
-import { observer } from "mobx-react-lite";
-import { ForeignBody } from "../../../store/entity/foreignBody";
-import { Autocomplete, Group, Select } from "@mantine/core";
-import { use } from "react";
-import { StoreContext } from "../../../store/StoreContext";
-import { ListItemProps } from "./listItemProps";
+import { observer } from "mobx-react-lite"
+import { ForeignBody } from "../../../store/entity/foreignBody"
+import { Autocomplete, Group, Select } from "@mantine/core"
+import { ListItemProps } from "./listItemProps"
+import { fetchSelectOptions } from "../../../utils/fetchJson"
+import { useQuery } from "@tanstack/react-query"
 
 const ForeignBodyListItem = observer(({ entity }: ListItemProps<ForeignBody>) => {
-    const store = use(StoreContext)
+    const foreignBodyTypeOptions = useQuery({
+        queryKey: ['foreignBodyType'],
+        queryFn: fetchSelectOptions
+    })
+
+    const foreignBodyRemovalOptions = useQuery({
+        queryKey: ['foreignBodyRemoval'],
+        queryFn: fetchSelectOptions
+    })
     
     return (
         <>
@@ -19,13 +27,13 @@ const ForeignBodyListItem = observer(({ entity }: ListItemProps<ForeignBody>) =>
                     value={entity.type}
                     onChange={value => { entity.type = value }}
                     label="Vierasesine"
-                    data={store.data.foreignBodyTypeOptions}
+                    data={foreignBodyTypeOptions.data}
                 />
                 <Select
                     value={entity.removal}
                     onChange={value => { entity.removal = value }}
                     label="Poisto"
-                    data={store.data.foreignBodyRemovalOptions}
+                    data={foreignBodyRemovalOptions.data}
                 />
             </Group>
         </>

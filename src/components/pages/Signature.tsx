@@ -7,14 +7,20 @@ import EntityPageWrapper from '../entityLists/EntityPageWrapper'
 import { use } from 'react'
 import { StoreContext } from '../../store/StoreContext'
 import dayjs from 'dayjs'
+import { useQuery } from '@tanstack/react-query'
+import { emptySignatureDefaults, SignatureDefaults } from '../../store/dataInterfaces/signatureDefaults'
+import { fetchJson } from '../../utils/fetchJson'
 
 const SignaturePage = observer(({ entity: data }: EntityPageProps<SignatureData>) => {
-    const store = use(StoreContext)
+    const signatureDefaults = useQuery({
+        queryKey: ['signatureDefaults'],
+        queryFn: () => fetchJson<SignatureDefaults>('signatureDefaults'),
+        placeholderData: emptySignatureDefaults
+    })
 
     const handleUseDefaults = () => {
-        const defaults = store.data.signatureDefaults
-        data.phone = defaults.phone
-        data.place = defaults.place
+        data.phone = signatureDefaults.data!.phone
+        data.place = signatureDefaults.data!.place
         data.date = dayjs().format('YYYY-MM-DD')
     }
 

@@ -1,13 +1,18 @@
 import { Autocomplete, Group, TextInput } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { observer } from "mobx-react-lite"
-import { use } from "react"
 import { Treatment } from "../../../store/entity/treatment"
-import { StoreContext } from "../../../store/StoreContext"
 import { EntityPageProps } from "./entityPageProps"
+import { useQuery } from "@tanstack/react-query"
+import { fetchSelectOptions } from "../../../utils/fetchJson"
+import { withUnknown } from "../../../utils/withUnknown"
 
 const TreatmentPage = observer(({ entity }: EntityPageProps<Treatment>) => {
-    const { data } = use(StoreContext)
+    const treatmentStopReasonOptions = useQuery({
+        queryKey: ['treatmentStopReason'],
+        queryFn: fetchSelectOptions,
+        select: data => withUnknown(data)
+    })
 
     return (
         <>
@@ -39,7 +44,7 @@ const TreatmentPage = observer(({ entity }: EntityPageProps<Treatment>) => {
             <Autocomplete
                 value={entity.stopReason}
                 onChange={value => { entity.stopReason = value }}
-                data={data.treatmentStopReasonOptions}
+                data={treatmentStopReasonOptions.data}
                 label="Hoidon loppumisen syy"
             />
         </>
