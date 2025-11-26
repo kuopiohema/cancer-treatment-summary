@@ -14,8 +14,8 @@ const Help = () => {
                 <ListItem>Voit poistaa kaikki tiedot painamalla "Uusi".</ListItem>
                 <ListItem>Tallenna syötetyt tiedot omalle tietokoneelle json-tiedostona painamalla
                     "Tallenna".</ListItem>
-                <ListItem>Aiemmin tallennettuja tiedostoja voi uudelleen avata painamalla "Lataa". Huom: vanhalla
-                    yhteenvetosovelluksella tehtyjä tiedostoja ei toistaiseksi voi avata.</ListItem>
+                <ListItem>Aiemmin tallennettuja tiedostoja voi uudelleen avata painamalla "Lataa". Myös vanhalla yhteenvetosovelluksella
+                    tehtyjä yhteenvetoja voi avata, mutta tietojen sijaintia kannattaa tuolloin tarkistaa ja tarvittaessa korjata.</ListItem>
                 <ListItem>Kun lomake on valmis, voit luoda siitä tulostettavan tiedoston painamalla "Luo Word-tiedosto".
                     Tässä vaiheessa sovellus kysyy potilaan henkilötietoja - nämä
                     eivät tallennu sovellukseen (eikä ladattavaan json-tiedostoon), vaan siirtyvät ainoastaan
