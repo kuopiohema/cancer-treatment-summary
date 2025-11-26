@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "homepage": "https://kuopiohema.github.io/catrest",
+  "homepage": "https://kuopiohema.github.io/cancer-treatment-summary",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
