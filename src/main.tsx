@@ -1,9 +1,13 @@
 import { MantineProvider } from '@mantine/core'
 import { DatesProvider } from '@mantine/dates'
 import { ModalsProvider } from '@mantine/modals'
+import { Notifications } from '@mantine/notifications'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import 'dayjs/locale/fi'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
+
+import { configure } from 'mobx'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
@@ -11,18 +15,15 @@ import App from './App.tsx'
 import '@mantine/core/styles.css'
 import '@mantine/dates/styles.css'
 import '@mantine/notifications/styles.css'
-import DataProvider from './context/DataProvider.tsx'
-import { theme } from './theme.ts'
+import DataProvider from './data/DataProvider.tsx'
+import NavProvider from './nav/NavProvider.tsx'
 import StoreProvider from './store/StoreProvider.tsx'
-import { Notifications } from '@mantine/notifications'
-
-import { configure } from 'mobx'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { theme } from './theme.ts'
 
 dayjs.extend(customParseFormat)
 
 configure({
-    enforceActions: "always",
+    enforceActions: 'always',
     computedRequiresReaction: true,
     reactionRequiresObservable: true,
     observableRequiresReaction: true,
@@ -37,12 +38,14 @@ createRoot(document.getElementById('root')!).render(
             <MantineProvider defaultColorScheme="auto" theme={theme}>
                 <DatesProvider settings={{ locale: 'fi' }}>
                     <ModalsProvider>
-                        <StoreProvider>
-                            <DataProvider>
-                                <Notifications position="bottom-center" />
-                                <App />
-                            </DataProvider>
-                        </StoreProvider>
+                        <DataProvider>
+                            <NavProvider>
+                                <StoreProvider>
+                                    <Notifications position="bottom-center" />
+                                    <App />
+                                </StoreProvider>
+                            </NavProvider>
+                        </DataProvider>
                     </ModalsProvider>
                 </DatesProvider>
             </MantineProvider>

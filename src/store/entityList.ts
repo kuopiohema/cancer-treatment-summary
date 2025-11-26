@@ -1,39 +1,40 @@
-import { Entity } from "./entity/entity";
-import { action, computed, makeObservable, observable } from 'mobx'
+import { computed } from 'mobx'
+import { arrayActions, Model, model, modelAction, prop } from 'mobx-keystone'
+import type { Entity } from './entities/entity.ts'
 
-export class EntityList<E extends Entity> {
-    entities: E[] = []
-
-    constructor() {
-        makeObservable(this, {
-            entities: observable,
-            add: action,
-            swap: action,
-            remove: action,
-            clear: action,
-            entityCount: computed
-        })
-    }
-
+@model('catrest/EntityList')
+export class EntityList<E extends Entity> extends Model(<E>() => ({
+    entities: prop<E[]>(() => [])
+}))<E> {
+    @modelAction
     add(entity: E) {
-        this.entities.push(entity)
+        arrayActions.push(this.entities, entity)
     }
 
-    swap(firstIndex: number, secondIndex: number) {
-        [this.entities[firstIndex], this.entities[secondIndex]] = [this.entities[secondIndex], this.entities[firstIndex]]
+    @modelAction
+    swap(index1: number, index2: number) {
+        arrayActions.swap(this.entities, index1, index2)
     }
 
+    @modelAction
     remove(id: string) {
         const index = this.entities.findIndex(item => item.id === id)
         if (index === -1)
             return
-        this.entities.splice(index, 1)
+        arrayActions.delete(this.entities, index)
     }
 
+    @modelAction
+    set(list: E[]) {
+        this.entities = [...list]
+    }
+
+    @modelAction
     clear() {
         this.entities = []
     }
 
+    @computed
     get entityCount() {
         return this.entities.length
     }

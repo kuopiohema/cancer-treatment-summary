@@ -1,9 +1,9 @@
-import { observer } from "mobx-react-lite"
-import { AdverseEffect } from "../../../store/entity/adverseEffect"
-import { Autocomplete, Group, Textarea } from "@mantine/core"
-import { ListItemProps } from "./listItemProps"
-import { useQuery } from "@tanstack/react-query"
-import { fetchSelectOptions } from "../../../utils/fetchJson"
+import { Autocomplete, Group, Textarea } from '@mantine/core'
+import { useQuery } from '@tanstack/react-query'
+import { observer } from 'mobx-react-lite'
+import { AdverseEffect } from '../../../store/entities/adverseEffect'
+import { fetchSelectOptions } from '../../../utils/fetchJson'
+import { ListItemProps } from './listItemProps'
 
 const AdverseEffectListItem = observer(({ entity }: ListItemProps<AdverseEffect>) => {
     const organSystemOptions = useQuery({
@@ -20,7 +20,7 @@ const AdverseEffectListItem = observer(({ entity }: ListItemProps<AdverseEffect>
             >
                 <Autocomplete
                     value={entity.organSystem}
-                    onChange={value => { entity.organSystem = value }}
+                    onChange={value => entity.set('organSystem', value)}
                     label="Elinjärjestelmä"
                     data={organSystemOptions.data}
                     w={300}
@@ -28,7 +28,7 @@ const AdverseEffectListItem = observer(({ entity }: ListItemProps<AdverseEffect>
                 />
                 <Textarea
                     value={entity.description}
-                    onChange={e => { entity.description = e.target.value }}
+                    onChange={e => entity.set('description', e.target.value)}
                     label="Kuvaus"
                 />
             </Group>

@@ -1,90 +1,107 @@
-import { Divider, NavLink, Text } from "@mantine/core"
-import { CellTherapy } from "../store/entity/cellTherapy"
-import { Chemotherapy } from "../store/entity/chemotherapy"
-import { Diagnosis } from "../store/entity/diagnosis"
-import { Procedure } from "../store/entity/procedure"
-import { Radiotherapy } from "../store/entity/radiotherapy"
-import { Treatment } from "../store/entity/treatment"
+import { Divider, NavLink, Text } from '@mantine/core'
+import { observer } from 'mobx-react-lite'
+import { use } from 'react'
+import { NavContext } from '../nav/NavContext.ts'
+import { CellTherapy } from '../store/entities/cellTherapy'
+import { Chemotherapy } from '../store/entities/chemotherapy'
+import { Diagnosis } from '../store/entities/diagnosis'
+import { Procedure } from '../store/entities/procedure'
+import { Radiotherapy } from '../store/entities/radiotherapy'
+import { Treatment } from '../store/entities/treatment'
+import { StoreContext } from '../store/StoreContext'
 import { buildTextList } from '../utils/buildTextList.tsx'
-import NavList from "./entityLists/NavList"
-import { use } from "react"
-import { StoreContext } from "../store/StoreContext"
-import { observer } from "mobx-react-lite"
-import { countWithLabel } from "../utils/countWithLabel"
+import { countWithLabel } from '../utils/countWithLabel'
+import { formatDate } from '../utils/formatDate.ts'
+import NavList from './entityLists/NavList'
 
 const Navbar = observer(() => {
-    const { form, nav } = use(StoreContext)
+    const store = use(StoreContext)
+    const nav = use(NavContext)
+    if (!nav)
+        throw new Error('Navigation context missing!')
+
+    const followup = store.followup
+    const signature = store.signature
+
     return (
         <>
             <NavList
-                entityList={form.diagnoses}
-                entityFactory={() => new Diagnosis()}
+                entityList={store.diagnoses}
+                entityFactory={() => new Diagnosis({})}
                 title="Diagnoosit"
                 emptyText="Ei diagnooseja"
-                addButtonText="Lisää diagnoosi"
+                itemName="diagnoosi"
             />
             <NavList
-                entityList={form.treatments}
-                entityFactory={() => new Treatment()}
+                entityList={store.treatments}
+                entityFactory={() => new Treatment({})}
                 title="Hoidot"
                 emptyText="Ei hoitoja"
-                addButtonText="Lisää hoito"
+                itemName="hoito"
             />
             <NavList
-                entityList={form.chemotherapies}
-                entityFactory={() => new Chemotherapy()}
+                entityList={store.chemotherapies}
+                entityFactory={() => new Chemotherapy({})}
                 title="Lääkehoitojaksot"
                 emptyText="Ei lääkehoitojaksoja"
-                addButtonText="Lisää lääkehoitojakso"
+                itemName="lääkehoitojakso"
             />
             <NavList
-                entityList={form.radiotherapies}
-                entityFactory={() => new Radiotherapy()}
+                entityList={store.radiotherapies}
+                entityFactory={() => new Radiotherapy({})}
                 title="Sädehoitojaksot"
                 emptyText="Ei sädehoitojaksoja"
-                addButtonText="Lisää sädehoitojakso"
+                itemName="sädehoitojakso"
             />
             <NavList
-                entityList={form.procedures}
-                entityFactory={() => new Procedure()}
+                entityList={store.procedures}
+                entityFactory={() => new Procedure({})}
                 title="Leikkaukset ja toimenpiteet"
                 emptyText="Ei toimenpiteitä"
-                addButtonText="Lisää toimenpide"
+                itemName="toimenpide"
             />
             <NavList
-                entityList={form.cellTherapies}
-                entityFactory={() => new CellTherapy()}
+                entityList={store.cellTherapies}
+                entityFactory={() => new CellTherapy({})}
                 title="Kantasolusiirrot ja muut soluhoidot"
                 emptyText="Ei soluhoitoja"
-                addButtonText="Lisää soluhoito"
+                itemName="soluhoito"
             />
-            <Divider mb="xs"/>
+            <Divider mb="xs" />
             <Divider />
             <NavLink
                 label={<Text>Vierasesineet</Text>}
-                description={countWithLabel(form.foreignBodies.entityCount, 'vierasesineitä', 'vierasesine', 'vierasesinettä')}
-                active={nav.page === 'foreignBodies'}
+                description={countWithLabel(store.foreignBodies.entityCount, 'vierasesineitä', 'vierasesine', 'vierasesinettä')}
+                active={nav.currentPage === 'foreignBodies'}
                 onClick={() => nav.selectPage('foreignBodies')}
             />
             <Divider />
             <NavLink
                 label={<Text>Haittavaikutukset</Text>}
-                description={countWithLabel(form.adverseEffects.entityCount, 'haittavaikutuksia', 'haittavaikutus', 'haittavaikutusta')}
-                active={nav.page === 'adverseEffects'}
+                description={countWithLabel(store.adverseEffects.entityCount, 'haittavaikutuksia', 'haittavaikutus', 'haittavaikutusta')}
+                active={nav.currentPage === 'adverseEffects'}
                 onClick={() => nav.selectPage('adverseEffects')}
             />
             <Divider />
             <NavLink
                 label={<Text>Jälkiseuranta</Text>}
-                description={buildTextList(form.followup.content)}
-                active={nav.page === 'followup'}
+                description={buildTextList([
+                    { label: 'Yleisohjeet', content: followup.general ? 'Syötetty' : 'Ei syötetty' },
+                    { label: 'Rokotusohjeet', content: followup.vaccination ? 'Syötetty' : 'Ei syötetty' }
+                ])}
+                active={nav.currentPage === 'followup'}
                 onClick={() => nav.selectPage('followup')}
             />
             <Divider />
             <NavLink
                 label={<Text>Lomakkeen täyttäjä</Text>}
-                description={buildTextList(form.signature.content)}
-                active={nav.page === 'signature'}
+                description={buildTextList([
+                    { label: 'Nimi', content: signature.name || 'Ei syötetty' },
+                    { label: 'Puhelin', content: signature.phone || 'Ei syötetty' },
+                    { label: 'Paikka', content: signature.place || 'Ei syötetty' },
+                    { label: 'Päiväys', content: formatDate(signature.date, 'Ei syötetty') }
+                ])}
+                active={nav.currentPage === 'signature'}
                 onClick={() => nav.selectPage('signature')}
             />
         </>

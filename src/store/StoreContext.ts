@@ -1,11 +1,6 @@
 import { createContext } from 'react'
-import type { FormStore } from './formStore.ts'
-import type { NavStore } from './navStore.ts'
-import { form, nav } from './store'
+import { Store } from './store'
 
-interface StoreContextValue {
-    form: FormStore,
-    nav: NavStore
-}
+export const store = new Store({})
 
-export const StoreContext = createContext<StoreContextValue>({ form, nav })
+export const StoreContext = createContext<Store>(store)

@@ -1,34 +1,34 @@
-import {Title, Text} from '@mantine/core'
-import EntityPageWrapper from '../entityLists/EntityPageWrapper'
+import { Text, Title } from '@mantine/core'
+import { observer } from 'mobx-react-lite'
 import { use } from 'react'
-import { StoreContext } from '../../store/StoreContext'
+import { AdverseEffect } from '../../store/entities/adverseEffect'
 import { EntityList } from '../../store/entityList'
-import { AdverseEffect } from '../../store/entity/adverseEffect'
+import { StoreContext } from '../../store/StoreContext'
+import AdverseEffectListItem from '../entities/listItems/AdverseEffectListItem'
 import { EntityPageProps } from '../entities/pages/entityPageProps'
 import ChildList from '../entityLists/ChildList'
-import AdverseEffectListItem from '../entities/listItems/AdverseEffectListItem'
-import { observer } from 'mobx-react-lite'
+import EntityPageWrapper from '../entityLists/EntityPageWrapper'
 
 const AdverseEffectsPage = ({ entity: data }: EntityPageProps<EntityList<AdverseEffect>>) => {
     return <ChildList
         entityList={data}
-        entityFactory={() => new AdverseEffect()}
+        entityFactory={() => new AdverseEffect({})}
         title="Haittavaikutukset"
         emptyText="Ei haittavaikutuksia"
-        addButtonText="Lisää haittavaikutus"
+        itemName="haittavaikutus"
         ListItemComponent={AdverseEffectListItem}
     />
 }
 
 const AdverseEffects = observer(() => {
-    const { form } = use(StoreContext)
+    const store = use(StoreContext)
     return (
         <>
             <Title order={1}>Haittavaikutukset</Title>
             <Text mb="xl">
                 Syötä tälle sivulle potilaalla todetut syöpähoitojen aiheuttamat haittavaikutukset.
             </Text>
-            <EntityPageWrapper entity={form.adverseEffects} InnerComponent={AdverseEffectsPage} />
+            <EntityPageWrapper entity={store.adverseEffects} InnerComponent={AdverseEffectsPage} />
         </>
     )
 })

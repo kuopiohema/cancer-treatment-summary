@@ -1,31 +1,23 @@
-import { makeAutoObservable } from 'mobx'
-import { DateInputValue } from '../types/dateInputValue'
-import { type TextListItem } from '../utils/buildTextList'
-import { formatDate } from '../utils/formatDate'
+import { Model, model, modelAction, prop } from 'mobx-keystone'
+import type { DateInputValue } from '../types/dateInputValue.ts'
 
-export class Signature {
-    name = ''
-    phone = ''
-    place = ''
-    date: DateInputValue = null
-
-    constructor() {
-        makeAutoObservable(this)
+@model('catrest/Signature')
+export class Signature extends Model({
+    name: prop(''),
+    phone: prop(''),
+    place: prop(''),
+    date: prop<DateInputValue>(null)
+}) {
+    @modelAction
+    set<K extends keyof this, V extends this[K]>(key: K, value: V) {
+        this[key] = value
     }
 
+    @modelAction
     clear() {
         this.name = ''
         this.phone = ''
         this.place = ''
         this.date = ''
-    }
-
-    get content(): TextListItem[] {
-        return [
-            { label: 'Nimi', content: this.name || 'Ei syötetty' },
-            { label: 'Puhelin', content: this.phone || 'Ei syötetty' },
-            { label: 'Yksikkö', content: this.place || 'Ei syötetty' },
-            { label: 'Päiväys', content: formatDate(this.date, 'Ei syötetty') }
-        ]
     }
 }

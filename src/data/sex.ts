@@ -1,4 +1,4 @@
-import { unknownValue } from "../utils/withUnknown"
+import { unknownValue } from "../utils/withUnknown.ts"
 
 export const sex = {
     male: 'Mies',

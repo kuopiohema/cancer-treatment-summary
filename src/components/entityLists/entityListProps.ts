@@ -1,10 +1,10 @@
-import { Entity } from "../../store/entity/entity"
-import { EntityList } from "../../store/entityList"
+import { Entity } from '../../store/entities/entity'
+import { EntityList } from '../../store/entityList'
 
 export interface EntityListProps<E extends Entity> {
     entityList: EntityList<E>
     entityFactory: () => E
     title: string
     emptyText: string
-    addButtonText: string
+    itemName: string
 }

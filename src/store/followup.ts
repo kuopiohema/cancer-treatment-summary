@@ -1,23 +1,18 @@
-import { makeAutoObservable } from 'mobx'
-import { type TextListItem } from '../utils/buildTextList'
+import { Model, model, modelAction, prop } from 'mobx-keystone'
 
-export class Followup {
-    general = ''
-    vaccination = ''
-
-    constructor() {
-        makeAutoObservable(this)
+@model('catrest/Followup')
+export class Followup extends Model({
+    general: prop(''),
+    vaccination: prop('')
+}) {
+    @modelAction
+    set<K extends keyof this, V extends this[K]>(key: K, value: V) {
+        this[key] = value
     }
 
+    @modelAction
     clear() {
         this.general = ''
         this.vaccination = ''
-    }
-
-    get content(): TextListItem[] {
-        return [
-            { label: 'Yleisohjeet', content: this.general ? 'Syötetty' : 'Ei syötetty' },
-            { label: 'Rokotusohjeet', content: this.vaccination ? 'Syötetty' : 'Ei syötetty' }
-        ]
     }
 }

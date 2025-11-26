@@ -14,10 +14,12 @@ import {
 import { useDisclosure, useFileDialog } from '@mantine/hooks'
 import { modals } from '@mantine/modals'
 import { IconDeviceFloppy, IconFile, IconFolderOpen, IconMoon, IconQuestionMark, IconSun } from '@tabler/icons-react'
+import { getSnapshot } from 'mobx-keystone'
 import { use } from 'react'
 import Navbar from './components/Navbar.tsx'
 import PageDisplay from './components/PageDisplay.tsx'
 import CreateWordButton from './CreateWordButton.tsx'
+import { NavContext } from './nav/NavContext.ts'
 import { StoreContext } from './store/StoreContext.ts'
 import { exportFile } from './utils/exportFile.ts'
 import { showNotification } from './utils/showNotification.tsx'
@@ -31,10 +33,14 @@ const App = (() => {
 
     const [navbarCollapsed, { toggle: toggleNavbarCollapsed }] = useDisclosure(true)
 
-    const { form, nav } = use(StoreContext)
+    const store = use(StoreContext)
+    const nav = use(NavContext)
+    if (!nav)
+        throw new Error('Navigation context missing!')
 
     const handleResetConfirmed = () => {
-        form.clear()
+        store.clear()
+        nav.selectPage('help')
         showNotification('', 'Kaikki tiedot tyhjennetty!')
     }
 
@@ -51,7 +57,7 @@ const App = (() => {
     })
 
     const handleSave = () => {
-        const data = JSON.stringify(form, null, 2)
+        const data = JSON.stringify(getSnapshot(store), null, 2)
         const status = exportFile('yhteenveto.json', data, 'application/json;charset=utf-8')
         if (status instanceof Error) {
             showNotification(

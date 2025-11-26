@@ -1,4 +1,4 @@
-import { sex } from "../options/sex"
+import { sex } from "../data/sex.ts"
 import { SelectValue } from "../types/selectValue"
 import { unknownValue } from "./withUnknown"
 

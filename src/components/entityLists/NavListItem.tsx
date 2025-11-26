@@ -1,8 +1,8 @@
-import { Draggable } from "@hello-pangea/dnd";
-import { ActionIcon, Center, NavLink, Tooltip } from "@mantine/core";
-import { IconGripVertical, IconTrash } from "@tabler/icons-react";
-import { MouseEventHandler, ReactNode } from "react";
-import { removeConfirmModal } from "../../modals/removeConfirmModal";
+import { Draggable } from '@hello-pangea/dnd'
+import { ActionIcon, Center, NavLink, Tooltip } from '@mantine/core'
+import { IconGripVertical, IconTrash } from '@tabler/icons-react'
+import { MouseEventHandler, ReactNode } from 'react'
+import { removeConfirmModal } from '../../modals/removeConfirmModal'
 
 interface NavListItemProps {
     index: number

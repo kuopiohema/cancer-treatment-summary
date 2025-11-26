@@ -1,5 +1,5 @@
-import { Text } from "@mantine/core"
-import { modals } from "@mantine/modals"
+import { Text } from '@mantine/core'
+import { modals } from '@mantine/modals'
 
 export const rejectChangesConfirmModal = (onConfirm: () => void) => modals.openConfirmModal({
     title: 'Perutaanko muutokset?',

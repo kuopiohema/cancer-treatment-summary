@@ -20,7 +20,4 @@ export interface DataContextValue {
     cycloEquivalents: DrugEquivalenceList
 }
 
-export const DataContext = createContext<DataContextValue>({
-    doxoEquivalents: {...emptyDrugEquivalenceList},
-    cycloEquivalents: {...emptyDrugEquivalenceList}
-})
+export const DataContext = createContext<DataContextValue | undefined>(undefined)

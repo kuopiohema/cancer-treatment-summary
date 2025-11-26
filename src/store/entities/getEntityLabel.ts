@@ -1,15 +1,15 @@
-import type { DataContextValue } from '../../context/DataContext.ts'
+import type { DataContextValue } from '../../data/DataContext.ts'
 import type { TextListItem } from '../../utils/buildTextList.tsx'
 import { calculateTotalEquivalentDose } from '../../utils/calculateEquivalentDose.ts'
 import { formatDate, formatDateRange } from '../../utils/formatDate.ts'
 import { getDonorText } from '../../utils/getDonorText.ts'
-import { CellTherapy } from '../entity/cellTherapy.ts'
-import { Chemotherapy } from '../entity/chemotherapy.ts'
-import { Diagnosis } from '../entity/diagnosis.ts'
-import type { Entity } from '../entity/entity.ts'
-import { Procedure } from '../entity/procedure.ts'
-import { Radiotherapy } from '../entity/radiotherapy.ts'
-import { Treatment } from '../entity/treatment.ts'
+import { CellTherapy } from './cellTherapy.ts'
+import { Chemotherapy } from './chemotherapy.ts'
+import { Diagnosis } from './diagnosis.ts'
+import type { Entity } from './entity.ts'
+import { Procedure } from './procedure.ts'
+import { Radiotherapy } from './radiotherapy.ts'
+import { Treatment } from './treatment.ts'
 
 interface EntityLabel {
     heading: string,

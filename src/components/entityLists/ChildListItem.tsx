@@ -1,8 +1,8 @@
-import { Draggable } from "@hello-pangea/dnd"
-import { ActionIcon, alpha, Card, Center, Divider, Group, Stack } from "@mantine/core"
-import { IconGripVertical, IconTrash } from "@tabler/icons-react"
-import { MouseEventHandler, PropsWithChildren } from "react"
-import { removeConfirmModal } from "../../modals/removeConfirmModal"
+import { Draggable } from '@hello-pangea/dnd'
+import { ActionIcon, alpha, Card, Center, Divider, Group, Stack } from '@mantine/core'
+import { IconGripVertical, IconTrash } from '@tabler/icons-react'
+import { MouseEventHandler, PropsWithChildren } from 'react'
+import { removeConfirmModal } from '../../modals/removeConfirmModal'
 
 interface ChildListItemProps extends PropsWithChildren {
     index: number
