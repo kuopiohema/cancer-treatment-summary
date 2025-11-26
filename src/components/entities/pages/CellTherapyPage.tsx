@@ -110,6 +110,7 @@ const CellTherapyPage = observer(({ entity }: EntityPageProps<CellTherapy>) => {
                 title="Esihoidon lääkkeet"
                 emptyText="Ei lääkkeitä"
                 addButtonText="Lisää lääke"
+                // @ts-expect-error This should work but doesn't for some reason. See ChemotherapyPage.tsx.
                 ListItemComponent={DrugListItem}
             />
             <Fieldset legend="Koko kehon sädehoito (TBI)">

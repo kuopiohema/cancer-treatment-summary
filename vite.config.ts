@@ -8,5 +8,31 @@ export default defineConfig({
             tsDecorators: true,
         })
     ],
-    base: '/catrest/'
+    base: '/catrest/',
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks: (id) => {
+                    if (id.includes('node_modules')) {
+                        /*if (id.includes('react')) {
+                            if (id.includes('tabler'))
+                                return 'icons-react'
+                            return 'react'
+                        }*/
+                        if (id.includes('mantine'))
+                            return 'mantine'
+                        if (id.includes('mobx'))
+                            return 'mobx'
+                        if (id.includes('tanstack'))
+                            return 'tanstack'
+                        if (id.includes('docx'))
+                            return 'docx'
+                        if (id.includes('dayjs'))
+                            return 'dayjs'
+                        return 'vendor'
+                    }
+                }
+            }
+        }
+    }
 })
