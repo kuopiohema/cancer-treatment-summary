@@ -61,13 +61,13 @@ const App = (() => {
         const status = exportFile('yhteenveto.json', data, 'application/json;charset=utf-8')
         if (status instanceof Error) {
             showNotification(
-                'Tallenna tiedot',
-                `Tietojen tallennuksessa tapahtui virhe: ${status.message}`,
+                'Tietojen tallennuksessa tapahtui virhe:',
+                status.message,
                 false
             )
         } else {
             showNotification(
-                'Tallenna tiedot',
+                'Tietojen tallentaminen',
                 'Lataa tiedosto koneellesi tallentaaksesi sovellukseen syötetyt tiedot!',
                 true
             )
@@ -78,7 +78,7 @@ const App = (() => {
         multiple: false,
         accept: '.json',
         resetOnOpen: true,
-        onChange: (files) => console.log(files)//form.load(files)
+        onChange: (files) => store.load(files)
     })
 
     return (
