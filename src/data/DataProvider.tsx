@@ -1,25 +1,15 @@
-import { useQuery } from '@tanstack/react-query'
-import type { PropsWithChildren } from 'react'
-import { fetchJson } from '../utils/fetchJson.ts'
-import { DataContext, type DrugEquivalenceList, emptyDrugEquivalenceList } from './DataContext.ts'
+import { DataContext, dataStore } from './DataContext.ts'
+import { type PropsWithChildren, useEffect, useState } from 'react'
 
 const DataProvider = ({children}: PropsWithChildren) => {
-    const doxoEquivalents = useQuery({
-        queryKey: ['doxoEquivalents'],
-        queryFn: () => fetchJson<DrugEquivalenceList>('doxoEquivalents')
-    })
+    const [store] = useState(dataStore)
 
-    const cycloEquivalents = useQuery({
-        queryKey: ['cycloEquivalents'],
-        queryFn: () => fetchJson<DrugEquivalenceList>('cycloEquivalents')
-    })
+    useEffect(() => {
+        const fetchData = async () => await store.fetchData()
+        void fetchData()
+    }, [store])
 
-    return <DataContext
-        value={{
-            doxoEquivalents: doxoEquivalents.data ?? emptyDrugEquivalenceList,
-            cycloEquivalents: cycloEquivalents.data ?? emptyDrugEquivalenceList
-        }}
-    >
+    return <DataContext value={{store}}>
         {children}
     </DataContext>
 }

@@ -1,10 +1,15 @@
-import { PropsWithChildren, useState } from 'react'
-import { store, StoreContext } from './StoreContext'
+import { PropsWithChildren, use, useState } from 'react'
+import { mainStore, StoreContext } from './StoreContext'
+import { DataContext } from '../data/DataContext'
 
 const StoreProvider = ({children}: PropsWithChildren) => {
-    const [providedStore] = useState(store)
+    const data = use(DataContext)
+    if (!data)
+        throw new Error('Data context missing!')
+    
+    const [store] = useState(mainStore)
 
-    return <StoreContext value={providedStore}>{children}</StoreContext>
+    return <StoreContext value={store}>{children}</StoreContext>
 }
 
 export default StoreProvider

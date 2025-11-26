@@ -13,6 +13,8 @@ const CreateWordButton = () => {
     const [id, setId] = useState('')
 
     const store = use(StoreContext)
+    if (!store)
+        throw new Error('Store context missing!')
 
     const handleClose = () => {
         setName('')

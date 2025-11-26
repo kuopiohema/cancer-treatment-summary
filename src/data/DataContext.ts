@@ -1,23 +1,12 @@
 import { createContext } from 'react'
-
-export interface DrugEquivalence {
-    drug: string,
-    factor: number
-}
-
-export interface DrugEquivalenceList {
-    drugs: DrugEquivalence[]
-    source: string
-}
-
-export const emptyDrugEquivalenceList: DrugEquivalenceList = {
-    drugs: [],
-    source: ''
-}
+import { createContext as createMobxContext } from 'mobx-keystone'
+import { DataStore } from './dataStore'
 
 export interface DataContextValue {
-    doxoEquivalents: DrugEquivalenceList,
-    cycloEquivalents: DrugEquivalenceList
+    store: DataStore
 }
+
+export const dataStore = new DataStore({})
+export const dataStoreContext = createMobxContext<DataStore>(dataStore)
 
 export const DataContext = createContext<DataContextValue | undefined>(undefined)

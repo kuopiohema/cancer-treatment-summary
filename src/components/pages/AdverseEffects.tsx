@@ -22,6 +22,9 @@ const AdverseEffectsPage = ({ entity: data }: EntityPageProps<EntityList<Adverse
 
 const AdverseEffects = observer(() => {
     const store = use(StoreContext)
+    if (!store)
+        throw new Error('Store context missing!')
+    
     return (
         <>
             <Title order={1}>Haittavaikutukset</Title>

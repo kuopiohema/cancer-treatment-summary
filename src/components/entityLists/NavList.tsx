@@ -6,7 +6,6 @@ import { use } from 'react'
 import { DataContext } from '../../data/DataContext.ts'
 import { NavContext } from '../../nav/NavContext.ts'
 import { Entity } from '../../store/entities/entity'
-import { getEntityLabel } from '../../store/entities/getEntityLabel.ts'
 import { EntityList } from '../../store/entityList'
 import { buildTextList } from '../../utils/buildTextList.tsx'
 import { EntityListProps } from './entityListProps'
@@ -36,7 +35,7 @@ const NavListInner = observer(<E extends Entity>({
     return entityList.entities.length === 0 ?
         <Text px="sm" pb="xs">{emptyText}</Text> :
         entityList.entities.map((entity, index) => {
-            const { heading, content } = getEntityLabel(entity, data)
+            const { heading, content } = entity.label
 
             return <NavListItem
                 key={entity.id}

@@ -16,7 +16,7 @@ const ChemotherapyPage = observer(({ entity }: EntityPageProps<Chemotherapy>) =>
     if (!data)
         throw new Error('Data context missing!')
 
-    const doxoEquivalents = data.doxoEquivalents
+    const doxoEquivalents = data.store.doxoEquivalents
     //const [cycloEquivalents] = useState(store.data.cycloEquivalents)
 
     const doxoEquivalent = useMemo(

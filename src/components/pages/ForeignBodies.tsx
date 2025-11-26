@@ -22,6 +22,9 @@ const ForeignBodiesPage = ({ entity: data }: EntityPageProps<EntityList<ForeignB
 
 const ForeignBodies = observer(() => {
     const store = use(StoreContext)
+    if (!store)
+        throw new Error('Store context missing!')
+    
     return (
         <>
             <Title order={1}>Vierasesineet</Title>

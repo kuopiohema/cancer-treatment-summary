@@ -1,4 +1,4 @@
-import { _await, fromSnapshot, Model, model, modelAction, modelFlow, prop, SnapshotInOf } from 'mobx-keystone'
+import { _async, _await, fromSnapshot, Model, model, modelAction, modelFlow, prop, SnapshotInOf } from 'mobx-keystone'
 import { AdverseEffect } from './entities/adverseEffect.ts'
 import { CellTherapy } from './entities/cellTherapy.ts'
 import type { Chemotherapy } from './entities/chemotherapy.ts'
@@ -68,7 +68,7 @@ export class Store extends Model({
     }
 
     @modelFlow
-    *load(files: FileList | null) {
+    load = _async(function* (this: Store, files: FileList | null) {
         if (!files)
             return
 
@@ -108,5 +108,5 @@ export class Store extends Model({
                 false
             )
         }
-    }
+    })
 }

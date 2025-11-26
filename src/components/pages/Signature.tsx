@@ -60,6 +60,9 @@ const SignaturePage = observer(({ entity: data }: EntityPageProps<SignatureData>
 
 const Signature = observer(() => {
     const store = use(StoreContext)
+    if (!store)
+        throw new Error('Store context missing!')
+    
     return (
         <>
             <Title order={1}>Allekirjoitus</Title>

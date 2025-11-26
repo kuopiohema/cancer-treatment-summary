@@ -4,7 +4,10 @@ import type { NumberInputValue } from '../../types/numberInputValue.ts'
 import type { SelectValue } from '../../types/selectValue.ts'
 import { EntityList } from '../entityList.ts'
 import type { Drug } from './drug.ts'
-import { Entity } from './entity.ts'
+import { Entity, EntityLabel } from './entity.ts'
+import { override } from 'mobx'
+import { formatDate, formatDateRange } from '../../utils/formatDate.ts'
+import { getDonorText } from '../../utils/getDonorText.ts'
 
 @model('catrest/StemCellTransplant')
 export class CellTherapy extends ExtendedModel(Entity, {
@@ -25,4 +28,28 @@ export class CellTherapy extends ExtendedModel(Entity, {
     dliStartDate: prop<DateInputValue>(null),
     dliEndDate: prop<DateInputValue>(null),
     dliDoses: prop<NumberInputValue>(0)
-}) {}
+}) {
+    @override
+    get label(): EntityLabel {
+        return {
+            heading: this.type || '(Uusi soluhoito)',
+            content: [
+                this.origin ? `${this.origin} siirto` : '',
+                { label: 'Siirtopäivä', content: formatDate(this.date) },
+                { label: 'CAR-solujen kohde', content: this.carTarget },
+                { label: 'Luovuttaja', content: getDonorText(this.donor, this.donorSex) },
+                { label: 'HLA-sopivuus', content: this.hlaMatch },
+                { label: 'Luovuttajan veriryhmä', content: this.donorBloodGroup },
+                { label: 'Esihoito', content: this.conditioning },
+                {
+                    label: 'TBI',
+                    content: this.tbi ? `${this.tbiDoseBody} Gy (vartalo) / ${this.tbiDoseLungs} Gy (keuhkot)` : ''
+                },
+                {
+                    label: 'DLI',
+                    content: this.dli ? `${formatDateRange(this.dliStartDate, this.dliEndDate)}, ${this.dliDoses} annosta` : ''
+                }
+            ]
+        }
+    }
+}

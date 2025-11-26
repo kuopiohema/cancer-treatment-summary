@@ -1,9 +1,6 @@
 import { observer } from "mobx-react-lite"
-import { use, useMemo } from 'react'
-import { DataContext } from '../../../data/DataContext.ts'
 import { Drug } from "../../../store/entities/drug"
 import { Group, NumberInput, Select, Text, Textarea, TextInput } from "@mantine/core"
-import { calculateEquivalentDose } from '../../../utils/calculateEquivalentDose.ts'
 import { ListItemProps } from "./listItemProps"
 import { useQuery } from "@tanstack/react-query"
 import { fetchSelectOptions } from "../../../utils/fetchJson"
@@ -13,12 +10,6 @@ const DrugListItem = observer(({ entity }: ListItemProps<Drug>) => {
         queryKey: ['doseFormula'],
         queryFn: fetchSelectOptions
     })
-    
-    const data = use(DataContext)
-    if (!data)
-        throw new Error('Data context missing!')
-    
-    const doxoEquivalent = useMemo(() => calculateEquivalentDose(entity, data.doxoEquivalents.drugs), [data.doxoEquivalents.drugs, entity])
     
     return (
         <>
@@ -60,7 +51,7 @@ const DrugListItem = observer(({ entity }: ListItemProps<Drug>) => {
                     minRows={1}
                 />
             </Group>
-            {doxoEquivalent > 0 && <Text size="sm">Doksorubisiiniekvivalentti: {doxoEquivalent} mg/m²</Text>}
+            {entity.doxoEquivalent > 0 && <Text size="sm">Doksorubisiiniekvivalentti: {entity.doxoEquivalent} mg/m²</Text>}
             {/*entity.cycloEquivalent > 0 && <Text size="sm">Syklofosfamidiekvivalentti: {entity.cycloEquivalent} mg/m²</Text>*/}
         </>
     )

@@ -34,6 +34,9 @@ const App = (() => {
     const [navbarCollapsed, { toggle: toggleNavbarCollapsed }] = useDisclosure(true)
 
     const store = use(StoreContext)
+    if (!store)
+        throw new Error('Store context missing!')
+
     const nav = use(NavContext)
     if (!nav)
         throw new Error('Navigation context missing!')

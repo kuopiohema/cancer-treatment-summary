@@ -1,5 +1,12 @@
 import { randomId } from '@mantine/hooks'
+import { computed } from 'mobx'
 import { Model, model, modelAction, prop } from 'mobx-keystone'
+import { TextListItem } from '../../utils/buildTextList'
+
+export interface EntityLabel {
+    heading: string
+    content: TextListItem[]
+}
 
 @model('catrest/Entity')
 export class Entity extends Model({
@@ -8,5 +15,10 @@ export class Entity extends Model({
     @modelAction
     set<K extends keyof this, V extends this[K]>(key: K, value: V) {
         this[key] = value
+    }
+
+    @computed
+    get label(): EntityLabel {
+        return {heading: '', content: []}
     }
 }

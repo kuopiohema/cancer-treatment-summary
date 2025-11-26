@@ -141,6 +141,9 @@ const FollowupPage = observer(({ entity: data }: EntityPageProps<FollowupData>) 
 
 const Followup = observer(() => {
     const store = use(StoreContext)
+    if (!store)
+        throw new Error('Store context missing!')
+    
     return (
         <>
             <Title order={1}>Seurantaohjeet</Title>
