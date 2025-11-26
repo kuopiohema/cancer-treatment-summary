@@ -7,5 +7,6 @@ export default defineConfig({
         react({
             tsDecorators: true,
         })
-    ]
+    ],
+    base: '/catrest/'
 })
