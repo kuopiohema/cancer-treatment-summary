@@ -81,7 +81,7 @@ const App = (() => {
         multiple: false,
         accept: '.json',
         resetOnOpen: true,
-        onChange: (files) => store.load(files)
+        onChange: (files) => void store.load(files)
     })
 
     return (

@@ -5,9 +5,11 @@ import type { SelectValue } from '../../types/selectValue.ts'
 import { EntityList } from '../entityList.ts'
 import type { Drug } from './drug.ts'
 import { Entity, EntityLabel } from './entity.ts'
-import { override } from 'mobx'
+import { computed, override } from 'mobx'
 import { formatDate, formatDateRange } from '../../utils/formatDate.ts'
 import { getDonorText } from '../../utils/getDonorText.ts'
+import { dataStoreContext } from '../../data/DataContext.ts'
+import { calculateTotalEquivalentDose } from '../../utils/calculateEquivalentDose.ts'
 
 @model('catrest/StemCellTransplant')
 export class CellTherapy extends ExtendedModel(Entity, {
@@ -29,6 +31,18 @@ export class CellTherapy extends ExtendedModel(Entity, {
     dliEndDate: prop<DateInputValue>(null),
     dliDoses: prop<NumberInputValue>(0)
 }) {
+    @computed
+    get doxoEquivalent() {
+        const data = dataStoreContext.get(this)
+        return calculateTotalEquivalentDose(this.drugs.entities, data.doxoEquivalents.drugs)
+    }
+
+    @computed
+    get cycloEquivalent() {
+        const data = dataStoreContext.get(this)
+        return calculateTotalEquivalentDose(this.drugs.entities, data.cycloEquivalents.drugs)
+    }
+
     @override
     get label(): EntityLabel {
         return {

@@ -7,7 +7,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/fi'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 
-import { configure } from 'mobx'
+//import { configure } from 'mobx'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
@@ -22,13 +22,13 @@ import { theme } from './theme.ts'
 
 dayjs.extend(customParseFormat)
 
-configure({
+/*configure({
     enforceActions: 'always',
     computedRequiresReaction: true,
     reactionRequiresObservable: true,
     observableRequiresReaction: true,
     disableErrorBoundaries: true
-})
+})*/
 
 const queryClient = new QueryClient()
 

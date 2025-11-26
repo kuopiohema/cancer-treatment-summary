@@ -13,14 +13,8 @@ import {
     TabStopType,
     TextRun
 } from 'docx'
-import type { CellTherapy } from '../store/entity/cellTherapy.ts'
-import type { Chemotherapy } from '../store/entity/chemotherapy.ts'
-import type { Diagnosis } from '../store/entity/diagnosis.ts'
-import type { Drug } from '../store/entity/drug.ts'
-import type { Procedure } from '../store/entity/procedure.ts'
-import type { Radiotherapy } from '../store/entity/radiotherapy.ts'
-import type { Treatment } from '../store/entity/treatment.ts'
-import type { FormStore } from '../store/formStore.ts'
+import type { Drug } from '../store/entities/drug.ts'
+import type { Store } from '../store/store.ts'
 import type { TextListItem } from './buildTextList.tsx'
 import { exportFile } from './exportFile.ts'
 import { formatDate } from './formatDate.ts'
@@ -186,17 +180,17 @@ const convertNewlines = (text: string): TextRun[] => {
     return result
 }
 
-export const generateDoc = async (data: FormStore, patient: { name: string, id: string }) => {
-    const diagnoses = data.diagnoses.entities as Diagnosis[]
-    const treatments = data.treatments.entities as Treatment[]
-    const chemotherapies = data.chemotherapies.entities as Chemotherapy[]
-    const radiotherapies = data.radiotherapies.entities as Radiotherapy[]
-    const procedures = data.procedures.entities as Procedure[]
-    const cellTherapies = data.cellTherapies.entities as CellTherapy[]
-    const foreignBodies = data.foreignBodies.entities
-    const adverseEffects = data.adverseEffects.entities
-    const followup = data.followup
-    const signature = data.signature
+export const generateDoc = async (store: Store, patient: { name: string, id: string }) => {
+    const diagnoses = store.diagnoses.entities
+    const treatments = store.treatments.entities
+    const chemotherapies = store.chemotherapies.entities
+    const radiotherapies = store.radiotherapies.entities
+    const procedures = store.procedures.entities
+    const cellTherapies = store.cellTherapies.entities
+    const foreignBodies = store.foreignBodies.entities
+    const adverseEffects = store.adverseEffects.entities
+    const followup = store.followup
+    const signature = store.signature
 
     //
     // HEADER AND FOOTER
@@ -271,8 +265,8 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
 
         diagnoses.forEach((item, index, list) => {
             content.push(...itemParagraphs(
-                item.heading,
-                buildDocxTextList(item.content),
+                item.label.heading,
+                buildDocxTextList(item.label.content),
                 index === list.length - 1
             ))
         })
@@ -288,8 +282,8 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
 
         treatments.forEach((item, index, list) => {
             content.push(...itemParagraphs(
-                item.heading,
-                buildDocxTextList(item.content),
+                item.label.heading,
+                buildDocxTextList(item.label.content),
                 index === list.length - 1
             ))
         })
@@ -328,7 +322,7 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
 
         chemotherapies.forEach((item, index, list) => {
             content.push(...itemParagraphs(
-                item.heading,
+                item.label.heading,
                 drugList(item.drugs.entities),
                 index === list.length - 1
             ))
@@ -345,8 +339,8 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
 
         radiotherapies.forEach((item, index, list) => {
             content.push(...itemParagraphs(
-                item.heading,
-                buildDocxTextList(item.content),
+                item.label.heading,
+                buildDocxTextList(item.label.content),
                 index === list.length - 1
             ))
         })
@@ -362,8 +356,8 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
 
         procedures.forEach((item, index, list) => {
             content.push(...itemParagraphs(
-                item.heading,
-                buildDocxTextList(item.content),
+                item.label.heading,
+                buildDocxTextList(item.label.content),
                 index === list.length - 1
             ))
         })
@@ -382,9 +376,9 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
             const isLast = index === list.length - 1
 
             content.push(...itemParagraphs(
-                item.heading,
+                item.label.heading,
                 buildDocxTextList(
-                    item.content.map(item => {
+                    item.label.content.map(item => {
                         if (typeof item === 'string')
                             return item
                         if (item.label === 'TBI')
@@ -525,7 +519,7 @@ export const generateDoc = async (data: FormStore, patient: { name: string, id: 
     //
 
     const doc = new Document({
-        creator: data.signature.place,
+        creator: store.signature.place,
         title: 'Yhteenveto syöpähoidoista',
         styles: styles,
         sections: [
