@@ -25,17 +25,16 @@ const CreateWordButton = () => {
     }
 
     const handleConfirm = () => {
-        generateDoc(store.form, { name, id })
+        generateDoc(store, { name, id })
             .then(() => showNotification(
-                'Luo Word-tiedosto',
-                <p>Tiedoston luonti onnistunut!<br />Avaa tiedosto muokkausta ja tulostusta varten.<br />Poista tiedosto
-                    tämän jälkeen koneeltasi!</p>,
+                'Tiedoston luonti onnistui!',
+                'Avaa tiedosto muokkausta ja tulostusta varten. Poista tiedosto tämän jälkeen koneeltasi!',
                 true
             ))
             .catch((error) =>
                 showNotification(
-                    'Luo Word-tiedosto',
-                    `Word-tiedoston luonti epäonnistunut: ${typeof error === 'string' ? error : error instanceof Error ? error.message : 'Tuntematon virhe'}`,
+                    'Word-tiedoston luonnissa tapahtui virhe:',
+                    `${typeof error === 'string' ? error : error instanceof Error ? error.message : 'Tuntematon virhe'}`,
                     false
                 ))
         handleClose()

@@ -41,7 +41,7 @@ const App = (() => {
     const handleResetConfirmed = () => {
         store.clear()
         nav.selectPage('help')
-        showNotification('', 'Kaikki tiedot tyhjennetty!')
+        showNotification('Kaikki tiedot tyhjennetty!', 'Voit nyt aloittaa uuden yhteenvedon tekemistä.')
     }
 
     const handleReset = () => modals.openConfirmModal({
@@ -67,7 +67,7 @@ const App = (() => {
             )
         } else {
             showNotification(
-                'Tietojen tallentaminen',
+                'Tietojen tallentaminen onnistui!',
                 'Lataa tiedosto koneellesi tallentaaksesi sovellukseen syötetyt tiedot!',
                 true
             )

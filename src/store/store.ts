@@ -86,11 +86,16 @@ export class Store extends Model({
                 try { // try loading old format
                     const snapshot = loadOldVersionJson(json)
                     this.restoreSnapshot(snapshot)
-                    showNotification('', 'Tietojen lataaminen onnistui!', true)
+                    showNotification(
+                        'Tietojen lataaminen onnistui!',
+                        'HUOM: Ladattu vanhalla sovelluksella tehty tiedosto. Tarkista tietoja huolellisesti!',
+                        true
+                    )
                 } catch {
                     showNotification(
                         'Tietojen lataamisessa tapahtui virhe:',
-                        'Tiedoston sisältöä ei tunnistettu'
+                        'Tiedoston sisältöä ei tunnistettu',
+                        false
                     )
                 }
             }
@@ -99,7 +104,8 @@ export class Store extends Model({
                 'Tietojen lataamisessa tapahtui virhe:',
                 typeof e === 'string' ? e :
                     e instanceof Error ? e.message :
-                        'Tuntematon virhe'
+                        'Tuntematon virhe',
+                false
             )
         }
     }
