@@ -8,7 +8,7 @@ export default defineConfig({
             tsDecorators: true,
         })
     ],
-    base: '/catrest/',
+    base: '/cancer-treatment-summary/',
     build: {
         rollupOptions: {
             output: {
