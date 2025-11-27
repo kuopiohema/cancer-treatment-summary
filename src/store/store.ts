@@ -68,14 +68,7 @@ export class Store extends Model({
     }
 
     @modelFlow
-    load = _async(function* (this: Store, files: FileList | null) {
-        if (!files)
-            return
-
-        if (files.length > 1)
-            return
-
-        const file = files[0]
+    load = _async(function* (this: Store, file: File) {
         try {
             const json = yield* _await(file.text())
             try { // try loading new format

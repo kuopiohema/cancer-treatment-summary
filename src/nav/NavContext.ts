@@ -10,6 +10,7 @@ interface NavContextValue {
     selectPage: (page: Page) => void,
     selectEntity: (entity: Entity) => void
     setDirty: (dirty: boolean) => void
+    reset: () => void
 }
 
 export const NavContext = createContext<NavContextValue | undefined>(undefined)

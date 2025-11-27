@@ -30,13 +30,20 @@ const NavProvider = ({ children }: PropsWithChildren) => {
 
     const setDirty = (dirty: boolean) => setPageIsDirty(dirty)
 
+    const reset = () => {
+        setCurrentPage('help')
+        setCurrentEntity(undefined)
+        setPageIsDirty(false)
+    }
+
     return <NavContext value={{
         currentPage,
         currentEntity,
         pageIsDirty,
         selectPage,
         selectEntity,
-        setDirty
+        setDirty,
+        reset
     }}>
         {children}
     </NavContext>

@@ -41,9 +41,13 @@ const App = (() => {
     if (!nav)
         throw new Error('Navigation context missing!')
 
-    const handleResetConfirmed = () => {
+    const reset = () => {
         store.clear()
-        nav.selectPage('help')
+        nav.reset()
+    }
+
+    const handleResetConfirmed = () => {
+        reset()
         showNotification('Kaikki tiedot tyhjennetty!', 'Voit nyt aloittaa uuden yhteenvedon tekemistä.')
     }
 
@@ -57,6 +61,33 @@ const App = (() => {
         labels: { confirm: 'Tyhjennä kaikki', cancel: 'Peruuta' },
         confirmProps: { color: 'red' },
         onConfirm: handleResetConfirmed
+    })
+
+    const handleLoadConfirmed = (files: FileList | null) => {
+        if (files?.length !== 1)
+            return
+
+        reset()
+        void store.load(files[0])
+    }
+    
+    const fileDialog = useFileDialog({
+        multiple: false,
+        accept: '.json',
+        resetOnOpen: true,
+        onChange: handleLoadConfirmed
+    })
+
+    const handleLoad = () => modals.openConfirmModal({
+        title: 'Avaa yhteenveto',
+        children: (
+            <Text size="sm">
+                Avataanko yhteenveto? Sovellukseen syötetyt tiedot tyhjennetään, eikä niitä voi palauttaa!
+            </Text>
+        ),
+        labels: { confirm: 'Avaa yhteenveto', cancel: 'Peruuta' },
+        confirmProps: { color: 'green' },
+        onConfirm: fileDialog.open
     })
 
     const handleSave = () => {
@@ -76,13 +107,6 @@ const App = (() => {
             )
         }
     }
-
-    const fileDialog = useFileDialog({
-        multiple: false,
-        accept: '.json',
-        resetOnOpen: true,
-        onChange: (files) => void store.load(files)
-    })
 
     return (
         <AppShell
@@ -115,9 +139,9 @@ const App = (() => {
                         <Button
                             variant="default"
                             leftSection={<IconFolderOpen size={20} />}
-                            onClick={fileDialog.open}
+                            onClick={handleLoad}
                         >
-                            Lataa
+                            Avaa
                         </Button>
                         <Button
                             variant="default"
