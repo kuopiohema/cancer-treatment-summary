@@ -1,19 +1,11 @@
 import { Autocomplete, Group, NumberInput, Text, Textarea, TextInput } from '@mantine/core'
 import { DateInput } from '@mantine/dates'
-import { useQuery } from '@tanstack/react-query'
 import { observer } from 'mobx-react-lite'
 import { Radiotherapy } from '../../../store/entities/radiotherapy'
-import { fetchSelectOptions } from '../../../utils/fetchJson'
-import { withUnknown } from '../../../utils/withUnknown'
 import { EntityPageProps } from './entityPageProps'
+import { radiotherapyModeOptions } from '../../../data/radiotherapyMode'
 
 const RadiotherapyPage = observer(({ entity }: EntityPageProps<Radiotherapy>) => {
-    const radiotherapyModeOptions = useQuery({
-        queryKey: ['radiotherapyMode'],
-        queryFn: fetchSelectOptions,
-        select: data => withUnknown(data)
-    })
-
     return (
         <>
             <Group>
@@ -38,7 +30,7 @@ const RadiotherapyPage = observer(({ entity }: EntityPageProps<Radiotherapy>) =>
                 value={entity.mode}
                 onChange={value => entity.set('mode', value)}
                 label="Hoitomuoto"
-                data={radiotherapyModeOptions.data}
+                data={radiotherapyModeOptions}
             />
             <Group>
                 <NumberInput

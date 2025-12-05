@@ -8,8 +8,9 @@ import { Entity, EntityLabel } from './entity.ts'
 import { computed, override } from 'mobx'
 import { formatDate, formatDateRange } from '../../utils/formatDate.ts'
 import { getDonorText } from '../../utils/getDonorText.ts'
-import { dataStoreContext } from '../../data/DataContext.ts'
 import { calculateTotalEquivalentDose } from '../../utils/calculateEquivalentDose.ts'
+import { doxoEquivalents } from '../../data/doxoEquivalents.ts'
+import { cycloEquivalents } from '../../data/cycloEquivalents.ts'
 
 @model('catrest/StemCellTransplant')
 export class CellTherapy extends ExtendedModel(Entity, {
@@ -33,14 +34,12 @@ export class CellTherapy extends ExtendedModel(Entity, {
 }) {
     @computed
     get doxoEquivalent() {
-        const data = dataStoreContext.get(this)
-        return calculateTotalEquivalentDose(this.drugs.entities, data.doxoEquivalents.drugs)
+        return calculateTotalEquivalentDose(this.drugs.entities, doxoEquivalents.drugs)
     }
 
     @computed
     get cycloEquivalent() {
-        const data = dataStoreContext.get(this)
-        return calculateTotalEquivalentDose(this.drugs.entities, data.cycloEquivalents.drugs)
+        return calculateTotalEquivalentDose(this.drugs.entities, cycloEquivalents.drugs)
     }
 
     @override

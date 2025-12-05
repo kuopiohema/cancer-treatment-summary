@@ -1,49 +1,20 @@
 import { Autocomplete, Fieldset, Group, NumberInput, Select, Switch, Text, TextInput } from '@mantine/core'
 import { DateInput } from '@mantine/dates'
-import { useQuery } from '@tanstack/react-query'
 import { observer } from 'mobx-react-lite'
 import { sexOptions } from '../../../data/sex.ts'
 import { CellTherapy } from '../../../store/entities/cellTherapy'
 import { Drug } from '../../../store/entities/drug'
-import { fetchSelectOptions } from '../../../utils/fetchJson'
-import { withUnknown } from '../../../utils/withUnknown'
 import ChildList from '../../entityLists/ChildList'
 import DrugListItem from '../listItems/DrugListItem'
 import { EntityPageProps } from './entityPageProps'
+import { bloodGroupOptions } from '../../../data/bloodGroup.ts'
+import { carTargetOptions } from '../../../data/carTarget.ts'
+import { cellDonorOptions } from '../../../data/cellDonor.ts'
+import { cellOriginOptions } from '../../../data/cellOrigin.ts'
+import { cellTherapyTypeOptions } from '../../../data/cellTherapyType.ts'
+import { hlaMatchOptions } from '../../../data/hlaMatch.ts'
 
 const CellTherapyPage = observer(({ entity }: EntityPageProps<CellTherapy>) => {
-    const cellTherapyTypeOptions = useQuery({
-        queryKey: ['cellTherapyType'],
-        queryFn: fetchSelectOptions
-    })
-
-    const cellOriginOptions = useQuery({
-        queryKey: ['cellOrigin'],
-        queryFn: fetchSelectOptions
-    })
-
-    const carTargetOptions = useQuery({
-        queryKey: ['carTarget'],
-        queryFn: fetchSelectOptions
-    })
-
-    const cellDonorOptions = useQuery({
-        queryKey: ['cellDonor'],
-        queryFn: fetchSelectOptions
-    })
-
-    const hlaMatchOptions = useQuery({
-        queryKey: ['hlaMatch'],
-        queryFn: fetchSelectOptions,
-        select: data => withUnknown(data)
-    })
-
-    const bloodGroupOptions = useQuery({
-        queryKey: ['bloodGroup'],
-        queryFn: fetchSelectOptions,
-        select: data => withUnknown(data)
-    })
-
     return (
         <>
             <Fieldset legend="Hoidon perustiedot">
@@ -51,20 +22,20 @@ const CellTherapyPage = observer(({ entity }: EntityPageProps<CellTherapy>) => {
                     value={entity.type}
                     onChange={value => entity.set('type', value)}
                     label="Hoitomuoto"
-                    data={cellTherapyTypeOptions.data}
+                    data={cellTherapyTypeOptions}
                 />
                 <Select
                     value={entity.origin}
                     onChange={value => entity.set('origin', value)}
                     label="Solujen alkuperä"
-                    data={cellOriginOptions.data}
+                    data={cellOriginOptions}
                     flex="none"
                 />
                 <Autocomplete
                     value={entity.carTarget}
                     onChange={value => entity.set('carTarget', value)}
                     label="CAR-solujen kohde"
-                    data={carTargetOptions.data}
+                    data={carTargetOptions}
                 />
                 <DateInput
                     value={entity.date}
@@ -83,7 +54,7 @@ const CellTherapyPage = observer(({ entity }: EntityPageProps<CellTherapy>) => {
                     value={entity.donor}
                     onChange={value => entity.set('donor', value)}
                     label="Luovuttaja"
-                    data={cellDonorOptions.data}
+                    data={cellDonorOptions}
                 />
                 <Select
                     value={entity.donorSex}
@@ -95,13 +66,13 @@ const CellTherapyPage = observer(({ entity }: EntityPageProps<CellTherapy>) => {
                     value={entity.hlaMatch}
                     onChange={value => entity.set('hlaMatch', value)}
                     label="HLA-sopivuus"
-                    data={hlaMatchOptions.data}
+                    data={hlaMatchOptions}
                 />
                 <Select
                     value={entity.donorBloodGroup}
                     onChange={value => entity.set('donorBloodGroup', value)}
                     label="Veriryhmä"
-                    data={bloodGroupOptions.data}
+                    data={bloodGroupOptions}
                 />
             </Fieldset>
             <ChildList

@@ -11,6 +11,7 @@ import { Radiotherapy } from '../store/entities/radiotherapy'
 import { Procedure } from '../store/entities/procedure'
 import { CellTherapy } from '../store/entities/cellTherapy'
 import { AdverseEffect } from '../store/entities/adverseEffect'
+import { cellOrigin } from '../data/cellOrigin'
 
 export interface OldFileStructure {
     treatment: {
@@ -167,7 +168,7 @@ export const loadOldVersionJson = (json: string): SnapshotInOf<Store> => {
 
         result.cellTherapies.add(new CellTherapy({
             date: dateFromOldFormat(item.date),
-            origin: isAllo ? 'Allogeeninen' : 'Autologinen',
+            origin: isAllo ? cellOrigin.allo : cellOrigin.auto,
             type,
             donor: isAllo ? item.source.label : '',
             donorSex: isAllo ? item.donorSex : '',

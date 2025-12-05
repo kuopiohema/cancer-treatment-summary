@@ -1,3 +1,4 @@
+import { cellDonor } from '../data/cellDonor.ts'
 import { sex } from "../data/sex.ts"
 import { SelectValue } from "../types/selectValue"
 import { unknownValue } from "./withUnknown"
@@ -8,7 +9,7 @@ export const getDonorText = (donorValue: SelectValue, donorSexValue: SelectValue
     if (!donorValue)
         return ''
 
-    if (donorValue === 'Vanhempi') {
+    if (donorValue === cellDonor.parent) {
         if (donorSexValue === sex.male)
             return 'Isä'
         if (donorSexValue === sex.female)
@@ -16,7 +17,7 @@ export const getDonorText = (donorValue: SelectValue, donorSexValue: SelectValue
         return `Vanhempi (${unknownSexText})`
     }
     
-    if (donorValue === 'Sisarus') {
+    if (donorValue === cellDonor.sibling) {
         if (donorSexValue === sex.male)
             return 'Veli'
         if (donorSexValue === sex.female)

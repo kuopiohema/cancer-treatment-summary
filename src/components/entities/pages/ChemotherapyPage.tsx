@@ -1,25 +1,22 @@
-import { Divider, Group, List, Text } from '@mantine/core'
+import { Divider, Group, List, ListItem, Text } from '@mantine/core'
 import { DateInput } from '@mantine/dates'
 import { observer } from 'mobx-react-lite'
-import { use } from 'react'
-import { DataContext } from '../../../data/DataContext.ts'
 import { Chemotherapy } from '../../../store/entities/chemotherapy'
 import { Drug } from '../../../store/entities/drug'
 import { firstLetterUppercase } from '../../../utils/firstLetterUppercase'
 import ChildList from '../../entityLists/ChildList'
 import DrugListItem from '../listItems/DrugListItem'
 import { EntityPageProps } from './entityPageProps'
+import { doxoEquivalents } from '../../../data/doxoEquivalents'
 
 const ChemotherapyPage = observer(({ entity }: EntityPageProps<Chemotherapy>) => {
-    const data = use(DataContext)
-    if (!data)
-        throw new Error('Data context missing!')
-
-    const doxoEquivalents = data.store.doxoEquivalents
-    //const [cycloEquivalents] = useState(store.data.cycloEquivalents)
-
     return (
         <>
+            <Text>HUOM:</Text>
+            <List>
+                <ListItem>Syötä kantasolusiirtojen ja muiden soluhoitojen esihoidot ko. soluhoidon alle</ListItem>
+                <ListItem>Lääkkeiden nimet on kirjoitettava oikein, jotta (kumulatiivisen) antrasykliiniannoksen laskeminen toimii</ListItem>
+            </List>
             <Group>
                 <DateInput
                     value={entity.startDate}
@@ -49,7 +46,6 @@ const ChemotherapyPage = observer(({ entity }: EntityPageProps<Chemotherapy>) =>
                 ))}
             </List>
             <Text size="xs">Lähde: {doxoEquivalents.source}</Text>
-            <Text>HUOM: lääkkeiden nimet on kirjoitettava oikein, jotta (kumulatiivisen) antrasykliiniannoksen laskeminen toimii!</Text>
             {/*<Divider orientation="horizontal" />
             <Text>Kumulatiivinen alkyloivien aineiden annos (syklofosfamidiekvivalentti) = {data.cycloEquivalent} mg/m²<br /></Text>
             <Text size="xs">Käytetyt kertoimet:</Text>

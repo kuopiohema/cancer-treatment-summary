@@ -1,21 +1,13 @@
 import { Button, Divider, Grid, Group, Text, Textarea, Title } from '@mantine/core'
-import { useQuery } from '@tanstack/react-query'
 import { observer } from 'mobx-react-lite'
 import { use } from 'react'
 import { Followup as FollowupData } from '../../store/followup.ts'
 import { StoreContext } from '../../store/StoreContext'
-import { emptyFollowupDefaults, FollowupDefaults } from '../../types/followupDefaults.ts'
-import { fetchJson } from '../../utils/fetchJson'
 import { EntityPageProps } from '../entities/pages/entityPageProps'
 import EntityPageWrapper from '../entityLists/EntityPageWrapper'
+import { followupDefaults } from '../../data/followupDefaults.ts'
 
 const FollowupPage = observer(({ entity: data }: EntityPageProps<FollowupData>) => {
-    const followupDefaults = useQuery({
-        queryKey: ['followupDefaults'],
-        queryFn: () => fetchJson<FollowupDefaults>('followupDefaults'),
-        placeholderData: emptyFollowupDefaults
-    })
-
     const handleAddToGeneral = (value: string) => {
         let newText = data.general
         if (newText)
@@ -54,13 +46,13 @@ const FollowupPage = observer(({ entity: data }: EntityPageProps<FollowupData>) 
             </Grid.Col>
             <Grid.Col span={9}>
                 <Group>
-                    <Button onClick={() => handleAddToGeneral(followupDefaults.data!.growth)}>
+                    <Button onClick={() => handleAddToGeneral(followupDefaults.growth)}>
                         Kasvu
                     </Button>
-                    <Button onClick={() => handleAddToGeneral(followupDefaults.data!.bloodPressure)}>
+                    <Button onClick={() => handleAddToGeneral(followupDefaults.bloodPressure)}>
                         Verenpaine
                     </Button>
-                    <Button onClick={() => handleAddToGeneral(followupDefaults.data!.lifestyle)}>
+                    <Button onClick={() => handleAddToGeneral(followupDefaults.lifestyle)}>
                         Elämäntavat
                     </Button>
                 </Group>
@@ -70,13 +62,13 @@ const FollowupPage = observer(({ entity: data }: EntityPageProps<FollowupData>) 
             </Grid.Col>
             <Grid.Col span={9}>
                 <Group>
-                    <Button onClick={() => handleAddToGeneral(followupDefaults.data!.heart.boy.lowRisk)}>
+                    <Button onClick={() => handleAddToGeneral(followupDefaults.heart.boy.lowRisk)}>
                         Matala riski
                     </Button>
-                    <Button onClick={() => handleAddToGeneral(followupDefaults.data!.heart.boy.mediumRisk)}>
+                    <Button onClick={() => handleAddToGeneral(followupDefaults.heart.boy.mediumRisk)}>
                         Keskiriski
                     </Button>
-                    <Button onClick={() => handleAddToGeneral(followupDefaults.data!.heart.boy.highRisk)}>
+                    <Button onClick={() => handleAddToGeneral(followupDefaults.heart.boy.highRisk)}>
                         Korkea riski
                     </Button>
                 </Group>
@@ -86,13 +78,13 @@ const FollowupPage = observer(({ entity: data }: EntityPageProps<FollowupData>) 
             </Grid.Col>
             <Grid.Col span={9}>
                 <Group>
-                    <Button onClick={() => handleAddToGeneral(followupDefaults.data!.heart.girl.lowRisk)}>
+                    <Button onClick={() => handleAddToGeneral(followupDefaults.heart.girl.lowRisk)}>
                         Matala riski
                     </Button>
-                    <Button onClick={() => handleAddToGeneral(followupDefaults.data!.heart.girl.mediumRisk)}>
+                    <Button onClick={() => handleAddToGeneral(followupDefaults.heart.girl.mediumRisk)}>
                         Keskiriski
                     </Button>
-                    <Button onClick={() => handleAddToGeneral(followupDefaults.data!.heart.girl.highRisk)}>
+                    <Button onClick={() => handleAddToGeneral(followupDefaults.heart.girl.highRisk)}>
                         Korkea riski
                     </Button>
                 </Group>
@@ -105,19 +97,19 @@ const FollowupPage = observer(({ entity: data }: EntityPageProps<FollowupData>) 
             </Grid.Col>
             <Grid.Col span={9}>
                 <Group>
-                    <Button onClick={() => handleAddToVaccination(followupDefaults.data!.vaccination.unvaccinated)}>
+                    <Button onClick={() => handleAddToVaccination(followupDefaults.vaccination.unvaccinated)}>
                         Aiemmin rokottamaton
                     </Button>
-                    <Button onClick={() => handleAddToVaccination(followupDefaults.data!.vaccination.interrupted)}>
+                    <Button onClick={() => handleAddToVaccination(followupDefaults.vaccination.interrupted)}>
                         Rokotusohjelma keskeytynyt
                     </Button>
-                    <Button onClick={() => handleAddToVaccination(followupDefaults.data!.vaccination.influenza)}>
+                    <Button onClick={() => handleAddToVaccination(followupDefaults.vaccination.influenza)}>
                         Influenssarokotus
                     </Button>
-                    <Button onClick={() => handleAddToVaccination(followupDefaults.data!.vaccination.autoSCT)}>
+                    <Button onClick={() => handleAddToVaccination(followupDefaults.vaccination.autoSCT)}>
                         Autologinen siirto
                     </Button>
-                    <Button onClick={() => handleAddToVaccination(followupDefaults.data!.vaccination.alloSCT)}>
+                    <Button onClick={() => handleAddToVaccination(followupDefaults.vaccination.alloSCT)}>
                         Allogeeninen siirto
                     </Button>
                 </Group>
@@ -127,10 +119,10 @@ const FollowupPage = observer(({ entity: data }: EntityPageProps<FollowupData>) 
             </Grid.Col>
             <Grid.Col span={9}>
                 <Group>
-                    <Button onClick={() => handleAddToVaccination(followupDefaults.data!.vaccination.standardRisk)}>
+                    <Button onClick={() => handleAddToVaccination(followupDefaults.vaccination.standardRisk)}>
                         Normaali riski
                     </Button>
-                    <Button onClick={() => handleAddToVaccination(followupDefaults.data!.vaccination.highRisk)}>
+                    <Button onClick={() => handleAddToVaccination(followupDefaults.vaccination.highRisk)}>
                         Korkea riski (HR-ALL, AML)
                     </Button>
                 </Group>

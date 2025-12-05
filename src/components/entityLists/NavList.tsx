@@ -3,7 +3,6 @@ import { ActionIcon, Divider, Group, Stack, Text, Tooltip } from '@mantine/core'
 import { IconPlus } from '@tabler/icons-react'
 import { observer } from 'mobx-react-lite'
 import { use } from 'react'
-import { DataContext } from '../../data/DataContext.ts'
 import { NavContext } from '../../nav/NavContext.ts'
 import { Entity } from '../../store/entities/entity'
 import { EntityList } from '../../store/entityList'
@@ -24,10 +23,6 @@ const NavListInner = observer(<E extends Entity>({
                                                      itemName,
                                                      onRemove
                                                  }: NavListInnerProps<E>) => {
-    const data = use(DataContext)
-    if (!data)
-        throw new Error('Data context missing!')
-
     const nav = use(NavContext)
     if (!nav)
         throw new Error('Navigation context missing!')

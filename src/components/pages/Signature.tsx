@@ -1,26 +1,18 @@
 import { Button, Divider, Text, TextInput, Title } from '@mantine/core'
 import { DateInput } from '@mantine/dates'
-import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { observer } from 'mobx-react-lite'
 import { use } from 'react'
 import { Signature as SignatureData } from '../../store/signature'
 import { StoreContext } from '../../store/StoreContext'
-import { emptySignatureDefaults, SignatureDefaults } from '../../types/signatureDefaults.ts'
-import { fetchJson } from '../../utils/fetchJson'
 import { EntityPageProps } from '../entities/pages/entityPageProps'
 import EntityPageWrapper from '../entityLists/EntityPageWrapper'
+import { signatureDefaults } from '../../data/signatureDefaults'
 
 const SignaturePage = observer(({ entity: data }: EntityPageProps<SignatureData>) => {
-    const signatureDefaults = useQuery({
-        queryKey: ['signatureDefaults'],
-        queryFn: () => fetchJson<SignatureDefaults>('signatureDefaults'),
-        placeholderData: emptySignatureDefaults
-    })
-
     const handleUseDefaults = () => {
-        data.set('phone', signatureDefaults.data?.phone ?? '')
-        data.set('place', signatureDefaults.data?.place ?? '')
+        data.set('phone', signatureDefaults.phone ?? '')
+        data.set('place', signatureDefaults.place ?? '')
         data.set('date', dayjs().format('YYYY-MM-DD'))
     }
 

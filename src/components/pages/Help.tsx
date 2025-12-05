@@ -1,27 +1,41 @@
-import { List, ListItem, Text, Title } from '@mantine/core'
+import { Divider, List, Text, Title } from '@mantine/core'
 
 const Help = () => {
     return (
         <>
             <Title order={1}>Käyttöohjeet</Title>
             <List>
-                <ListItem>Lisää tarvittavia kohteita (diagnoosit, hoidot jne.) painamalla sivupalkissa ko. osion
-                    kohdalla "+"-painiketta.</ListItem>
-                <ListItem>Avaa lisätyt kohteet klikkaamalla niitä sivupalkissa ja täytä tarvittavat tiedot avautuvaan
-                    lomakkeeseen. Muista hyväksyä muutokset ikkunan alareunassa olevan painikkeen avulla!</ListItem>
-                <ListItem>Voit muuttaa listana olevien kohteiden järjestystä vetämällä ja pudottamalla; tarvittaessa
-                    voit poistaa kohteita myös kokonaan painamalla roskakorikuviota.</ListItem>
-                <ListItem>Voit poistaa kaikki tiedot painamalla "Uusi".</ListItem>
-                <ListItem>Tallenna syötetyt tiedot omalle tietokoneelle json-tiedostona painamalla
-                    "Tallenna".</ListItem>
-                <ListItem>Aiemmin tallennettuja tiedostoja voi uudelleen avata painamalla "Lataa". Myös vanhalla yhteenvetosovelluksella
-                    tehtyjä yhteenvetoja voi avata, mutta tietojen sijaintia kannattaa tuolloin tarkistaa ja tarvittaessa korjata.</ListItem>
-                <ListItem>Kun lomake on valmis, voit luoda siitä tulostettavan tiedoston painamalla "Luo Word-tiedosto".
+                <List.Item>
+                    Lisää tarvittavia kohteita (diagnoosit, hoidot jne.) painamalla sivupalkissa ko. osion kohdalla "+"-painiketta.
+                </List.Item>
+                <List.Item>
+                    Avaa lisätyt kohteet klikkaamalla niitä sivupalkissa ja täytä tarvittavat tiedot avautuvaan
+                    lomakkeeseen. Muista hyväksyä muutokset ikkunan alareunassa olevan painikkeen avulla!
+                </List.Item>
+                <List.Item>
+                    Voit muuttaa listana olevien kohteiden järjestystä vetämällä ja pudottamalla; tarvittaessa
+                    voit poistaa kohteita myös kokonaan painamalla roskakorikuviota.
+                </List.Item>
+                <List.Item>
+                    Voit poistaa kaikki tiedot painamalla "Uusi".
+                </List.Item>
+                <List.Item>
+                    Tallenna syötetyt tiedot omalle tietokoneelle json-tiedostona painamalla "Tallenna".
+                </List.Item>
+                <List.Item>
+                    Aiemmin tallennettuja tiedostoja voi uudelleen avata painamalla "Lataa". Myös vanhalla yhteenvetosovelluksella
+                    tehtyjä yhteenvetoja voi avata, mutta tietojen sijaintia kannattaa tuolloin tarkistaa ja tarvittaessa korjata.
+                </List.Item>
+                <List.Item>
+                    Kun lomake on valmis, voit luoda siitä tulostettavan tiedoston painamalla "Luo Word-tiedosto".
                     Tässä vaiheessa sovellus kysyy potilaan henkilötietoja - nämä
                     eivät tallennu sovellukseen (eikä ladattavaan json-tiedostoon), vaan siirtyvät ainoastaan
-                    Word-tiedostoon.</ListItem>
-                <ListItem>Hävitä ladattu Word-tiedosto tulostuksen jälkeen omalta tietokoneeltasi siinä olevien
-                    henkilötietojen vuoksi.</ListItem>
+                    Word-tiedostoon.
+                </List.Item>
+                <List.Item>
+                    Hävitä ladattu Word-tiedosto tulostuksen jälkeen omalta tietokoneeltasi siinä olevien
+                    henkilötietojen vuoksi.
+                </List.Item>
             </List>
             <Title order={2} mt="xl">Tietoturva ja -suoja</Title>
             <Text>
@@ -33,6 +47,35 @@ const Help = () => {
                 jälkeen.
             </Text>
             <Text mt="xl">Tätä sivua voit avata uudelleen painamalla yläpalkissa "?"-painiketta.</Text>
+            <Divider my="xl" />
+            <Title order={3} size="sm" mb="sm">Sovelluksen muutoshistoria</Title>
+            <List size="xs">
+                <List.Item>
+                    1.0.2
+                    <List withPadding size="xs">
+                        <List.Item>
+                            Lisätty ohje kemoterapia-sivulle, että soluhoitojen esihoitojen lääkkeet on syötettävä soluhoidon alle
+                        </List.Item>
+                        <List.Item>
+                            Lisätty haittavaikutusten elinjärjestelmäluetteloon "Luuydin"
+                        </List.Item>
+                        <List.Item>
+                            Sisäisiä muutoksia (mm. valikkovaihtoehtojen ja vakiotekstien sijainti)
+                        </List.Item>
+                    </List>
+                </List.Item>
+                <List.Item>
+                    1.0.1
+                    <List withPadding size="xs">
+                        <List.Item>
+                            Virheiden korjauksia
+                        </List.Item>
+                        <List.Item>
+                            Lisätty ohje, että lääkkeiden nimiä on kirjoitettava oikein, jotta kumulatiivinen annoslasku toimii
+                        </List.Item>
+                    </List>
+                </List.Item>
+            </List>
         </>
     )
 }
